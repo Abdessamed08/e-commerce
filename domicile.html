@@ -19,6 +19,8 @@
             --card-bg: #ffffff;
             --card-text: #1f2937;
             --shadow-hard: 0 6px 15px rgba(0, 0, 0, 0.3);
+            --carrousel-dot: #ccc;
+            --carrousel-active: var(--accent-main);
         }
 
         /* Base & Reset - (inchangé) */
@@ -39,7 +41,7 @@
             padding: 0 10px;
         }
         
-        /* HEADER - (inchangé) */
+        /* HEADER et STYLES GÉNÉRAUX - (inchangé) */
         .site-header {
             background-color: rgba(17, 24, 39, 0.95);
             backdrop-filter: blur(8px);
@@ -49,13 +51,11 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             padding: 15px 0;
         }
-
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .logo {
             font-size: 1.4rem;
             font-weight: 800;
@@ -64,13 +64,9 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
         main {
             padding-top: 20px;
         }
-
-
-        /* Styles Spécifiques */
         .section-title {
             text-align: center;
             font-size: 2.2rem;
@@ -80,12 +76,8 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
         }
-        
-        /* GRILLE DE PRODUITS */
         .product-grid {
-            /* Largeur minimale conservée à 200px */
             display: grid;
-            /* Permet à la grille de s'adapter automatiquement, min 200px par colonne */
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 20px;
             padding-bottom: 60px;
@@ -99,54 +91,76 @@
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             cursor: pointer;
             border: 1px solid transparent; 
-            /* Ajout pour faciliter le flex du product-info sur mobile si besoin */
             display: flex;
             flex-direction: column;
         }
-        
         .product-card:hover {
             transform: translateY(-4px); 
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 0 6px var(--accent-main);
             border-color: var(--accent-main);
         }
-        
-        /* Image Card */
+
+        /* --- NOUVEAUX STYLES DE CARROUSEL --- */
         .product-card-header {
             position: relative;
             overflow: hidden;
-            /* Hauteur ajustée pour mobile dans la media query si la minmax ne suffisait pas */
-            height: 300px; 
+            /* Hauteur relative pour les ratios Instagram/produits */
+            height: 0; 
+            padding-bottom: 125%; /* Exemple: Ratio 4:5 (100 / (4/5) = 125) */
             background-color: #f3f4f6;
-            aspect-ratio: 819 / 1024; 
         }
         
-        .product-card-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            display: block;
-            transition: opacity 0.3s ease-in-out; 
-            image-rendering: optimizeQuality; 
-            image-rendering: -webkit-optimize-contrast; 
-        }
-
-        /* Effet Switch Image (inchangé) */
-        .product-card-header .hover-img {
+        .image-track {
             position: absolute;
             top: 0;
             left: 0;
-            opacity: 0;
+            width: 100%;
+            height: 100%;
+            /* Transition fluide entre les images */
+            transition: transform 0.4s ease-in-out; 
+            display: flex;
+        }
+        
+        .image-track img {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Supprime l'effet de survol CSS précédent */
+            position: relative;
+            opacity: 1; 
         }
 
-        .product-card:hover .product-card-header .default-img {
-            opacity: 0;
+        /* Contrôles (Points de navigation) */
+        .carrousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
         }
 
-        .product-card:hover .product-card-header .hover-img {
-            opacity: 1;
+        .dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 4px;
+            background-color: var(--carrousel-dot);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        /* Info produit et prix */
+        .dot.active {
+            background-color: var(--carrousel-active);
+            transform: scale(1.2);
+        }
+        /* -------------------------------- */
+
+
+        /* Info produit, Prix, CTA - (inchangé) */
         .product-info {
             padding: 10px 10px 8px; 
             color: var(--card-text);
@@ -154,19 +168,13 @@
             flex-direction: column;
             justify-content: space-between; 
             min-height: 70px;
-            flex-grow: 1; /* Permet à product-info de prendre la hauteur restante */
+            flex-grow: 1; 
         }
-
         .product-info h3 {
             font-size: 1.0rem; 
             margin: 0 0 8px; 
             font-weight: 700;
         }
-
-        .description {
-            display: none; 
-        }
-
         .price-cta {
             display: flex;
             justify-content: space-between;
@@ -175,13 +183,11 @@
             border-top: 1px solid #e5e7eb;
             margin-top: auto;
         }
-
         .price {
             font-size: 1.3rem; 
             color: var(--accent-main);
             font-weight: 900;
         }
-
         .add-to-cart {
             background-color: var(--accent-main);
             color: var(--light-text);
@@ -194,122 +200,29 @@
             text-transform: uppercase;
             transition: background-color 0.3s, transform 0.1s;
         }
-        
         .add-to-cart:hover {
             background-color: var(--accent-hover);
             transform: scale(1.02);
             box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
         }
         
-        /* Reste du code (Liens, Footer) - (inchangé) */
-        .back-link-wrapper {
-            text-align: left;
-            padding-top: 20px;
-            margin-bottom: -20px;
-        }
-        
-        .back-link { 
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.85em;
-            color: var(--light-text);
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-        .back-link:hover {
-            background-color: var(--accent-main);
-            color: var(--dark-bg);
-            border-color: var(--accent-main);
-        }
-        
-        .site-footer {
-            background-color: #1f2937;
-            color: #9ca3af;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px; 
-            font-size: 0.8rem;
-        }
-        
-        .site-footer a {
-            color: var(--accent-main);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .site-footer a:hover {
-            color: var(--light-text);
-        }
-
-        /* ================================================= */
-        /* === ADAPTATION MOBILE (Media Queries) === */
-        /* ================================================= */
+        /* ADAPTATION MOBILE - (ajustements mineurs) */
         @media (max-width: 600px) {
-            
-            .logo {
-                /* Réduire la taille du logo sur les très petits écrans */
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                /* Réduire la taille du titre principal sur mobile */
-                font-size: 1.8rem;
-                margin: 30px 0 20px; /* Moins de marge pour gagner de la place */
-            }
-
             .product-grid {
-                /* Force une seule colonne sur les très petits écrans pour plus de lisibilité */
                 grid-template-columns: 1fr; 
-                gap: 25px; /* Augmenter un peu l'espace entre les cartes en mode liste */
+                gap: 25px; 
             }
-
-            .product-card {
-                /* Enlever l'effet de survol (hover) qui n'est pas intuitif sur écran tactile */
-                transform: none !important; 
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            .product-card-header {
+                /* Légèrement moins haut sur mobile pour un meilleur aperçu */
+                padding-bottom: 100%; /* Si on veut un carré parfait sur mobile (plus courant) */
             }
-            .product-card:hover { /* S'assurer que l'effet hover est désactivé */
+            .product-card:hover {
                  transform: none; 
                  border-color: transparent;
             }
-            
-            .product-card-header {
-                /* Réduire la hauteur de l'image si vous souhaitez plus d'espace */
-                height: 350px; 
-            }
-            
-            .product-info h3 {
-                /* Légèrement plus grand pour la lisibilité sur mobile */
-                font-size: 1.1rem; 
-            }
-            
-            .price {
-                /* Ajuster la taille du prix */
-                font-size: 1.2rem;
-            }
-            
             .add-to-cart {
-                /* Augmenter un peu la zone de clic du bouton */
-                padding: 8px 15px; 
-                font-size: 0.8rem; 
-            }
-            
-            .site-footer {
-                padding: 15px 0;
-            }
-            
-            .back-link {
-                font-size: 0.8em; /* Un peu plus petit pour le mobile */
-            }
-        }
-
-        @media (min-width: 601px) and (max-width: 1024px) {
-            /* Adaptation pour les tablettes (2 ou 3 colonnes) */
-            .product-grid {
-                /* Permet à la grille d'afficher 2 ou 3 colonnes de minimum 200px */
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+                padding: 10px 15px; /* Plus de zone de tapotement */
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -334,8 +247,16 @@
 
             <div class="product-card" data-sku="D001">
                 <div class="product-card-header">
-                    <img src="images/mbapééé.webp" alt="Maillot Domicile Pro Mbappé" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/mbappétshirt.webp" alt="Maillot Domicile Pro Mbappé Arrière" class="hover-img" loading="lazy" decoding="async">
+                    <div class="image-track" data-current-index="0" data-images="3">
+                        <img src="images/mbapééé.webp" alt="Maillot Pro Mbappé Face" loading="lazy">
+                        <img src="images/mbappétshirt.webp" alt="Maillot Pro Mbappé Arrière" loading="lazy">
+                        <img src="images/mbappédétail.webp" alt="Maillot Pro Mbappé Détail" loading="lazy">
+                    </div>
+                    <div class="carrousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                        <span class="dot" data-index="2"></span>
+                    </div>
                 </div>
                 <div class="product-info">
                     <h3>Kylian Mbappé</h3>
@@ -348,8 +269,14 @@
 
             <div class="product-card" data-sku="D002">
                 <div class="product-card-header">
-                    <img src="images/halandd.webp" alt="Maillot Domicile Classique Haaland" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/halandtshirt.webp" alt="Maillot Domicile Classique Haaland Arrière" class="hover-img" loading="lazy" decoding="async">
+                    <div class="image-track" data-current-index="0" data-images="2">
+                        <img src="images/halandd.webp" alt="Maillot Classique Haaland Face" loading="lazy">
+                        <img src="images/halandtshirt.webp" alt="Maillot Classique Haaland Arrière" loading="lazy">
+                    </div>
+                    <div class="carrousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
                 </div>
                 <div class="product-info">
                     <h3>Erling Haaland</h3>
@@ -362,8 +289,14 @@
 
             <div class="product-card" data-sku="D003">
                 <div class="product-card-header">
-                    <img src="images/bellingham.webp" alt="Maillot Domicile Junior Bellingham" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/bellinghamtshirt.webp" alt="Maillot Domicile Junior Bellingham Arrière" class="hover-img" loading="lazy" decoding="async">
+                    <div class="image-track" data-current-index="0" data-images="2">
+                        <img src="images/bellingham.webp" alt="Maillot Junior Bellingham Face" loading="lazy">
+                        <img src="images/bellinghamtshirt.webp" alt="Maillot Junior Bellingham Arrière" loading="lazy">
+                    </div>
+                    <div class="carrousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
                 </div>
                 <div class="product-info">
                     <h3>Jude Bellingham</h3>
@@ -376,8 +309,14 @@
 
             <div class="product-card" data-sku="D004">
                 <div class="product-card-header">
-                    <img src="images/ooo.webp" alt="Maillot Domicile Vierge" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/ousmanetshirt.webp" alt="Maillot Domicile Vierge Arrière" class="hover-img" loading="lazy" decoding="async">
+                    <div class="image-track" data-current-index="0" data-images="2">
+                        <img src="images/ooo.webp" alt="Maillot Domicile Vierge Face" loading="lazy">
+                        <img src="images/ousmanetshirt.webp" alt="Maillot Domicile Vierge Arrière" loading="lazy">
+                    </div>
+                    <div class="carrousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
                 </div>
                 <div class="product-info">
                     <h3>Ousmane Dembélé</h3>
@@ -397,5 +336,41 @@
         </div>
     </footer>
     
+    <script>
+        // Fonction pour changer l'image d'un produit
+        function switchImage(productCard, dotIndex) {
+            const track = productCard.querySelector('.image-track');
+            const dots = productCard.querySelectorAll('.dot');
+            const imageCount = parseInt(track.dataset.images);
+
+            // S'assurer que l'index est valide
+            if (dotIndex < 0 || dotIndex >= imageCount) return;
+
+            // Calculer la translation nécessaire (en pourcentage)
+            const offset = -dotIndex * 100;
+            
+            // Appliquer la transformation CSS pour glisser l'image
+            track.style.transform = `translateX(${offset}%)`;
+            
+            // Mettre à jour les points de navigation
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[dotIndex].classList.add('active');
+            
+            // Mettre à jour l'index courant dans les données de la piste
+            track.dataset.currentIndex = dotIndex;
+        }
+
+        // Écouteur d'événements pour les points de navigation
+        document.querySelectorAll('.product-card').forEach(card => {
+            const dotsContainer = card.querySelector('.carrousel-dots');
+            
+            dotsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('dot')) {
+                    const dotIndex = parseInt(e.target.dataset.index);
+                    switchImage(card, dotIndex);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
