@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maillots Domicile - THE FUSION</title>
-    <meta name="description" content="Découvrez la collection actuelle de maillots domicile exclusifs THE FUSION. Qualité pro et design moderne.">
+    <title>Maillots Domicile - THE FUSION | Collection Officielle</title>
+    <meta name="description" content="Découvrez la collection actuelle de maillots domicile exclusifs THE FUSION. Qualité pro et design moderne. Achetez le maillot de votre joueur préféré.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <style>
         /* Importation de la police */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        /* Variables CSS Professionnelles */
+        /* Variables CSS Professionnelles Améliorées */
         :root {
-            --dark-bg: #111827;
-            --light-text: #f9fafb;
-            --accent-main: #3b82f6;
-            --accent-hover: #1d4ed8;
+            --dark-bg: #0f172a; /* Bleu marine foncé (plus riche que le noir) */
+            --light-text: #e2e8f0;
+            --accent-main: #3b82f6; /* Bleu Vif */
+            --accent-hover: #1e40af; /* Bleu plus foncé au survol */
             --card-bg: #ffffff;
             --card-text: #1f2937;
-            --shadow-hard: 0 6px 15px rgba(0, 0, 0, 0.3);
-            --carrousel-dot: #ccc;
-            --carrousel-active: var(--accent-main);
+            --shadow-hard: 0 10px 20px rgba(0, 0, 0, 0.5); /* Ombre plus profonde */
+            --success-color: #10b981;
+            --badge-new: #f97316; /* Orange pour Nouveau */
+            --badge-promo: #ef4444; /* Rouge pour Promo */
         }
 
-        /* Base & Reset - (inchangé) */
+        /* Base & Reset */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -33,6 +37,8 @@
             line-height: 1.6;
             scroll-behavior: smooth;
         }
+        
+        a { text-decoration: none; }
 
         .container {
             width: 95%;
@@ -41,188 +47,547 @@
             padding: 0 10px;
         }
         
-        /* HEADER et STYLES GÉNÉRAUX - (inchangé) */
+        /* HEADER Rétractable et Moderne */
         .site-header {
-            background-color: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            padding: 10px 0; /* Plus compact */
         }
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 900;
             color: var(--accent-main);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
+
+        /* Navigation Mobile Améliorée */
+        .nav-icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        /* Utilisation d'un conteneur pour le badge de panier */
+        .cart-wrapper {
+            position: relative;
+        }
+
+        .nav-icon {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            width: 44px; /* Zone de clic conforme WCAG */
+            height: 44px; /* Zone de clic conforme WCAG */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .nav-icon:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Badge Panier */
+        .cart-count {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: var(--badge-promo);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 50%;
+            padding: 2px 5px;
+            min-width: 18px;
+            text-align: center;
+            border: 2px solid var(--dark-bg); /* Contour pour visibilité */
+            line-height: 1;
+        }
+
+        
         main {
-            padding-top: 20px;
+            padding-top: 30px;
         }
+
+        /* Liens de retour (Breadcrumb-like) */
+        .back-link-wrapper {
+            padding-bottom: 20px;
+        }
+        
+        .back-link { 
+            font-size: 0.9rem; 
+            color: var(--light-text);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .back-link:hover {
+            opacity: 1;
+            color: var(--accent-main);
+        }
+
+        /* Titre de Section (plus d'impact) */
         .section-title {
             text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 40px 0;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 0 0 40px;
             color: var(--light-text);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
+            line-height: 1.2;
         }
+        
+        /* Barres d'utilité et de filtres (Refonte totale) */
+        .utility-bar {
+            display: flex;
+            flex-direction: column; /* Mobile first: empilement */
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #1e293b;
+            border-radius: 8px;
+        }
+        
+        .filter-controls, .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* -- NOUVELLES AMÉLIORATIONS UX MOBILE -- */
+        /* Pour simplifier la barre, nous allons cacher le "Type" sur mobile et le gérer dans le modal */
+        #filter-type-label, #filter-type {
+            display: none;
+        }
+        /* Assurer que le tri et le bouton prennent de la place */
+        .filter-controls {
+            flex-grow: 1;
+            justify-content: flex-end;
+        }
+        .filter-controls select {
+             max-width: 150px; /* Limiter la taille du select de tri */
+        }
+        /* Alignement à gauche du nombre de produits sur mobile */
+        .utility-bar > span {
+            align-self: flex-start;
+        }
+
+        /* Fin des nouvelles règles UX MOBILE */
+
+        .utility-bar span {
+            font-weight: 600;
+            color: var(--accent-main);
+        }
+
+        .utility-bar label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        .utility-bar select, .utility-bar button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .utility-bar select {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            border: 1px solid #475569;
+            cursor: pointer;
+            flex-grow: 1; /* Prend l'espace disponible */
+        }
+
+        .filter-button {
+             background-color: var(--accent-main);
+             color: var(--card-bg);
+             font-weight: 600;
+             cursor: pointer;
+             transition: background-color 0.3s;
+        }
+        .filter-button:hover {
+             background-color: var(--accent-hover);
+        }
+
+        /* Desktop: alignement horizontal pour la barre d'utilité */
+        @media (min-width: 768px) {
+            .utility-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .filter-controls {
+                flex-grow: 0; /* Ne pas prendre l'espace */
+                justify-content: initial; 
+            }
+            .filter-controls select {
+                 max-width: 180px; 
+            }
+            #filter-type-label, #filter-type { /* Afficher le filtre Type sur Desktop */
+                display: initial;
+            }
+            .filter-button { /* Cacher le bouton 'Filtres' sur Desktop */
+                display: none;
+            }
+        }
+
+
+        /* Grille de Produits */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 20px;
+            /* Mobile: 2 colonnes dès que possible */
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 25px;
             padding-bottom: 60px;
         }
+        
+        @media (min-width: 1024px) {
+             .product-grid {
+                grid-template-columns: repeat(4, 1fr); /* Grille fixe à 4 colonnes sur grand écran */
+            }
+        }
+
 
         .product-card {
             background-color: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 12px; /* Rayon plus prononcé */
             overflow: hidden;
             box-shadow: var(--shadow-hard);
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid transparent; 
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            text-decoration: none;
+            position: relative;
         }
+        
         .product-card:hover {
-            transform: translateY(-4px); 
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 0 6px var(--accent-main);
-            border-color: var(--accent-main);
+            transform: translateY(-8px); /* Plus grand effet de "lift" */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 10px var(--accent-main);
         }
+        
+        /* Badges Nouveauté/Promo */
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--card-bg);
+            z-index: 10;
+            text-transform: uppercase;
+        }
+        .badge-new { background-color: var(--badge-new); }
+        .badge-promo { background-color: var(--badge-promo); }
 
-        /* --- STYLES DE CARROUSEL --- */
+
         .product-card-header {
             position: relative;
             overflow: hidden;
-            /* Rendre la zone de l'image cliquable et "swipable" */
-            touch-action: pan-y; 
-            height: 0; 
-            padding-bottom: 125%; 
+            aspect-ratio: 4 / 5; 
             background-color: #f3f4f6;
+            width: 100%;
         }
         
-        .image-track {
-            position: absolute;
+        /* ---------- NOUVEAU : SYSTÈME DE SLIDER D'IMAGES ---------- */
+        
+        .image-slider { /* Conteneur pour le positionnement absolu */
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute; /* Superposer les images */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            transition: transform 0.4s ease-in-out; 
-            display: flex;
+            object-fit: cover; 
+            display: block;
+            opacity: 0; /* Cachée par défaut */
+            transition: opacity 0.4s ease-in-out, transform 0.5s ease-out; 
+            transform: scale(1); /* État de base */
         }
         
-        .image-track img {
-            min-width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: relative;
-            opacity: 1; 
+        .slide.active {
+            opacity: 1;
+            z-index: 1; /* Image active visible */
         }
-
-        /* Contrôles (Points de navigation) */
-        .carrousel-dots {
+        
+        /* Appliquer le zoom au survol uniquement sur l'image active */
+        .product-card:hover .slide.active {
+             transform: scale(1.08); 
+        }
+        
+        /* Navigation par points */
+        .slider-nav {
             position: absolute;
-            bottom: 10px;
+            bottom: 10px; 
             left: 50%;
             transform: translateX(-50%);
+            z-index: 2; /* Au-dessus de l'image active */
             display: flex;
-            z-index: 10;
-            padding: 5px 10px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
+            gap: 6px;
+            background-color: rgba(15, 23, 42, 0.4); /* Fond semi-transparent */
+            padding: 5px 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(2px); /* Effet de flou */
         }
 
         .dot {
             width: 8px;
             height: 8px;
-            margin: 0 4px;
-            background-color: var(--carrousel-dot);
             border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: all 0.3s;
+        }
+        
+        .dot:hover {
+            background-color: #ffffff;
         }
 
         .dot.active {
-            background-color: var(--carrousel-active);
+            background-color: #ffffff;
             transform: scale(1.2);
         }
-        /* -------------------------------- */
 
-
-        /* Info produit, Prix, CTA - (inchangé) */
+        /* ---------- FIN : SYSTÈME DE SLIDER D'IMAGES ---------- */
+        
+        
+        /* Info produit (plus de padding) */
         .product-info {
-            padding: 10px 10px 8px; 
+            padding: 15px; 
             color: var(--card-text);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
-            min-height: 70px;
             flex-grow: 1; 
+            text-align: center;
         }
+
         .product-info h3 {
-            font-size: 1.0rem; 
-            margin: 0 0 8px; 
-            font-weight: 700;
+            font-size: 1.2rem; 
+            margin: 0 0 5px; 
+            font-weight: 800;
+            color: var(--card-text);
         }
+
+        .description-short {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            min-height: 32px; /* Assure un minimum de hauteur pour la cohérence */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sélecteur de Taille (Interaction supplémentaire) */
+        .size-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .size-option {
+            /* -- AMÉLIORATION UX MOBILE: Taille de cible tactile plus grande -- */
+            width: 30px; 
+            height: 30px;
+            line-height: 30px;
+            /* -- Fin d'amélioration -- */
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .size-option:hover {
+            border-color: var(--accent-main);
+            color: var(--accent-main);
+            transform: scale(1.1);
+        }
+        
+        .size-option.selected {
+            background-color: var(--accent-main);
+            color: var(--card-bg);
+            border-color: var(--accent-main);
+        }
+
+
         .price-cta {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 8px; 
+            flex-direction: column; /* Mobile: Empilement pour plus de lisibilité */
+            gap: 8px;
+            padding-top: 15px; 
             border-top: 1px solid #e5e7eb;
             margin-top: auto;
         }
+        
+        .price-group {
+            display: flex;
+            justify-content: center; /* Centrer le prix */
+            align-items: center;
+            gap: 10px;
+        }
+
         .price {
-            font-size: 1.3rem; 
+            font-size: 1.6rem; 
             color: var(--accent-main);
             font-weight: 900;
         }
+        
+        /* Prix Barré pour les promotions */
+        .old-price {
+            font-size: 1rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
         .add-to-cart {
+            width: 100%; /* Prend toute la largeur de la carte */
             background-color: var(--accent-main);
             color: var(--light-text);
-            border: none;
-            padding: 6px 12px; 
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.75rem; 
-            font-weight: 600;
+            padding: 12px 0; /* Bouton plus grand et plus visible */
+            border-radius: 8px; 
+            font-size: 1rem; 
+            font-weight: 700; 
             text-transform: uppercase;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        .add-to-cart:hover {
-            background-color: var(--accent-hover);
-            transform: scale(1.02);
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+            min-height: 48px; /* Standard WCAG pour les cibles tactiles */
         }
         
-        /* ADAPTATION MOBILE - (inchangé) */
-        @media (max-width: 600px) {
-            .product-grid {
-                grid-template-columns: 1fr; 
-                gap: 25px; 
-            }
-            .product-card-header {
-                padding-bottom: 100%; 
-            }
-            .product-card:hover {
-                 transform: none; 
-                 border-color: transparent;
-            }
-            .add-to-cart {
-                padding: 10px 15px; 
-                font-size: 0.8rem;
-            }
+        .add-to-cart:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6); 
         }
+
+        /* Footer */
+        .site-footer {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 30px 0; 
+            font-size: 0.85rem;
+        }
+
+        /* -- NOUVEAU: MODAL DE FILTRES (MOBILE) -- */
+        .filter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            z-index: 2000;
+            transform: translateX(100%); /* Masqué à droite */
+            transition: transform 0.4s ease-out;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .filter-modal.open {
+            transform: translateX(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #475569;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--accent-main);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 10px;
+            width: 44px; /* Zone de clic */
+            height: 44px; /* Zone de clic */
+        }
+        
+        .filter-group {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #1e293b;
+            border-radius: 8px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--accent-main);
+            font-size: 1.1rem;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #475569;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        
+        .filter-option.selected {
+            background-color: var(--accent-main);
+            border-color: var(--accent-main);
+            font-weight: 600;
+        }
+        
+        .apply-filters {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success-color);
+            color: var(--card-bg);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        /* -- FIN: MODAL DE FILTRES (MOBILE) -- */
     </style>
 </head>
 <body>
@@ -230,205 +595,415 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="index.html" class="logo">THE FUSION</a>
+             <div class="nav-icons">
+                 <a href="#" class="nav-icon search-icon" aria-label="Recherche">🔍</a>
+                 <div class="cart-wrapper">
+                     <a href="panier.html" class="nav-icon cart-icon" aria-label="Panier">🛒</a>
+                     <span class="cart-count" aria-hidden="true">3</span> </div>
+             </div>
         </div>
     </header>
 
     <main class="container">
         
         <div class="back-link-wrapper">
-            <a href="index.html" class="back-link">← Retour au Catalogue</a> 
+            <a href="index.html" class="back-link">Accueil / Maillots / Domicile</a> 
         </div>
 
-        <h2 class="section-title">Maillots Domicile | Collection Actuelle</h2>
+        <h2 class="section-title">Maillots Domicile | La Légende Continue</h2>
+        
+        <div class="utility-bar">
+            <span>4 Produits disponibles</span>
+            <div class="filter-controls">
+                <label for="filter-type" id="filter-type-label">Type :</label>
+                 <select id="filter-type" aria-label="Filtrer par type de maillot">
+                     <option value="all">Tout</option>
+                     <option value="pro">Pro Match</option>
+                     <option value="classic">Classique</option>
+                     <option value="junior">Junior</option>
+                 </select>
+                <label for="sort-select">Trier par :</label>
+                 <select id="sort-select" aria-label="Trier les produits">
+                     <option value="pop">Popularité</option>
+                     <option value="price-desc">Prix Décroissant</option>
+                     <option value="new">Nouveautés</option>
+                 </select>
+            </div>
+            <button class="filter-button" id="open-filter-modal" aria-expanded="false" aria-controls="filter-modal">Filtres</button> 
+        </div>
 
-        <div class="product-grid">
 
-            <div class="product-card" data-sku="D001">
+        <div class="product-grid" role="list">
+
+            <a href="maillot-mbappe.html" class="product-card" data-sku="D001" role="listitem">
+                <span class="product-badge badge-new">Nouveauté</span>
+                
                 <div class="product-card-header">
-                    <div class="image-track" data-current-index="0" data-images="3">
-                        <img src="images/mbapééé.webp" alt="Maillot Pro Mbappé Face" loading="lazy">
-                        <img src="images/mbappétshirt.webp" alt="Maillot Pro Mbappé Arrière" loading="lazy">
-                        <img src="images/mbappédétail.webp" alt="Maillot Pro Mbappé Détail" loading="lazy">
+                    <div class="image-slider">
+                        <img src="images/mbapééé.webp" alt="Maillot Domicile Pro Mbappé - Vue de face" class="slide active" loading="lazy" decoding="async">
+                        <img src="images/mbappétshirt.webp" alt="Maillot Domicile Pro Mbappé - Vue arrière" class="slide" loading="lazy" decoding="async">
                     </div>
-                    <div class="carrousel-dots">
-                        <span class="dot active" data-index="0"></span>
-                        <span class="dot" data-index="1"></span>
-                        <span class="dot" data-index="2"></span>
+                    <div class="slider-nav">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
                     </div>
                 </div>
                 <div class="product-info">
                     <h3>Kylian Mbappé</h3>
+                    <p class="description-short">Version Pro Match. Tissu respirant haute performance.</p>
+                    <div class="size-selector">
+                        <span class="size-option selected" data-size="S">S</span>
+                        <span class="size-option" data-size="M">M</span>
+                        <span class="size-option" data-size="L">L</span>
+                        <span class="size-option" data-size="XL">XL</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">139.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Mbappé Domicile" data-price="139.99">Ajouter</button>
+                        <div class="price-group">
+                            <span class="price">139.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Maillot Mbappé Domicile" data-price="139.99" aria-label="Ajouter le maillot Mbappé au panier">Ajouter au Panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" data-sku="D002">
+            <a href="maillot-haaland.html" class="product-card" data-sku="D002" role="listitem">
+                <span class="product-badge badge-promo"> -25% </span>
+                
                 <div class="product-card-header">
-                    <div class="image-track" data-current-index="0" data-images="2">
-                        <img src="images/halandd.webp" alt="Maillot Classique Haaland Face" loading="lazy">
-                        <img src="images/halandtshirt.webp" alt="Maillot Classique Haaland Arrière" loading="lazy">
+                    <div class="image-slider">
+                        <img src="images/halandd.webp" alt="Maillot Domicile Classique Haaland - Vue de face" class="slide active" loading="lazy" decoding="async">
+                        <img src="images/halandtshirt.webp" alt="Maillot Domicile Classique Haaland - Vue arrière" class="slide" loading="lazy" decoding="async">
                     </div>
-                    <div class="carrousel-dots">
-                        <span class="dot active" data-index="0"></span>
-                        <span class="dot" data-index="1"></span>
+                    <div class="slider-nav">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
                     </div>
                 </div>
                 <div class="product-info">
                     <h3>Erling Haaland</h3>
+                    <p class="description-short">Coupe classique. Confort et durabilité. Idéal pour les fans.</p>
+                    <div class="size-selector">
+                        <span class="size-option" data-size="S">S</span>
+                        <span class="size-option" data-size="M">M</span>
+                        <span class="size-option selected" data-size="L">L</span>
+                        <span class="size-option" data-size="XL">XL</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">109.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Haaland Domicile" data-price="109.99">Ajouter</button>
+                        <div class="price-group">
+                            <span class="old-price">149.99 €</span>
+                            <span class="price">109.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Maillot Haaland Domicile" data-price="109.99" aria-label="Ajouter le maillot Haaland au panier">Ajouter au Panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" data-sku="D003">
+            <a href="maillot-bellingham.html" class="product-card" data-sku="D003" role="listitem">
+                
                 <div class="product-card-header">
-                    <div class="image-track" data-current-index="0" data-images="2">
-                        <img src="images/bellingham.webp" alt="Maillot Junior Bellingham Face" loading="lazy">
-                        <img src="images/bellinghamtshirt.webp" alt="Maillot Junior Bellingham Arrière" loading="lazy">
+                     <div class="image-slider">
+                        <img src="images/bellingham.webp" alt="Maillot Domicile Junior Bellingham - Vue de face" class="slide active" loading="lazy" decoding="async">
+                        <img src="images/bellinghamtshirt.webp" alt="Maillot Domicile Junior Bellingham - Vue arrière" class="slide" loading="lazy" decoding="async">
                     </div>
-                    <div class="carrousel-dots">
-                        <span class="dot active" data-index="0"></span>
-                        <span class="dot" data-index="1"></span>
+                    <div class="slider-nav">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
                     </div>
                 </div>
                 <div class="product-info">
-                    <h3>Jude Bellingham</h3>
+                    <h3>Jude Bellingham (Junior)</h3>
+                    <p class="description-short">Taille Junior. Design identique à la version adulte.</p>
+                    <div class="size-selector">
+                        <span class="size-option selected" data-size="10A">10A</span>
+                        <span class="size-option" data-size="12A">12A</span>
+                        <span class="size-option" data-size="14A">14A</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">89.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Bellingham Domicile Junior" data-price="89.99">Ajouter</button>
+                        <div class="price-group">
+                            <span class="price">89.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Maillot Bellingham Domicile Junior" data-price="89.99" aria-label="Ajouter le maillot Bellingham Junior au panier">Ajouter au Panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" data-sku="D004">
+            <a href="maillot-dembele.html" class="product-card" data-sku="D004" role="listitem">
+                
                 <div class="product-card-header">
-                    <div class="image-track" data-current-index="0" data-images="2">
-                        <img src="images/ooo.webp" alt="Maillot Domicile Vierge Face" loading="lazy">
-                        <img src="images/ousmanetshirt.webp" alt="Maillot Domicile Vierge Arrière" loading="lazy">
+                    <div class="image-slider">
+                        <img src="images/ooo.webp" alt="Maillot Domicile Ousmane Dembélé - Vue de face" class="slide active" loading="lazy" decoding="async">
+                        <img src="images/ousmanetshirt.webp" alt="Maillot Domicile Ousmane Dembélé - Vue arrière" class="slide" loading="lazy" decoding="async">
                     </div>
-                    <div class="carrousel-dots">
-                        <span class="dot active" data-index="0"></span>
-                        <span class="dot" data-index="1"></span>
+                    <div class="slider-nav">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
                     </div>
                 </div>
                 <div class="product-info">
                     <h3>Ousmane Dembélé</h3>
+                    <p class="description-short">Maillot personnalisable. Nom et Numéro en option.</p>
+                    <div class="size-selector">
+                        <span class="size-option" data-size="XS">XS</span>
+                        <span class="size-option selected" data-size="S">S</span>
+                        <span class="size-option" data-size="M">M</span>
+                        <span class="size-option" data-size="L">L</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">95.00 €</span>
-                        <button class="add-to-cart" data-name="Maillot Domicile Vierge" data-price="95.00">Ajouter</button>
+                        <div class="price-group">
+                            <span class="price">95.00 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Maillot Domicile Vierge" data-price="95.00" aria-label="Ajouter le maillot Dembélé au panier">Ajouter au Panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
         </div>
     </main>
     
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 THE FUSION. Tous droits réservés. | <a href="#">Politique de Confidentialité</a> | <a href="#">Conditions Générales de Vente</a></p>
+            <p>&copy; 2025 **THE FUSION**. L'Équipe, la Passion, l'Héritage. Tous droits réservés. | <a href="#">Aide & Contact</a> | <a href="#">Conditions de Vente</a></p>
         </div>
     </footer>
     
+    <div class="filter-modal" id="filter-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+            <h3 id="modal-title">Options de Filtrage</h3>
+            <button class="close-modal" id="close-filter-modal" aria-label="Fermer les filtres">✕</button>
+        </div>
+        
+        <div class="filter-group">
+            <label for="modal-filter-type">Type de Maillot</label>
+            <div class="filter-options" id="modal-filter-type">
+                <span class="filter-option selected" data-value="all">Tout</span>
+                <span class="filter-option" data-value="pro">Pro Match</span>
+                <span class="filter-option" data-value="classic">Classique</span>
+                <span class="filter-option" data-value="junior">Junior</span>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label for="modal-filter-price">Tranche de Prix</label>
+            <div class="filter-options" id="modal-filter-price">
+                <span class="filter-option selected" data-value="all">Tous Prix</span>
+                <span class="filter-option" data-value="low">- 100 €</span>
+                <span class="filter-option" data-value="high">+ 100 €</span>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <label>Disponibilité</label>
+            <div class="filter-options">
+                <span class="filter-option selected" data-value="in-stock">En Stock</span>
+                <span class="filter-option" data-value="promo">En Promotion</span>
+            </div>
+        </div>
+        
+        <button class="apply-filters" id="apply-filters-button">Appliquer les Filtres</button>
+    </div>
     <script>
-        // La distance minimale en pixels pour qu'un mouvement soit considéré comme un "swipe"
-        const SWIPE_THRESHOLD = 50; 
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Fonction principale pour changer l'image (réutilisée)
-        function switchImage(productCard, newIndex) {
-            const track = productCard.querySelector('.image-track');
-            const dots = productCard.querySelectorAll('.dot');
-            const imageCount = parseInt(track.dataset.images);
+            /* -----------------------------------------------------------------
+             * NOUVELLE FONCTION (REFACTOR) : Gère l'affichage des slides
+             * ----------------------------------------------------------------- */
+            function showSlide(header, index) {
+                const slides = header.querySelectorAll('.slide');
+                const dots = header.querySelectorAll('.dot');
+                
+                // Gérer les limites (si on swipe trop loin)
+                if (index >= slides.length) {
+                    index = 0; // Revient au début
+                }
+                if (index < 0) {
+                    index = slides.length - 1; // Va à la fin
+                }
 
-            // Gérer le bouclage (optional: pour rester sur la première/dernière image)
-            if (newIndex < 0) {
-                newIndex = 0; // Bloque sur la première image
-            } else if (newIndex >= imageCount) {
-                newIndex = imageCount - 1; // Bloque sur la dernière image
+                // Cacher toutes les slides et désactiver les points
+                slides.forEach(s => s.classList.remove('active'));
+                dots.forEach(d => d.classList.remove('active'));
+
+                // Afficher la bonne slide et le bon point
+                if (slides[index]) {
+                    slides[index].classList.add('active');
+                }
+                if (dots[index]) {
+                    dots[index].classList.add('active');
+                }
+                
+                // Stocker l'index actuel sur l'élément pour le prochain swipe
+                header.dataset.currentIndex = index;
             }
 
-            const offset = -newIndex * 100;
-            track.style.transform = `translateX(${offset}%)`;
-            
-            dots.forEach(dot => dot.classList.remove('active'));
-            if (dots[newIndex]) {
-                dots[newIndex].classList.add('active');
-            }
-            
-            track.dataset.currentIndex = newIndex;
-        }
 
-        // 1. Écouteur d'événements pour les points de navigation (clic)
-        document.querySelectorAll('.product-card').forEach(card => {
-            const dotsContainer = card.querySelector('.carrousel-dots');
+            /* -----------------------------------------------------------------
+             * 1. Gestion de la sélection de taille dans la carte
+             * ----------------------------------------------------------------- */
+            document.querySelectorAll('.size-selector').forEach(selector => {
+                selector.addEventListener('click', (e) => {
+                    const option = e.target.closest('.size-option');
+                    if (!option) return;
+                    
+                    e.preventDefault(); 
+                    e.stopPropagation();
+                    
+                    selector.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                });
+            });
+
+            /* -----------------------------------------------------------------
+             * 2. Rendre la carte cliquable (sauf les zones interactives)
+             * ----------------------------------------------------------------- */
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Si l'élément cliqué n'est NI le bouton, NI le sélecteur, NI la nav du slider
+                    if (!e.target.closest('.add-to-cart') && 
+                        !e.target.closest('.size-selector') && 
+                        !e.target.closest('.slider-nav')) {
+                        
+                        // Alors on navigue. Le swipe est géré dans le 'touchend' (n°5)
+                        window.location.href = card.href;
+                    }
+                });
+            });
+
+            /* -----------------------------------------------------------------
+             * 3. Simuler l'ajout au panier
+             * ----------------------------------------------------------------- */
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const selectedSize = e.target.closest('.product-info').querySelector('.size-option.selected')?.textContent || 'Non spécifiée';
+                    const cartCountElement = document.querySelector('.cart-count');
+                    let currentCount = parseInt(cartCountElement.textContent) || 0;
+                    cartCountElement.textContent = currentCount + 1;
+                    alert(`✅ ${e.target.getAttribute('data-name')} (Taille ${selectedSize}) ajouté au panier !`);
+                });
+            });
+
+            /* -----------------------------------------------------------------
+             * 4. Gestion du clic sur les points (utilise la nouvelle fonction)
+             * ----------------------------------------------------------------- */
+            document.querySelectorAll('.slider-nav').forEach(nav => {
+                nav.addEventListener('click', (e) => {
+                    const dot = e.target.closest('.dot');
+                    if (!dot) return; 
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const slideIndex = parseInt(dot.getAttribute('data-slide'));
+                    const header = dot.closest('.product-card-header');
+                    
+                    showSlide(header, slideIndex);
+                });
+            });
+
+            /* -----------------------------------------------------------------
+             * 5. NOUVEAU: Gestion du SWIPE (Type Instagram)
+             * ----------------------------------------------------------------- */
+            document.querySelectorAll('.product-card-header').forEach(header => {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                let touchStartY = 0;
+                let touchEndY = 0;
+                
+                // Initialiser l'index à 0
+                header.dataset.currentIndex = "0"; 
+
+                header.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    // Réinitialiser les positions de fin
+                    touchEndX = touchStartX;
+                    touchEndY = touchStartY;
+                }, { passive: true }); // passive:true pour la performance
+
+                header.addEventListener('touchmove', (e) => {
+                    touchEndX = e.touches[0].clientX;
+                    touchEndY = e.touches[0].clientY;
+                    
+                    const deltaX = Math.abs(touchEndX - touchStartX);
+                    const deltaY = Math.abs(touchEndY - touchStartY);
+
+                    // Si on swipe plus horizontalement que verticalement
+                    if (deltaX > deltaY && deltaX > 10) { 
+                        // On empêche la page de scroller (défilement vertical)
+                        e.preventDefault(); 
+                    }
+                }, { passive: false }); // passive:false est REQUIS pour appeler preventDefault
+
+                header.addEventListener('touchend', (e) => {
+                    let deltaX = touchEndX - touchStartX;
+                    let deltaY = touchEndY - touchStartY;
+                    let threshold = 50; // Il faut glisser d'au moins 50px
+
+                    // Vérifier si c'est un swipe horizontal valide
+                    if (Math.abs(deltaX) > threshold && Math.abs(deltaX) > Math.abs(deltaY)) {
+                        
+                        // C'est un swipe ! On empêche le clic sur la carte <a>
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
+
+                        let currentIndex = parseInt(header.dataset.currentIndex || 0);
+                        
+                        if (deltaX < 0) {
+                            // Glissé vers la gauche (image suivante)
+                            showSlide(header, currentIndex + 1);
+                        } else {
+                            // Glissé vers la droite (image précédente)
+                            showSlide(header, currentIndex - 1);
+                        }
+                    }
+                    
+                    // Réinitialiser les positions
+                    touchStartX = 0;
+                    touchStartY = 0;
+                }, { passive: false }); // passive:false est REQUIS pour appeler preventDefault/stopPropagation
+            });
+
+
+            /* -----------------------------------------------------------------
+             * 6. LOGIQUE DU MODAL DE FILTRES (MOBILE)
+             * ----------------------------------------------------------------- */
+            const filterModal = document.getElementById('filter-modal');
+            const openModalButton = document.getElementById('open-filter-modal');
+            const closeModalButton = document.getElementById('close-filter-modal');
+            const applyFiltersButton = document.getElementById('apply-filters-button');
             
-            // Événement pour le clic sur les points
-            dotsContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('dot')) {
-                    const dotIndex = parseInt(e.target.dataset.index);
-                    switchImage(card, dotIndex);
+            // Ouvrir le modal
+            openModalButton.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    filterModal.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    openModalButton.setAttribute('aria-expanded', 'true');
                 }
             });
 
-            // 2. LOGIQUE DU SWIPE TACTILE
-            const track = card.querySelector('.image-track');
-            let startX; // Position X au début du toucher
-            
-            // a. Début du toucher
-            track.addEventListener('touchstart', (e) => {
-                // S'assurer qu'un seul doigt est utilisé
-                startX = e.touches[0].clientX; 
-                // Désactiver temporairement la transition CSS pour un mouvement fluide
-                track.style.transition = 'none'; 
-            }, false);
+            // Fermer le modal
+            const closeModal = () => {
+                filterModal.classList.remove('open');
+                document.body.style.overflow = '';
+                openModalButton.setAttribute('aria-expanded', 'false');
+            };
 
-            // b. Mouvement pendant le toucher (optionnel: pour le feedback en temps réel)
-            track.addEventListener('touchmove', (e) => {
-                if (startX === undefined) return;
-                
-                const currentX = e.touches[0].clientX;
-                const diffX = currentX - startX;
-                const currentIndex = parseInt(track.dataset.currentIndex);
-                
-                // Calculer la nouvelle position pour le feedback
-                const slideWidth = track.clientWidth / parseInt(track.dataset.images);
-                const currentOffset = -currentIndex * 100;
-                
-                // Appliquer une transformation légère pour suivre le doigt
-                track.style.transform = `translateX(calc(${currentOffset}% + ${diffX}px))`;
-            }, false);
+            closeModalButton.addEventListener('click', closeModal);
+            applyFiltersButton.addEventListener('click', () => {
+                console.log("Filtres appliqués !");
+                closeModal();
+            });
             
-            // c. Fin du toucher
-            track.addEventListener('touchend', (e) => {
-                if (startX === undefined) return;
-                
-                // Réactiver la transition CSS
-                track.style.transition = 'transform 0.4s ease-in-out';
-                
-                const endX = e.changedTouches[0].clientX;
-                const diffX = endX - startX;
-                let currentIndex = parseInt(track.dataset.currentIndex);
-                
-                if (Math.abs(diffX) > SWIPE_THRESHOLD) {
-                    // Glissement vers la gauche (passe à l'image suivante)
-                    if (diffX < 0) { 
-                        currentIndex++;
-                    } 
-                    // Glissement vers la droite (passe à l'image précédente)
-                    else { 
-                        currentIndex--;
-                    }
-                }
-                
-                // Appeler switchImage pour mettre à jour l'affichage
-                switchImage(card, currentIndex);
-                
-                startX = undefined; // Réinitialiser pour le prochain glissement
-            }, false);
+            // Sélection des options de filtre
+            document.querySelectorAll('.filter-group .filter-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const group = e.target.closest('.filter-group');
+                    group.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                });
+            });
 
         });
     </script>
