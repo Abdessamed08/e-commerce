@@ -19,10 +19,9 @@
             --card-bg: #ffffff;
             --card-text: #1f2937;
             --shadow-hard: 0 6px 15px rgba(0, 0, 0, 0.3);
-            --burger-size: 28px; /* Nouvelle taille pour le burger */
         }
 
-        /* Base & Reset */
+        /* Base & Reset - (inchangé) */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -40,7 +39,7 @@
             padding: 0 10px;
         }
         
-        /* HEADER */
+        /* HEADER - (inchangé) */
         .site-header {
             background-color: rgba(17, 24, 39, 0.95);
             backdrop-filter: blur(8px);
@@ -64,49 +63,32 @@
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 2px;
-            z-index: 1001;
         }
         
-        /* Menu Hamburger (pour cohérence) */
-        .hamburger-menu {
-            display: none; 
-            width: var(--burger-size);
-            height: var(--burger-size);
-            cursor: pointer;
-            z-index: 1001; 
-            position: relative;
-        }
-
-        .hamburger-menu .bar {
-            width: 100%;
-            height: 3px;
-            background-color: var(--light-text);
-            margin: 5px 0; /* Espacement ajusté */
-            transition: 0.4s;
-            border-radius: 2px;
-        }
-
         main {
-            padding-top: 10px; /* Réduit le padding du haut */
+            padding-top: 20px;
         }
+
 
         /* Styles Spécifiques */
         .section-title {
             text-align: center;
             font-size: 2.2rem;
             font-weight: 800;
-            margin: 30px 0 20px; /* Marges réduites */
+            margin: 40px 0;
             color: var(--light-text);
             text-transform: uppercase;
             letter-spacing: 1.5px;
         }
-
+        
+        /* GRILLE DE PRODUITS */
         .product-grid {
+            /* Largeur minimale conservée à 200px */
             display: grid;
-            /* Deux colonnes par défaut, minimum de 200px */
+            /* Permet à la grille de s'adapter automatiquement, min 200px par colonne */
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
             gap: 20px;
-            padding-bottom: 40px; /* Réduit le padding du bas */
+            padding-bottom: 60px;
         }
 
         .product-card {
@@ -117,6 +99,9 @@
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             cursor: pointer;
             border: 1px solid transparent; 
+            /* Ajout pour faciliter le flex du product-info sur mobile si besoin */
+            display: flex;
+            flex-direction: column;
         }
         
         .product-card:hover {
@@ -124,10 +109,12 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 0 6px var(--accent-main);
             border-color: var(--accent-main);
         }
-
+        
+        /* Image Card */
         .product-card-header {
             position: relative;
             overflow: hidden;
+            /* Hauteur ajustée pour mobile dans la media query si la minmax ne suffisait pas */
             height: 300px; 
             background-color: #f3f4f6;
             aspect-ratio: 819 / 1024; 
@@ -143,6 +130,7 @@
             image-rendering: -webkit-optimize-contrast; 
         }
 
+        /* Effet Switch Image (inchangé) */
         .product-card-header .hover-img {
             position: absolute;
             top: 0;
@@ -158,23 +146,21 @@
             opacity: 1;
         }
 
+        /* Info produit et prix */
         .product-info {
-            padding: 10px; 
+            padding: 10px 10px 8px; 
             color: var(--card-text);
             display: flex;
             flex-direction: column;
             justify-content: space-between; 
             min-height: 70px;
+            flex-grow: 1; /* Permet à product-info de prendre la hauteur restante */
         }
 
         .product-info h3 {
             font-size: 1.0rem; 
             margin: 0 0 8px; 
             font-weight: 700;
-            /* Pour s'assurer que le nom est visible sur mobile */
-            white-space: nowrap; 
-            overflow: hidden;
-            text-overflow: ellipsis; 
         }
 
         .description {
@@ -215,10 +201,11 @@
             box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
         }
         
+        /* Reste du code (Liens, Footer) - (inchangé) */
         .back-link-wrapper {
             text-align: left;
-            padding-top: 10px; /* Moins d'espace */
-            margin-bottom: -10px;
+            padding-top: 20px;
+            margin-bottom: -20px;
         }
         
         .back-link { 
@@ -242,9 +229,9 @@
             background-color: #1f2937;
             color: #9ca3af;
             text-align: center;
-            padding: 15px 0; /* Réduit le padding */
-            margin-top: 30px; 
-            font-size: 0.75rem; /* Réduit la taille de la police */
+            padding: 20px 0;
+            margin-top: 40px; 
+            font-size: 0.8rem;
         }
         
         .site-footer a {
@@ -256,76 +243,73 @@
             color: var(--light-text);
         }
 
-        /* ========================================================== */
-        /* 💡 RESPONSIVE MOBILE MAXIMIZATION (<= 480px) */
-        /* ========================================================== */
-        @media (max-width: 768px) {
+        /* ================================================= */
+        /* === ADAPTATION MOBILE (Media Queries) === */
+        /* ================================================= */
+        @media (max-width: 600px) {
+            
+            .logo {
+                /* Réduire la taille du logo sur les très petits écrans */
+                font-size: 1.2rem;
+            }
+
             .section-title {
+                /* Réduire la taille du titre principal sur mobile */
                 font-size: 1.8rem;
-                margin: 25px 0 15px;
+                margin: 30px 0 20px; /* Moins de marge pour gagner de la place */
             }
 
-            .product-card-header {
-                height: 250px; /* Optimise l'espace vertical sur tablette/mobile large */
-            }
-        }
-
-        @media (max-width: 480px) {
-            
-            /* 1. Titres et Espacements */
-            .container {
-                padding: 0 5px; /* Réduit le padding du container pour utiliser l'espace au maximum */
-            }
-            .section-title {
-                font-size: 1.5rem;
-                margin: 20px 0 10px;
-            }
-
-            /* 2. Grille de Produits (Mono-colonne) */
             .product-grid {
-                /* Passe à une seule colonne pour un défilement vertical fluide */
-                grid-template-columns: 1fr;
-                gap: 25px;
+                /* Force une seule colonne sur les très petits écrans pour plus de lisibilité */
+                grid-template-columns: 1fr; 
+                gap: 25px; /* Augmenter un peu l'espace entre les cartes en mode liste */
             }
 
-            /* 3. Hauteur des images */
-            .product-card-header {
-                height: 350px; /* Augmenté légèrement pour que l'image soit bien visible */
+            .product-card {
+                /* Enlever l'effet de survol (hover) qui n'est pas intuitif sur écran tactile */
+                transform: none !important; 
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            .product-card:hover { /* S'assurer que l'effet hover est désactivé */
+                 transform: none; 
+                 border-color: transparent;
             }
             
-            /* 4. Info Produit (Boutons et Prix) */
-            .product-info {
-                padding: 10px 15px; /* Plus de padding sur les côtés dans la carte */
+            .product-card-header {
+                /* Réduire la hauteur de l'image si vous souhaitez plus d'espace */
+                height: 350px; 
             }
-
-            .price-cta {
-                /* Empile le prix et le bouton verticalement */
-                flex-direction: column; 
-                align-items: stretch; /* Les éléments s'étirent sur toute la largeur */
-                gap: 10px;
+            
+            .product-info h3 {
+                /* Légèrement plus grand pour la lisibilité sur mobile */
+                font-size: 1.1rem; 
             }
             
             .price {
-                /* Le prix reste en haut et est plus grand (1.6rem) */
-                font-size: 1.6rem; 
-                text-align: left;
-                margin-bottom: 5px;
+                /* Ajuster la taille du prix */
+                font-size: 1.2rem;
             }
             
             .add-to-cart {
-                /* Le bouton prend toute la largeur pour une zone de clic maximale */
-                width: 100%; 
-                padding: 10px; /* Augmente la zone de clic */
-                font-size: 0.9rem;
+                /* Augmenter un peu la zone de clic du bouton */
+                padding: 8px 15px; 
+                font-size: 0.8rem; 
             }
             
-            /* 5. Footer */
             .site-footer {
-                padding: 10px 0;
+                padding: 15px 0;
             }
-            .site-footer p {
-                padding: 0 10px;
-                line-height: 1.4;
+            
+            .back-link {
+                font-size: 0.8em; /* Un peu plus petit pour le mobile */
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1024px) {
+            /* Adaptation pour les tablettes (2 ou 3 colonnes) */
+            .product-grid {
+                /* Permet à la grille d'afficher 2 ou 3 colonnes de minimum 200px */
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
             }
         }
     </style>
@@ -335,12 +319,7 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="index.html" class="logo">THE FUSION</a>
-            <div class="hamburger-menu" id="hamburger-menu">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            </div>
+        </div>
     </header>
 
     <main class="container">
