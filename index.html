@@ -1,0 +1,569 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE FUSION - Maillots de Football Révolutionnaires</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+
+        :root {
+            --dark-bg: #111827; /* Fond très sombre */
+            --light-text: #f9fafb;
+            --accent-neon: #3b82f6; /* Bleu Vif (moderne) */
+            --accent-hover: #1d4ed8;
+            --card-bg: #ffffff;
+            --shadow-hard: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Base & Reset */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 1. Header (Minimaliste Noir) */
+        .site-header {
+            background-color: var(--dark-bg);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-hard);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-header h1 {
+            font-size: 1.9rem;
+            letter-spacing: 4px;
+            font-weight: 900;
+            color: var(--accent-neon);
+            margin: 0;
+        }
+
+        .main-nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        .main-nav a:hover {
+            color: var(--accent-neon);
+        }
+
+        /* 2. Hero Section (Grand et Flou - Glassmorphism) */
+        .hero-section {
+            /* REMPLACER PAR VOTRE IMAGE D'EN-TÊTE : images/hero-banner.jpg */
+            background-image: url('images/hero-banner.jpg');
+            background-size: cover;
+            background-position: center 30%;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-section::before { /* Voile sombre pour lisibilité */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .hero-content {
+            z-index: 10;
+            padding: 40px;
+            max-width: 500px;
+            margin-right: 50px;
+            /* Glassmorphism Effect */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-hard);
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin: 0 0 10px;
+            font-weight: 900;
+            color: var(--light-text);
+            text-shadow: none;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .hero-button {
+            background-color: var(--accent-neon);
+            color: var(--light-text);
+            padding: 15px 35px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 50px; /* Bouton "pill" moderne */
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .hero-button:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 20px var(--accent-neon);
+        }
+        
+        /* 3. Section Catégories/Mosaïque */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding-bottom: 60px;
+        }
+
+        .category-item {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: var(--shadow-hard);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .category-item:hover {
+            transform: scale(1.03);
+        }
+
+        .category-item img {
+            width: 100%;
+            height: 100%;
+            object-position: top;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+        }
+
+        .category-overlay h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        /* 4. Grille de Produits (Look carte de crédit) */
+        h2.section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 80px 0 40px;
+            color: var(--light-text);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+        
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hard);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transition plus lisse */
+        }
+        
+        .product-card:hover {
+             transform: translateY(-8px);
+        }
+
+        .product-card-header {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            padding: 20px 25px;
+            color: #1f2937; /* Couleur du texte sombre pour les cartes claires */
+        }
+
+        .product-info h3 {
+            font-size: 1.25rem;
+            margin: 0 0 5px;
+            font-weight: 700;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            height: 36px;
+            overflow: hidden;
+        }
+
+        .price-cta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            color: var(--accent-neon);
+            font-weight: 900;
+        }
+
+        /* Bouton Add to Cart (Animation et Micro-Interaction) */
+        .add-to-cart {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--accent-neon);
+            box-shadow: 0 0 10px var(--accent-neon);
+        }
+
+        /* 5. Footer (Minimaliste) */
+        .site-footer {
+            background-color: #0f172a; /* Bleu très foncé, presque noir */
+            color: #9ca3af;
+            padding: 50px 0;
+            font-size: 0.9rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .footer-section {
+            min-width: 180px;
+        }
+
+        .footer-section h4 {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: #6b7280;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-neon);
+        }
+        
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        /* 6. Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .main-nav a {
+                margin: 0 10px;
+            }
+            .hero-content {
+                max-width: 90%;
+                margin: 0 auto;
+                text-align: center;
+                backdrop-filter: blur(5px);
+            }
+            .hero-content h2 {
+                font-size: 2.5rem;
+            }
+            .advantages-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+    </head>
+<body>
+    
+    <header class="site-header">
+        <div class="container header-content">
+            <h1>THE FUSION</h1>
+            <nav class="main-nav">
+                <a href="#categories">Collections</a>
+                <a href="#produits">Boutique</a>
+                <a href="#">Édition Limitée</a>
+                <a href="#" id="cart-link">Panier (0)</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h2>Fusionnez Style & Performance.</h2>
+            <p>Notre nouvelle collection redéfinit l'équipement de football moderne. Découvrez l'innovation.</p>
+            <a href="#produits" class="hero-button">Découvrir la Collection</a>
+        </div>
+    </div>
+    
+    <main class="container">
+        <h2 class="section-title" id="categories">Explorer par Catégorie</h2>
+        
+        <div class="category-grid">
+            <a href="domicile.html" class="category-item">
+                <img src="images/domicile.webp" alt="Maillots Domicile">
+                <div class="category-overlay">
+                    <h3>MAILLOTS DOMICILE</h3>
+                </div>
+            </a>
+            
+            <a href="exterieur.html" class="category-item"> <img src="images/fcb.webp" alt="Maillots Extérieur">
+                <div class="category-overlay">
+                    <h3>MAILLOTS EXTÉRIEUR</h3>
+                </div>
+            </a>
+            
+            <a href="kits.html" class="category-item"> <img src="images/liver.webp" alt="Kits Complets">
+                <div class="category-overlay">
+                    <h3>KITS COMPLETS</h3>
+                </div>
+            </a>
+            
+            <a href="retro.html" class="category-item"> <img src="images/franc.webp" alt="Maillots Rétro">
+                <div class="category-overlay">
+                    <h3>COLLECTION RÉTRO</h3>
+                </div>
+            </a>
+        </div>
+    </main>
+        
+        <h2 class="section-title" id="produits">Les Produits Phares</h2>
+        
+        <div class="product-grid">
+            
+            <div class="product-card" data-sku="P001">
+                <div class="product-card-header">
+                    <img src="images/maillot-domicile-mbappe.jpg" alt="Maillot Domicile Mbappé #7">
+                </div>
+                <div class="product-info">
+                    <h3>Maillot Domicile Pro - MBAPPÉ #7</h3>
+                    <p class="description">Technologie FUSION-CELL™. Le maillot porté par la star, coupe ajustée.</p>
+                    <div class="price-cta">
+                        <span class="price">139.99 €</span>
+                        <button class="add-to-cart" data-name="Maillot Domicile Mbappé" data-price="139.99">Ajouter au Panier</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-sku="P002">
+                <div class="product-card-header">
+                    <img src="images/maillot-exterieur-haaland.jpg" alt="Maillot Extérieur Haaland #9">
+                </div>
+                <div class="product-info">
+                    <h3>Maillot Extérieur - HAALAND #9</h3>
+                    <p class="description">Design audacieux. Parfait pour les matchs à l'extérieur ou le street style.</p>
+                    <div class="price-cta">
+                        <span class="price">129.99 €</span>
+                        <button class="add-to-cart" data-name="Maillot Extérieur Haaland" data-price="129.99">Ajouter au Panier</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-sku="P003">
+                <div class="product-card-header">
+                    <img src="images/maillot-retro-classique.jpg" alt="Maillot Rétro Classique 90s">
+                </div>
+                <div class="product-info">
+                    <h3>Maillot Héritage '98 Rétro</h3>
+                    <p class="description">Réplique fidèle de la légende. Tissu épais, broderies de luxe.</p>
+                    <div class="price-cta">
+                        <span class="price">89.99 €</span>
+                        <button class="add-to-cart" data-name="Maillot Héritage 98" data-price="89.99">Ajouter au Panier</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card" data-sku="P004">
+                <div class="product-card-header">
+                    <img src="images/tshirt-entrainement-pro.jpg" alt="T-shirt Entraînement Pro">
+                </div>
+                <div class="product-info">
+                    <h3>T-shirt Entraînement Pro (Noir)</h3>
+                    <p class="description">Léger, anti-odeur, coupe ergonomique. Votre allié pour la performance.</p>
+                    <div class="price-cta">
+                        <span class="price">49.99 €</span>
+                        <button class="add-to-cart" data-name="T-shirt Entraînement Pro" data-price="49.99">Ajouter au Panier</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h4>THE FUSION</h4>
+                <p>Où l'innovation rencontre le terrain. Équipez-vous pour la victoire.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="#">Centre d'aide</a>
+                <a href="#">Livraison & Suivi</a>
+                <a href="#">Retours & Échanges</a>
+            </div>
+            <div class="footer-section">
+                <h4>Légal</h4>
+                <a href="#">Termes & Conditions</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Mentions Légales</a>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <p>Offres exclusives et nouveautés.</p>
+                <input type="email" placeholder="Votre email" style="padding: 8px; border-radius: 4px; border: none; width: 100%; margin-top: 10px; color: #1f2937;">
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2025 THE FUSION. Tous droits réservés. | Code par Gemini</p>
+        </div>
+    </footer>
+    
+    <script>
+        let cart = [];
+        const cartLink = document.getElementById('cart-link');
+        const productGrid = document.querySelector('.product-grid');
+
+        /** Met à jour le compteur du panier. */
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartLink.textContent = `Panier (${totalItems})`;
+        }
+
+        /** Ajoute un produit au panier. */
+        function addToCart(event) {
+            const button = event.target;
+            if (!button.classList.contains('add-to-cart')) return;
+
+            const name = button.dataset.name;
+            const price = parseFloat(button.dataset.price);
+
+            const existingItem = cart.find(item => item.name === name);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+
+            updateCartCount();
+            
+            // Animation de succès au clic
+            button.textContent = '✅ Ajouté !';
+            button.style.backgroundColor = '#10b981'; // Vert succès
+            button.style.boxShadow = '0 0 15px #10b981';
+
+            setTimeout(() => {
+                button.textContent = 'Ajouter au Panier';
+                button.style.backgroundColor = 'var(--dark-bg)';
+                button.style.boxShadow = 'none';
+            }, 1200); 
+        }
+
+        /** Affiche le contenu du panier (simulation). */
+        function displayCartSummary(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert("Votre panier est vide. Commencez vos achats !");
+                return;
+            }
+            
+            let summary = "--- VOTRE PANIER FUSION ---\n\n";
+            let total = 0;
+            
+            cart.forEach(item => {
+                summary += `- ${item.name} x ${item.quantity} = ${(item.price * item.quantity).toFixed(2)} €\n`;
+                total += item.price * item.quantity;
+            });
+            
+            summary += `\n-----------------------------\n`;
+            summary += `TOTAL À PAYER: ${total.toFixed(2)} €`;
+            
+            alert(summary);
+        }
+
+        // Initialisation des écouteurs d'événements
+        if (productGrid) {
+            productGrid.addEventListener('click', addToCart);
+        }
+
+        if (cartLink) {
+            cartLink.addEventListener('click', displayCartSummary);
+        }
+    </script>
+    </body>
+</html>
