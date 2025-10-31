@@ -100,13 +100,14 @@
             border-color: var(--accent-main);
         }
 
-        /* --- NOUVEAUX STYLES DE CARROUSEL --- */
+        /* --- STYLES DE CARROUSEL --- */
         .product-card-header {
             position: relative;
             overflow: hidden;
-            /* Hauteur relative pour les ratios Instagram/produits */
+            /* Rendre la zone de l'image cliquable et "swipable" */
+            touch-action: pan-y; 
             height: 0; 
-            padding-bottom: 125%; /* Exemple: Ratio 4:5 (100 / (4/5) = 125) */
+            padding-bottom: 125%; 
             background-color: #f3f4f6;
         }
         
@@ -116,7 +117,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Transition fluide entre les images */
             transition: transform 0.4s ease-in-out; 
             display: flex;
         }
@@ -125,7 +125,6 @@
             min-width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Supprime l'effet de survol CSS précédent */
             position: relative;
             opacity: 1; 
         }
@@ -206,22 +205,21 @@
             box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
         }
         
-        /* ADAPTATION MOBILE - (ajustements mineurs) */
+        /* ADAPTATION MOBILE - (inchangé) */
         @media (max-width: 600px) {
             .product-grid {
                 grid-template-columns: 1fr; 
                 gap: 25px; 
             }
             .product-card-header {
-                /* Légèrement moins haut sur mobile pour un meilleur aperçu */
-                padding-bottom: 100%; /* Si on veut un carré parfait sur mobile (plus courant) */
+                padding-bottom: 100%; 
             }
             .product-card:hover {
                  transform: none; 
                  border-color: transparent;
             }
             .add-to-cart {
-                padding: 10px 15px; /* Plus de zone de tapotement */
+                padding: 10px 15px; 
                 font-size: 0.8rem;
             }
         }
@@ -337,39 +335,101 @@
     </footer>
     
     <script>
-        // Fonction pour changer l'image d'un produit
-        function switchImage(productCard, dotIndex) {
+        // La distance minimale en pixels pour qu'un mouvement soit considéré comme un "swipe"
+        const SWIPE_THRESHOLD = 50; 
+
+        // Fonction principale pour changer l'image (réutilisée)
+        function switchImage(productCard, newIndex) {
             const track = productCard.querySelector('.image-track');
             const dots = productCard.querySelectorAll('.dot');
             const imageCount = parseInt(track.dataset.images);
 
-            // S'assurer que l'index est valide
-            if (dotIndex < 0 || dotIndex >= imageCount) return;
+            // Gérer le bouclage (optional: pour rester sur la première/dernière image)
+            if (newIndex < 0) {
+                newIndex = 0; // Bloque sur la première image
+            } else if (newIndex >= imageCount) {
+                newIndex = imageCount - 1; // Bloque sur la dernière image
+            }
 
-            // Calculer la translation nécessaire (en pourcentage)
-            const offset = -dotIndex * 100;
-            
-            // Appliquer la transformation CSS pour glisser l'image
+            const offset = -newIndex * 100;
             track.style.transform = `translateX(${offset}%)`;
             
-            // Mettre à jour les points de navigation
             dots.forEach(dot => dot.classList.remove('active'));
-            dots[dotIndex].classList.add('active');
+            if (dots[newIndex]) {
+                dots[newIndex].classList.add('active');
+            }
             
-            // Mettre à jour l'index courant dans les données de la piste
-            track.dataset.currentIndex = dotIndex;
+            track.dataset.currentIndex = newIndex;
         }
 
-        // Écouteur d'événements pour les points de navigation
+        // 1. Écouteur d'événements pour les points de navigation (clic)
         document.querySelectorAll('.product-card').forEach(card => {
             const dotsContainer = card.querySelector('.carrousel-dots');
             
+            // Événement pour le clic sur les points
             dotsContainer.addEventListener('click', (e) => {
                 if (e.target.classList.contains('dot')) {
                     const dotIndex = parseInt(e.target.dataset.index);
                     switchImage(card, dotIndex);
                 }
             });
+
+            // 2. LOGIQUE DU SWIPE TACTILE
+            const track = card.querySelector('.image-track');
+            let startX; // Position X au début du toucher
+            
+            // a. Début du toucher
+            track.addEventListener('touchstart', (e) => {
+                // S'assurer qu'un seul doigt est utilisé
+                startX = e.touches[0].clientX; 
+                // Désactiver temporairement la transition CSS pour un mouvement fluide
+                track.style.transition = 'none'; 
+            }, false);
+
+            // b. Mouvement pendant le toucher (optionnel: pour le feedback en temps réel)
+            track.addEventListener('touchmove', (e) => {
+                if (startX === undefined) return;
+                
+                const currentX = e.touches[0].clientX;
+                const diffX = currentX - startX;
+                const currentIndex = parseInt(track.dataset.currentIndex);
+                
+                // Calculer la nouvelle position pour le feedback
+                const slideWidth = track.clientWidth / parseInt(track.dataset.images);
+                const currentOffset = -currentIndex * 100;
+                
+                // Appliquer une transformation légère pour suivre le doigt
+                track.style.transform = `translateX(calc(${currentOffset}% + ${diffX}px))`;
+            }, false);
+            
+            // c. Fin du toucher
+            track.addEventListener('touchend', (e) => {
+                if (startX === undefined) return;
+                
+                // Réactiver la transition CSS
+                track.style.transition = 'transform 0.4s ease-in-out';
+                
+                const endX = e.changedTouches[0].clientX;
+                const diffX = endX - startX;
+                let currentIndex = parseInt(track.dataset.currentIndex);
+                
+                if (Math.abs(diffX) > SWIPE_THRESHOLD) {
+                    // Glissement vers la gauche (passe à l'image suivante)
+                    if (diffX < 0) { 
+                        currentIndex++;
+                    } 
+                    // Glissement vers la droite (passe à l'image précédente)
+                    else { 
+                        currentIndex--;
+                    }
+                }
+                
+                // Appeler switchImage pour mettre à jour l'affichage
+                switchImage(card, currentIndex);
+                
+                startX = undefined; // Réinitialiser pour le prochain glissement
+            }, false);
+
         });
     </script>
 </body>
