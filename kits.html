@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kits Complets - THE FUSION</title>
-    <meta name='description' content='Découvrez les kits complets (maillot, short, chaussettes) exclusifs THE FUSION. Parfait pour les jeunes et les pros.'>
+    <title>Kits Complets - THE FUSION | Collection Officielle</title>
+    <meta name="description" content="Découvrez les kits complets (maillot, short, chaussettes) exclusifs THE FUSION. Parfait pour les jeunes et les pros.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <style>
         /* Importation de la police */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        /* Variables CSS Professionnelles */
+        /* Variables CSS Professionnelles Améliorées */
         :root {
-            --dark-bg: #111827;
-            --light-text: #f9fafb;
-            --accent-main: #3b82f6;
-            --accent-hover: #1d4ed8;
+            --dark-bg: #0f172a; /* Bleu marine foncé (plus riche que le noir) */
+            --light-text: #e2e8f0;
+            --accent-main: #3b82f6; /* Bleu Vif */
+            --accent-hover: #1e40af; /* Bleu plus foncé au survol */
             --card-bg: #ffffff;
             --card-text: #1f2937;
-            --shadow-hard: 0 6px 15px rgba(0, 0, 0, 0.3);
+            --shadow-hard: 0 10px 20px rgba(0, 0, 0, 0.5); /* Ombre plus profonde */
+            --success-color: #10b981;
+            --badge-new: #f97316; /* Orange pour Nouveau */
+            --badge-promo: #ef4444; /* Rouge pour Promo */
         }
 
-        /* Base & Reset - (inchangé) */
+        /* Base & Reset */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -31,6 +37,8 @@
             line-height: 1.6;
             scroll-behavior: smooth;
         }
+        
+        a { text-decoration: none; }
 
         .container {
             width: 95%;
@@ -39,15 +47,15 @@
             padding: 0 10px;
         }
         
-        /* HEADER - (inchangé) */
+        /* HEADER Rétractable et Moderne */
         .site-header {
-            background-color: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            padding: 10px 0; /* Plus compact */
         }
 
         .header-content {
@@ -57,185 +65,514 @@
         }
 
         .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 900;
             color: var(--accent-main);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+        }
+
+        /* Navigation Mobile Améliorée */
+        .nav-icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .cart-wrapper {
+            position: relative;
+        }
+
+        .nav-icon {
+            color: var(--light-text);
+            font-size: 1.2rem;
+            width: 44px; 
+            height: 44px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .nav-icon:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Badge Panier */
+        .cart-count {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            background-color: var(--badge-promo);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 50%;
+            padding: 2px 5px;
+            min-width: 18px;
+            text-align: center;
+            border: 2px solid var(--dark-bg); 
+            line-height: 1;
         }
         
         main {
-            padding-top: 20px;
+            padding-top: 30px;
         }
 
+        /* Liens de retour (Breadcrumb-like) */
+        .back-link-wrapper {
+            padding-bottom: 20px;
+        }
+        
+        .back-link { 
+            font-size: 0.9rem; 
+            color: var(--light-text);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .back-link:hover {
+            opacity: 1;
+            color: var(--accent-main);
+        }
 
-        /* Styles Spécifiques */
+        /* Titre de Section (plus d'impact) */
         .section-title {
             text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 40px 0;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 0 0 40px;
             color: var(--light-text);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        
+        /* Barres d'utilité et de filtres */
+        .utility-bar {
+            display: flex;
+            flex-direction: column; 
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #1e293b;
+            border-radius: 8px;
+        }
+        
+        .filter-controls, .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        #filter-type-label, #filter-type {
+            display: none;
+        }
+        .filter-controls {
+            flex-grow: 1;
+            justify-content: flex-end;
+        }
+        .filter-controls select {
+             max-width: 150px; 
+        }
+        .utility-bar > span {
+            align-self: flex-start;
+        }
+
+        .utility-bar span {
+            font-weight: 600;
+            color: var(--accent-main);
+        }
+
+        .utility-bar label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        .utility-bar select, .utility-bar button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .utility-bar select {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            border: 1px solid #475569;
+            cursor: pointer;
+            flex-grow: 1; 
+        }
+
+        .filter-button {
+             background-color: var(--accent-main);
+             color: var(--card-bg);
+             font-weight: 600;
+             cursor: pointer;
+             transition: background-color 0.3s;
+        }
+        .filter-button:hover {
+             background-color: var(--accent-hover);
+        }
+
+        /* Desktop: alignement horizontal pour la barre d'utilité */
+        @media (min-width: 768px) {
+            .utility-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .filter-controls {
+                flex-grow: 0; 
+                justify-content: initial; 
+            }
+            .filter-controls select {
+                 max-width: 180px; 
+            }
+            #filter-type-label, #filter-type { 
+                display: initial;
+            }
+            .filter-button { 
+                display: none;
+            }
+        }
+
+
+        /* Grille de Produits */
         .product-grid {
-            /* Largeur minimale conservée à 200px */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 25px;
             padding-bottom: 60px;
         }
+        
+        @media (min-width: 1024px) {
+             .product-grid {
+                grid-template-columns: repeat(4, 1fr); 
+            }
+        }
+
 
         .product-card {
             background-color: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 12px; 
             overflow: hidden;
             box-shadow: var(--shadow-hard);
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid transparent; 
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            position: relative;
         }
         
         .product-card:hover {
-            transform: translateY(-4px); 
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3), 0 0 6px var(--accent-main);
-            border-color: var(--accent-main);
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 10px var(--accent-main);
         }
+        
+        /* Badges Nouveauté/Promo */
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--card-bg);
+            z-index: 10;
+            text-transform: uppercase;
+        }
+        .badge-new { background-color: var(--badge-new); }
+        .badge-promo { background-color: var(--badge-promo); }
+
 
         .product-card-header {
             position: relative;
             overflow: hidden;
-            height: 300px; /* Hauteur conservée à 300px */
+            aspect-ratio: 4 / 5; 
             background-color: #f3f4f6;
-            /* L'aspect-ratio de 819/1024 est un compromis, mais `object-fit: cover` aura le dernier mot */
-            aspect-ratio: 819 / 1024; 
+            width: 100%;
         }
         
-        .product-card-header img {
+        /* ---------- SYSTÈME DE SLIDER D'IMAGES (copié de domicile.html) ---------- */
+        
+        .image-slider { 
+            position: relative;
             width: 100%;
             height: 100%;
-            /* CECI GARANTIT QUE LA PHOTO COUVRE ENTIÈREMENT SANS ESPACE BLANC */
-            object-fit: cover; 
-            display: block;
-            transition: opacity 0.3s ease-in-out; 
-            
-            image-rendering: optimizeQuality; 
-            image-rendering: -webkit-optimize-contrast; 
         }
 
-        /* Effet Switch Image - (inchangé) */
-        .product-card-header .hover-img {
-            position: absolute;
+        .slide {
+            position: absolute; 
             top: 0;
             left: 0;
-            opacity: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+            opacity: 0; 
+            transition: opacity 0.4s ease-in-out, transform 0.5s ease-out; 
+            transform: scale(1); 
         }
-
-        .product-card:hover .product-card-header .default-img {
-            opacity: 0;
-        }
-
-        .product-card:hover .product-card-header .hover-img {
+        
+        .slide.active {
             opacity: 1;
+            z-index: 1; 
+        }
+        
+        .product-card:hover .slide.active {
+             transform: scale(1.08); 
+        }
+        
+        /* Navigation par points */
+        .slider-nav {
+            position: absolute;
+            bottom: 10px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2; 
+            display: flex;
+            gap: 6px;
+            background-color: rgba(15, 23, 42, 0.4); 
+            padding: 5px 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(2px); 
         }
 
-        /* Info produit et prix - (inchangé) */
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .dot:hover {
+            background-color: #ffffff;
+        }
+
+        .dot.active {
+            background-color: #ffffff;
+            transform: scale(1.2);
+        }
+
+        /* ---------- FIN : SYSTÈME DE SLIDER D'IMAGES ---------- */
+        
+        
+        /* Info produit (plus de padding) */
         .product-info {
-            padding: 10px 10px 8px; 
+            padding: 15px; 
             color: var(--card-text);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
-            min-height: 70px;
+            flex-grow: 1; 
+            text-align: center;
         }
 
         .product-info h3 {
-            font-size: 1.0rem; 
-            margin: 0 0 8px; 
-            font-weight: 700;
+            font-size: 1.2rem; 
+            margin: 0 0 5px; 
+            font-weight: 800;
+            color: var(--card-text);
         }
 
-        .description {
-            display: none; 
+        .description-short {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+            min-height: 32px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        /* Sélecteur de Taille (Interaction supplémentaire) */
+        .size-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .size-option {
+            width: 30px; 
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .size-option:hover {
+            border-color: var(--accent-main);
+            color: var(--accent-main);
+            transform: scale(1.1);
+        }
+        
+        .size-option.selected {
+            background-color: var(--accent-main);
+            color: var(--card-bg);
+            border-color: var(--accent-main);
+        }
+
 
         .price-cta {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 8px; 
+            flex-direction: column; 
+            gap: 8px;
+            padding-top: 15px; 
             border-top: 1px solid #e5e7eb;
             margin-top: auto;
         }
+        
+        .price-group {
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            gap: 10px;
+        }
 
         .price {
-            font-size: 1.3rem; 
+            font-size: 1.6rem; 
             color: var(--accent-main);
             font-weight: 900;
         }
+        
+        .old-price {
+            font-size: 1rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-weight: 500;
+        }
 
         .add-to-cart {
+            width: 100%; 
             background-color: var(--accent-main);
             color: var(--light-text);
-            border: none;
-            padding: 6px 12px; 
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.75rem; 
-            font-weight: 600;
+            padding: 12px 0; 
+            border-radius: 8px; 
+            font-size: 1rem; 
+            font-weight: 700; 
             text-transform: uppercase;
-            transition: background-color 0.3s, transform 0.1s;
+            min-height: 48px; 
         }
         
         .add-to-cart:hover {
             background-color: var(--accent-hover);
-            transform: scale(1.02);
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6); 
         }
-        
-        /* Reste du code (Liens, Footer) - (inchangé) */
-        .back-link-wrapper {
-            text-align: left;
-            padding-top: 20px;
-            margin-bottom: -20px;
-        }
-        
-        .back-link { 
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.85em;
-            color: var(--light-text);
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-        .back-link:hover {
-            background-color: var(--accent-main);
-            color: var(--dark-bg);
-            border-color: var(--accent-main);
-        }
-        
+
+        /* Footer */
         .site-footer {
-            background-color: #1f2937;
-            color: #9ca3af;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px; 
-            font-size: 0.8rem;
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 30px 0; 
+            font-size: 0.85rem;
         }
         
-        .site-footer a {
-            color: var(--accent-main);
-            text-decoration: none;
-            transition: color 0.3s;
+        /* -- MODAL DE FILTRES (MOBILE) -- */
+        .filter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            z-index: 2000;
+            transform: translateX(100%); 
+            transition: transform 0.4s ease-out;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
-        .site-footer a:hover {
+
+        .filter-modal.open {
+            transform: translateX(0);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #475569;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--accent-main);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
             color: var(--light-text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 10px;
+            width: 44px; 
+            height: 44px; 
+        }
+        
+        .filter-group {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #1e293b;
+            border-radius: 8px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--accent-main);
+            font-size: 1.1rem;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #475569;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        
+        .filter-option.selected {
+            background-color: var(--accent-main);
+            border-color: var(--accent-main);
+            font-weight: 600;
+        }
+        
+        .apply-filters {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success-color);
+            color: var(--card-bg);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -244,83 +581,390 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="index.html" class="logo">THE FUSION</a>
+            <nav class="nav-icons">
+                 <a href="#" class="nav-icon search-icon">🔍</a>
+                 <div class="cart-wrapper">
+                    <a href="#" class="nav-icon cart-icon">🛒</a>
+                    <span class="cart-count" id="cart-count">4</span>
+                 </div>
+            </nav>
         </div>
     </header>
 
     <main class="container">
         
         <div class="back-link-wrapper">
-            <a href="index.html" class="back-link">← Retour au Catalogue</a> 
+            <a href="catalogue.html" class="back-link">← Retour au Catalogue</a>
         </div>
 
-        <h2 class="section-title">Kits Complets | Collection Actuelle</h2>
+        <h2 class="section-title">Kits Complets | Maillot, Short & Chaussettes</h2>
+
+        <div class="utility-bar">
+            <span class="product-count">4 Kits disponibles</span>
+            <div class="filter-controls">
+                
+                <label for="filter-type" id="filter-type-label">Type:</label>
+                <select id="filter-type">
+                    <option value="all">Tout</option>
+                    <option value="pro">Pro Match</option>
+                    <option value="junior">Junior</option>
+                </select>
+                
+                <label for="filter-sort">Trier par:</label>
+                <select id="filter-sort">
+                    <option value="popular">Popularité</option>
+                    <option value="price-desc">Prix Décroissant</option>
+                    <option value="new">Nouveautés</option>
+                </select>
+
+                <button class="filter-button">Filtres</button>
+            </div>
+        </div>
 
         <div class="product-grid">
 
-            <div class="product-card" data-sku="D001">
+            <a class="product-card" href="kit-psg-domicile.html" data-sku="K001">
+                <span class="product-badge badge-new">Nouveau</span>
                 <div class="product-card-header">
-                    <img src="images/psgkava.webp" alt="Maillot Domicile Pro Mbappé" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/kitspsg.webp" alt="Maillot Domicile Pro Mbappé Arrière" class="hover-img" loading="lazy" decoding="async">
-                </div>
-                <div class="product-info">
-                    <h3>Paris Saint-Germain</h3>
-                    <div class="price-cta">
-                        <span class="price">139.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Mbappé Domicile" data-price="139.99">Ajouter</button>
+                    <div class="image-slider" data-slides="2">
+                        <img src="images/psgkava.webp" alt="Kit Domicile PSG vue avant" class="slide active" data-slide-index="0" loading="lazy" decoding="async">
+                        <img src="images/kitspsg.webp" alt="Kit Domicile PSG vue arrière" class="slide" data-slide-index="1" loading="lazy" decoding="async">
+                        <div class="slider-nav">
+                            <span class="dot active" data-dot-index="0"></span>
+                            <span class="dot" data-dot-index="1"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="product-card" data-sku="D002">
-                <div class="product-card-header">
-                    <img src="images/atlenticomennn.webp" alt="Maillot Domicile Classique Haaland" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/atlenticokits.webp" alt="Maillot Domicile Classique Haaland Arrière" class="hover-img" loading="lazy" decoding="async">
-                </div>
                 <div class="product-info">
-                    <h3>Club Atlético de Madrid</h3>
+                    <h3>Paris Saint-Germain Kit</h3>
+                    <p class="description-short">Kit Domicile. Maillot Pro Match + Tenue.</p>
+                    <div class="size-selector" data-selected-size="M">
+                        <span class="size-option" data-size="S">S</span>
+                        <span class="size-option selected" data-size="M">M</span>
+                        <span class="size-option" data-size="L">L</span>
+                        <span class="size-option" data-size="XL">XL</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">109.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Haaland Domicile" data-price="109.99">Ajouter</button>
+                        <div class="price-group">
+                            <span class="price">139.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Kit PSG Domicile" data-price="139.99">Ajouter au panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" data-sku="D003">
+            <a class="product-card" href="kit-atletico-ext.html" data-sku="K002">
+                <span class="product-badge badge-promo">-20%</span>
                 <div class="product-card-header">
-                    <img src="images/dortmunmann.webp" alt="Maillot Domicile Junior Bellingham" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/durtmundkits.webp" alt="Maillot Domicile Junior Bellingham Arrière" class="hover-img" loading="lazy" decoding="async">
-                </div>
-                <div class="product-info">
-                    <h3>Borussia Dortmund</h3>
-                    <div class="price-cta">
-                        <span class="price">89.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Bellingham Domicile Junior" data-price="89.99">Ajouter</button>
+                    <div class="image-slider" data-slides="2">
+                        <img src="images/atlenticomennn.webp" alt="Kit Extérieur Atlético de Madrid" class="slide active" data-slide-index="0" loading="lazy" decoding="async">
+                        <img src="images/atlenticokits.webp" alt="Kit Extérieur Atlético de Madrid vue complète" class="slide" data-slide-index="1" loading="lazy" decoding="async">
+                        <div class="slider-nav">
+                            <span class="dot active" data-dot-index="0"></span>
+                            <span class="dot" data-dot-index="1"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="product-card" data-sku="D004">
-                <div class="product-card-header">
-                    <img src="images/chealssman.webp" alt="Maillot Domicile Vierge" class="default-img" loading="lazy" decoding="async">
-                    <img src="images/chealseakits.webp" alt="Maillot Domicile Vierge Arrière" class="hover-img" loading="lazy" decoding="async">
-                </div>
                 <div class="product-info">
-                    <h3>Chelsea FC</h3>
+                    <h3>Atlético Madrid Kit</h3>
+                    <p class="description-short">Kit Extérieur Complet. Tissu respirant.</p>
+                    <div class="size-selector" data-selected-size="L">
+                        <span class="size-option" data-size="S">S</span>
+                        <span class="size-option" data-size="M">M</span>
+                        <span class="size-option selected" data-size="L">L</span>
+                        <span class="size-option" data-size="XL">XL</span>
+                    </div>
                     <div class="price-cta">
-                        <span class="price">95.00 €</span>
-                        <button class="add-to-cart" data-name="Maillot Domicile Vierge" data-price="95.00">Ajouter</button>
+                        <div class="price-group">
+                            <span class="old-price">129.99 €</span>
+                            <span class="price">103.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Kit Atlético Extérieur" data-price="103.99">Ajouter au panier</button>
                     </div>
                 </div>
-            </div>
+            </a>
 
+            <a class="product-card" href="kit-dortmund-junior.html" data-sku="K003">
+                <div class="product-card-header">
+                    <div class="image-slider" data-slides="2">
+                        <img src="images/dortmunmann.webp" alt="Kit Domicile Junior Dortmund" class="slide active" data-slide-index="0" loading="lazy" decoding="async">
+                        <img src="images/durtmundkits.webp" alt="Kit Domicile Junior Dortmund vue complète" class="slide" data-slide-index="1" loading="lazy" decoding="async">
+                        <div class="slider-nav">
+                            <span class="dot active" data-dot-index="0"></span>
+                            <span class="dot" data-dot-index="1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Dortmund Kit (Junior)</h3>
+                    <p class="description-short">Kit Domicile Junior. Idéal pour les 8-16 ans.</p>
+                    <div class="size-selector" data-selected-size="12A">
+                        <span class="size-option" data-size="10A">10A</span>
+                        <span class="size-option selected" data-size="12A">12A</span>
+                        <span class="size-option" data-size="14A">14A</span>
+                        <span class="size-option" data-size="16A">16A</span>
+                    </div>
+                    <div class="price-cta">
+                        <div class="price-group">
+                            <span class="price">89.99 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Kit Dortmund Junior" data-price="89.99">Ajouter au panier</button>
+                    </div>
+                </div>
+            </a>
+
+            <a class="product-card" href="kit-chelsea-troisieme.html" data-sku="K004">
+                <div class="product-card-header">
+                    <div class="image-slider" data-slides="2">
+                        <img src="images/chealssman.webp" alt="Kit Troisième Chelsea" class="slide active" data-slide-index="0" loading="lazy" decoding="async">
+                        <img src="images/chealseakits.webp" alt="Kit Troisième Chelsea vue complète" class="slide" data-slide-index="1" loading="lazy" decoding="async">
+                        <div class="slider-nav">
+                            <span class="dot active" data-dot-index="0"></span>
+                            <span class="dot" data-dot-index="1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3>Chelsea FC Kit</h3>
+                    <p class="description-short">Kit Troisième. Maillot, short et chaussettes.</p>
+                    <div class="size-selector" data-selected-size="S">
+                        <span class="size-option selected" data-size="S">S</span>
+                        <span class="size-option" data-size="M">M</span>
+                        <span class="size-option" data-size="L">L</span>
+                        <span class="size-option" data-size="XL">XL</span>
+                    </div>
+                    <div class="price-cta">
+                        <div class="price-group">
+                            <span class="price">115.00 €</span>
+                        </div>
+                        <button class="add-to-cart" data-name="Kit Chelsea Troisième" data-price="115.00">Ajouter au panier</button>
+                    </div>
+                </div>
+            </a>
+            
         </div>
     </main>
     
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 THE FUSION. Tous droits réservés. | <a href="#">Politique de Confidentialité</a> | <a href="#">Conditions Générales de Vente</a></p>
+            <p>&copy; 2025 THE FUSION. Tous droits réservés. | <a href="#">Aide & Contact</a> | <a href="#">Conditions Générales de Vente</a></p>
         </div>
     </footer>
     
+    <div class="filter-modal">
+        <div class="modal-header">
+            <h3>Filtrer les Kits</h3>
+            <button class="close-modal">✕</button>
+        </div>
+        <div class="filter-content">
+            
+            <div class="filter-group">
+                <label>Type de Kit</label>
+                <div class="filter-options" id="modal-type-filter">
+                    <button class="filter-option selected" data-value="all">Tout</button>
+                    <button class="filter-option" data-value="domicile">Domicile</button>
+                    <button class="filter-option" data-value="exterieur">Extérieur</button>
+                    <button class="filter-option" data-value="junior">Junior</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Tranche de Prix (€)</label>
+                <div class="filter-options" id="modal-price-filter">
+                    <button class="filter-option selected" data-value="0-100">0 - 100</button>
+                    <button class="filter-option" data-value="100-150">100 - 150</button>
+                    <button class="filter-option" data-value="150+">150 +</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Disponibilité</label>
+                <div class="filter-options" id="modal-availability-filter">
+                    <button class="filter-option selected" data-value="instock">En Stock</button>
+                    <button class="filter-option" data-value="preorder">Pré-commande</button>
+                </div>
+            </div>
+
+            <button class="apply-filters">Appliquer les Filtres</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productCards = document.querySelectorAll('.product-card');
+            const cartCountElement = document.getElementById('cart-count');
+            
+            // Initialisation du compteur de panier
+            let cartCount = parseInt(cartCountElement.textContent);
+
+            // --- 1. GESTION DU SÉLECTEUR DE TAILLE et AJOUT AU PANIER ---
+            productCards.forEach(card => {
+                const sizeSelector = card.querySelector('.size-selector');
+                const addToCartBtn = card.querySelector('.add-to-cart');
+                const cardLink = card; 
+
+                // A. SÉLECTION DE TAILLE
+                sizeSelector.addEventListener('click', (e) => {
+                    const option = e.target.closest('.size-option');
+                    if (option) {
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
+                        
+                        const selectedSize = option.dataset.size;
+                        const currentSelected = sizeSelector.querySelector('.selected');
+
+                        if (currentSelected) {
+                            currentSelected.classList.remove('selected');
+                        }
+                        option.classList.add('selected');
+                        sizeSelector.dataset.selectedSize = selectedSize;
+                    }
+                });
+
+                // B. AJOUT AU PANIER
+                addToCartBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+
+                    const name = addToCartBtn.dataset.name;
+                    const price = addToCartBtn.dataset.price;
+                    const selectedSize = sizeSelector.dataset.selectedSize || 'Non spécifiée';
+
+                    // Incrémenter le compteur du panier
+                    cartCount++;
+                    cartCountElement.textContent = cartCount;
+
+                    // Afficher une alerte (simulation d'ajout)
+                    alert(`✅ Ajouté au panier :\n${name} - Taille: ${selectedSize}\n@ ${price} €`);
+                });
+                
+                // C. NAVIGATION (clic sur la carte entière sauf les boutons)
+                cardLink.addEventListener('click', (e) => {
+                    // Si le clic n'a pas été géré par une sous-fonction (taille, ajouter au panier), naviguer
+                    if (!e.defaultPrevented) {
+                        // Le navigateur gérera le href du <a>
+                    }
+                });
+            });
+
+
+            // --- 2. SLIDER D'IMAGES (Points et Swipe) ---
+
+            function showSlide(card, slideIndex) {
+                const slides = card.querySelectorAll('.slide');
+                const dots = card.querySelectorAll('.dot');
+                const totalSlides = parseInt(card.querySelector('.image-slider').dataset.slides);
+                
+                // Limites
+                if (slideIndex < 0) slideIndex = totalSlides - 1;
+                if (slideIndex >= totalSlides) slideIndex = 0;
+
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+
+                slides[slideIndex].classList.add('active');
+                dots[slideIndex].classList.add('active');
+                
+                card.dataset.currentSlide = slideIndex;
+            }
+            
+            // Navigation par points
+            document.querySelectorAll('.slider-nav').forEach(nav => {
+                nav.addEventListener('click', (e) => {
+                    const dot = e.target.closest('.dot');
+                    if (dot) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const card = e.target.closest('.product-card');
+                        const index = parseInt(dot.dataset.dotIndex);
+                        showSlide(card, index);
+                    }
+                });
+            });
+
+            // GESTION DU SWIPE (Mobile)
+            productCards.forEach(card => {
+                const sliderContainer = card.querySelector('.image-slider');
+                let startX;
+                let isSwiping = false;
+
+                sliderContainer.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isSwiping = false;
+                });
+
+                sliderContainer.addEventListener('touchmove', (e) => {
+                    const currentX = e.touches[0].clientX;
+                    const diffX = startX - currentX;
+                    
+                    if (Math.abs(diffX) > 10) { 
+                        isSwiping = true;
+                        e.preventDefault(); 
+                    }
+                }, { passive: false });
+
+                sliderContainer.addEventListener('touchend', (e) => {
+                    if (isSwiping) {
+                        e.stopPropagation(); 
+                        
+                        const endX = e.changedTouches[0].clientX;
+                        const diffX = startX - endX;
+                        const threshold = 50; 
+
+                        if (Math.abs(diffX) > threshold) {
+                            const currentSlide = parseInt(card.dataset.currentSlide || '0');
+                            const totalSlides = parseInt(sliderContainer.dataset.slides);
+                            let newIndex = currentSlide;
+                            
+                            if (diffX > 0) { // Swipe vers la gauche (slide suivante)
+                                newIndex = (currentSlide + 1) % totalSlides;
+                            } else { // Swipe vers la droite (slide précédente)
+                                newIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+                            }
+                            showSlide(card, newIndex);
+                        }
+                    }
+                });
+                
+                // Initialisation de la data-slide
+                card.dataset.currentSlide = '0';
+            });
+
+            // --- 3. GESTION DU MODAL DE FILTRES (Mobile) ---
+            const filterModal = document.querySelector('.filter-modal');
+            const filterButton = document.querySelector('.filter-button');
+            const closeModalButton = document.querySelector('.close-modal');
+            const applyFiltersButton = document.querySelector('.apply-filters');
+
+            function openModal() {
+                filterModal.classList.add('open');
+                document.body.style.overflow = 'hidden'; 
+            }
+
+            function closeModal() {
+                filterModal.classList.remove('open');
+                document.body.style.overflow = ''; 
+            }
+
+            filterButton.addEventListener('click', openModal);
+            closeModalButton.addEventListener('click', closeModal);
+            applyFiltersButton.addEventListener('click', closeModal); 
+
+            // Sélection des options dans le modal
+            document.querySelectorAll('.filter-options .filter-option').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const parentGroup = e.target.closest('.filter-options');
+                    // Gérer le cas où un seul filtre est sélectionnable par groupe (Type et Prix)
+                    if (parentGroup.id === 'modal-type-filter' || parentGroup.id === 'modal-price-filter') {
+                        parentGroup.querySelectorAll('.filter-option').forEach(btn => btn.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                    } else {
+                        e.target.classList.toggle('selected'); // Pour les filtres multi-sélection (comme la disponibilité)
+                    }
+                });
+            });
+
+        });
+    </script>
 </body>
 </html>
