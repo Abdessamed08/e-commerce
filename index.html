@@ -150,26 +150,29 @@
         }
         
         /* ========================================================== */
-        /* 2. FUSION INTELIGENTE HERO + CARROUSEL */
+        /* 2. FUSION INTELIGENTE HERO + CARROUSEL (SLIDER COMPACT) */
         /* ========================================================== */
 
         .fused-hero-container {
             margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
         }
 
         .slideshow-container {
-            max-width: none;
-            width: 100%;
-            height: 650px; /* Hauteur d'impact */
+            width: 90%; 
+            max-width: 700px; 
+            height: 450px; 
             position: relative;
-            margin: 0;
+            margin: 0 auto; 
             overflow: hidden;
-            box-shadow: none;
-            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+            border-radius: 10px; 
             background-color: #000;
         }
 
-        /* Superposition sombre sur l'image de fond (IMPORTANTE pour la lisibilité du texte blanc) */
+        /* Superposition sombre sur l'image de fond (Optimisée) */
         .slideshow-container::before {
             content: '';
             position: absolute;
@@ -177,74 +180,78 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.55); /* Overlay sombre */
+            background: rgba(0, 0, 0, 0.55); /* Opacité augmentée pour meilleur contraste */
             z-index: 5;
         }
-
+        
+        /* Styles de base des slides */
         .slideshow-item {
             display: none;
             width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            opacity: 0;
+            z-index: 6; 
+            transition: opacity 1s ease-in-out; 
         }
         
-        .slideshow-item img {
-            width: 100%;
-            height: 650px; 
-            object-fit: cover;
-            object-position: top; /* AJOUT / MODIFICATION ICI: Centre sur le haut de l'image */
-            vertical-align: middle;
-            transition: transform 0.5s ease;
+        .slideshow-item.active {
+            display: block;
+            opacity: 1;
         }
 
-        /* Contenu Hero (TEXTE FLOTTANT SANS CADRE) */
+        /* Gérer le zoom de l'image (par défaut centré) */
+        .slideshow-item img {
+            width: 100%;
+            height: 450px; 
+            object-fit: cover;
+            object-position: center; /* Positionnement par défaut */
+            vertical-align: middle;
+            transform: scale(1.0);
+            transition: transform 3s ease-out; 
+        }
+        
+        /* RÈGLE : Cible les grandes images avec focus sur le haut */
+        .slideshow-item.focus-top img {
+            object-position: top; /* Concentre l'image sur le haut pour ces slides */
+        }
+
+        .slideshow-item.active img {
+            transform: scale(1.05); 
+        }
+
+        /* Contenu Hero (BOUTON SEUL EN BAS) - MODIFIÉ */
         .hero-content.fused-content {
             position: absolute;
-            top: 50%;
+            bottom: 30px; /* POSITIONNÉ EN BAS */
+            top: unset; /* Annule la valeur précédente de top */
             left: 50%;
-            transform: translate(-50%, -50%); /* Centrage parfait */
+            transform: translateX(-50%); /* Ajuste le centrage horizontal */
             z-index: 10;
-            padding: 40px 60px;
-            max-width: 800px;
+            padding: 0; /* Suppression du padding inutile */
+            max-width: 90%;
             text-align: center;
-            
-            /* SUPPRESSION COMPLÈTE DU CADRE ET DU FOND */
             background: none; 
             backdrop-filter: none;
             border: none;
             box-shadow: none; 
         }
 
-        /* On s'assure que le texte reste lisible sur le fond dynamique */
-        .hero-content.fused-content h2 {
-            font-size: 3rem; /* RÉDUCTION DE LA TAILLE */
-            margin: 0 0 15px;
-            font-weight: 800; /* Légèrement moins gras */
-            
-            /* COULEUR ET TRANSPARENCE DU TITRE */
-            color: rgba(255, 255, 255, 0.7); /* Blanc avec 70% d'opacité (30% transparent) */
-            
-            line-height: 1.2; 
-            /* Ombre de texte ajustée pour la lisibilité sur un texte plus transparent */
-            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9); 
-        }
-        
+        /* Cache le texte qui a été supprimé */
+        .hero-content.fused-content h2,
         .hero-content.fused-content p {
-            font-size: 1.05rem; /* RÉDUCTION DE LA TAILLE */
-            margin-bottom: 30px; /* Légèrement réduit */
-            font-weight: 400;
-            
-            /* COULEUR ET TRANSPARENCE DU PARAGRAPHE */
-            color: rgba(255, 255, 255, 0.6); /* Blanc avec 60% d'opacité (40% transparent) */
-            
-            text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+            display: none; 
         }
 
         .hero-button {
             background-color: var(--accent-neon);
             color: var(--light-text);
-            padding: 14px 35px; /* Légèrement réduit */
+            padding: 12px 30px; 
             text-decoration: none;
             text-transform: uppercase;
-            font-weight: 700; /* Légèrement moins gras */
+            font-weight: 700;
             border-radius: 50px;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
             display: inline-block;
@@ -252,48 +259,56 @@
 
         .hero-button:hover {
             background-color: var(--accent-hover);
-            box-shadow: 0 0 20px var(--accent-neon); /* Légèrement réduit */
+            box-shadow: 0 0 15px var(--accent-neon); 
             transform: translateY(-2px);
         }
 
-        /* Indicateurs de slide (dots) */
+        /* Indicateurs de slide (dots) - Cachés car les miniatures les remplacent */
         .slide-dots {
-            text-align: center;
-            padding: 15px 0;
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            z-index: 10;
+            display: none; 
         }
-        
-        .dot {
+
+        /* Styles pour les Miniatures (Thumbnails) */
+        .slideshow-thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 15px; 
+            max-width: 700px; 
+            width: 90%; 
+            margin: 15px auto 50px auto; 
+            padding-bottom: 0;
+        }
+
+        .thumbnail-item {
+            width: 18%; 
+            height: 70px;
+            object-fit: cover;
+            object-position: center; /* Positionnement par défaut */
+            border-radius: 6px;
             cursor: pointer;
-            height: 12px;
-            width: 12px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.6s ease;
+            opacity: 0.7;
+            border: 3px solid transparent; 
+            transition: opacity 0.3s, border-color 0.3s, transform 0.2s;
         }
         
-        .dot.active,
-        .dot:hover {
-            background-color: var(--accent-neon);
+        /* RÈGLE : Applique le focus sur le haut pour les miniatures ciblées */
+        .thumbnail-item.focus-top {
+            object-position: top;
         }
 
-        /* Animation de fondu */
-        .fade {
-            animation-name: fade;
-            animation-duration: 1.5s;
+
+        .thumbnail-item:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
 
-        @keyframes fade {
-            from {opacity: .7} 
-            to {opacity: 1}
+        /* Style de la miniature actuellement sélectionnée */
+        .thumbnail-item.active {
+            opacity: 1;
+            border-color: var(--accent-neon); 
         }
         
-        /* 3. Section Catégories/Mosaïque (Le reste du CSS est inchangé) */
+        /* 3. Section Catégories/Mosaïque */
         h2.section-title {
             text-align: center;
             font-size: 2.5rem;
@@ -515,25 +530,24 @@
         }
 
         /* 6. Responsive Design (Ajustements Mobile) */
-        @media (max-width: 1200px) {
-            .hero-content.fused-content {
-                max-width: 85%;
-            }
-        }
-        
         @media (max-width: 900px) {
-            .slideshow-container, .slideshow-item img {
-                height: 500px;
+            .slideshow-container {
+                max-width: 90%; 
+                height: 400px;
             }
-            .hero-content.fused-content {
-                max-width: 90%;
-                padding: 30px;
+            .slideshow-item img {
+                height: 400px;
             }
-            .hero-content.fused-content h2 {
-                font-size: 2.5rem;
+            /* Pas besoin de redéfinir le titre et paragraphe ici, ils sont masqués */
+            .slideshow-thumbnails {
+                 max-width: 90%;
+                 gap: 10px;
             }
-            .hero-content.fused-content p {
-                font-size: 1.1rem;
+            .thumbnail-item {
+                height: 60px;
+            }
+            .main-nav { 
+                top: 65px; 
             }
         }
         
@@ -543,7 +557,6 @@
             .main-nav { 
                 display: none; 
                 position: absolute;
-                top: 60px;
                 left: 0;
                 width: 100%;
                 background-color: rgba(17, 24, 39, 0.98);
@@ -558,19 +571,26 @@
             
             /* Fusion Hero Mobile */
             .slideshow-container, .slideshow-item img {
-                height: 400px;
+                height: 300px;
+                max-width: 95%;
             }
+            /* Position du bouton en bas pour mobile */
             .hero-content.fused-content {
-                padding: 20px;
+                bottom: 20px;
             }
-            .hero-content.fused-content h2 {
-                font-size: 2rem;
-            }
-            .hero-content.fused-content p {
-                font-size: 1rem;
-            }
+            
             .hero-button {
-                padding: 12px 25px;
+                padding: 10px 20px;
+            }
+
+            /* Miniatures Mobile */
+            .slideshow-thumbnails {
+                gap: 5px;
+                max-width: 95%;
+            }
+            .thumbnail-item {
+                width: 19%;
+                height: 45px;
             }
 
             /* Titres */
@@ -617,32 +637,43 @@
         <div class="fused-hero-container">
             <section class="slideshow-container" aria-label="Nouvelle collection de maillots de football en vedette">
         
-                
-                <div class="slideshow-item fade">
+                <div class="slideshow-item focus-top">
                     <img src="images/realmadridback.webp" alt="Maillot Real Madrid - Vue Arrière">
                 </div>
 
-                <div class="slideshow-item fade">
+                <div class="slideshow-item">
                     <img src="images/lyonback.webp" alt="Maillot Olympique Lyonnais - Vue Arrière">
                 </div>
 
-                <div class="slideshow-item fade">
+                <div class="slideshow-item focus-top">
                     <img src="images/grizback.webp" alt="Maillot Griezmann - Vue Arrière">
                 </div>
 
-                <div class="slideshow-item fade">
+                <div class="slideshow-item">
                     <img src="images/dortmundback.webp" alt="Maillot Dortmund - Vue Arrière">
                 </div>
                 
-                <div class="slideshow-item fade">
+                <div class="slideshow-item focus-top">
                     <img src="images/bayernback.webp" alt="Maillot Bayern Munich - Vue Arrière">
                 </div>
                 
-                <div class="slide-dots" id="slide-dots">
-                    </div>
+                <div class="hero-content fused-content">
+                    <a href="#products-title" class="hero-button">Découvrir la Collection</a>
+                </div>
+                
+                <div class="slide-dots" id="slide-dots"></div> 
                 
             </section>
+
+            <div class="slideshow-thumbnails">
+                <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1">
+                <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2">
+                <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3">
+                <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4">
+                <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" alt="Miniature 5">
+            </div>
         </div>
+        
         <div class="container">
             <section aria-labelledby="categories-title">
                 <h2 class="section-title" id="categories-title">Explorer par Catégorie</h2>
@@ -789,12 +820,15 @@
         const nav = document.getElementById('main-nav');
         const slides = document.getElementsByClassName("slideshow-item");
         const dotContainer = document.getElementById('slide-dots');
+        const thumbnails = document.getElementsByClassName("thumbnail-item"); 
         
         let slideIndex = 1;
+        let slideTimer; 
 
         // --- Fonctions Carrousel (Slideshow) ---
         function generateDots() {
             if (dotContainer) {
+                // Fonction conservée, bien que masquée par CSS
                 for (let i = 0; i < slides.length; i++) {
                     const dot = document.createElement('span');
                     dot.className = 'dot';
@@ -804,31 +838,66 @@
             }
         }
         
+        // Fonction pour l'autoplay (incrémente l'index)
         function showSlides() {
             let i;
             const dots = document.getElementsByClassName("dot");
             
+            // 1. Désactiver la slide et la miniature précédentes
             for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+                slides[i].classList.remove('active');
+                thumbnails[i].classList.remove('active'); 
             }
+
+            // 2. Passage à la slide suivante
             slideIndex++;
             if (slideIndex > slides.length) {slideIndex = 1}
 
+            // 3. Activer la nouvelle slide et la miniature
+            slides[slideIndex-1].classList.add('active');
+            thumbnails[slideIndex-1].classList.add('active'); 
+            
+            // 4. Mettre à jour les dots (logique conservée)
             for (i = 0; i < dots.length; i++) {
                 dots[i].className = dots[i].className.replace(" active", "");
             }
-            
-            slides[slideIndex-1].style.display = "block";
             if (dots[slideIndex-1]) {
-                 dots[slideIndex-1].className += " active";
+                dots[slideIndex-1].className += " active";
             }
             
-            setTimeout(showSlides, 4000); // Change l'image toutes les 4 secondes
+            // 5. Relancer le minuteur pour l'animation automatique (3000ms = 3 secondes)
+            slideTimer = setTimeout(showSlides, 3000); 
         }
 
+        // Fonction appelée manuellement (par une miniature)
         function currentSlide(n) {
+            clearTimeout(slideTimer); // Arrête l'autoplay
             slideIndex = n - 1; 
-            showSlides();
+            
+            showSlidesManual(); 
+            
+            // Reprise de l'autoplay après 5 secondes d'inactivité
+            slideTimer = setTimeout(showSlides, 5000); 
+        }
+        
+        // Nouvelle fonction pour l'affichage manuel
+        function showSlidesManual() {
+            let i;
+            const dots = document.getElementsByClassName("dot");
+
+            // Désactivation de toutes les slides, dots et miniatures
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+                thumbnails[i].classList.remove('active');
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            
+            // Activation de la slide, dot et miniature ciblées
+            slides[slideIndex].classList.add('active');
+            thumbnails[slideIndex].classList.add('active'); 
+            if (dots[slideIndex]) {
+                dots[slideIndex].className += " active";
+            }
         }
         
         // --- Logique du Menu Hamburger ---
@@ -902,7 +971,7 @@
             if (slides.length > 0) {
                 generateDots();
                 slideIndex = 0; 
-                showSlides();
+                showSlides(); 
             }
         });
         
