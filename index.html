@@ -54,7 +54,7 @@
             border-width: 0;
         }
 
-        /* 1. Header */
+        /* 1. Header (Inchangé) */
         .site-header {
             background-color: var(--dark-bg);
             padding: 1rem 0;
@@ -86,7 +86,6 @@
              text-shadow: 0 0 10px var(--accent-neon);
         }
 
-        /* Menu de navigation Desktop */
         .main-nav a {
             color: var(--light-text);
             text-decoration: none;
@@ -125,6 +124,8 @@
             cursor: pointer;
             z-index: 1001;
             position: relative;
+            padding: 10px;
+            margin: -10px;
         }
 
         .hamburger-menu .bar {
@@ -136,7 +137,6 @@
             border-radius: 2px;
         }
 
-        /* Styles pour l'animation du menu hamburger (croix) */
         .hamburger-menu.open .bar:nth-child(1) {
             transform: translateY(9px) rotate(45deg);
         }
@@ -150,33 +150,33 @@
         }
         
         /* ========================================================== */
-        /* 2. FUSION INTELIGENTE HERO + CARROUSEL (SLIDER CÔTE À CÔTE) */
+        /* 2. FUSION INTELIGENTE HERO + CARROUSEL */
         /* ========================================================== */
         
         .fused-hero-container {
             margin-bottom: 60px;
-            display: flex;
-            justify-content: center; /* Centre l'ensemble du bloc */
-            gap: 20px; /* Espace entre l'image et les miniatures */
-            align-items: flex-start; /* Alignement en haut */
+            display: flex; /* Permet le placement côte à côte sur PC */
+            justify-content: center; 
+            gap: 20px; 
+            align-items: flex-start; 
             max-width: 1400px; 
             padding: 0 4%;
             margin: 30px auto 60px auto; 
         }
 
         .slideshow-container {
-            width: 75%; /* Occupe 75% de l'espace horizontal disponible */
+            width: 75%; 
             max-width: 800px; 
-            height: 550px; /* Augmentation de la hauteur */
+            height: 550px; 
             position: relative;
-            margin: 0; /* Suppression de l'ancien 'margin: 0 auto' */
+            margin: 0; 
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
             border-radius: 10px; 
             background-color: #000;
+            touch-action: pan-y; 
         }
 
-        /* Superposition sombre sur l'image de fond (Optimisée) */
         .slideshow-container::before {
             content: '';
             position: absolute;
@@ -184,11 +184,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.55); /* Opacité augmentée pour meilleur contraste */
+            background: rgba(0, 0, 0, 0.55); 
             z-index: 5;
         }
         
-        /* Styles de base des slides */
         .slideshow-item {
             display: none;
             width: 100%;
@@ -198,41 +197,36 @@
             height: 100%;
             opacity: 0;
             z-index: 6; 
-            transition: opacity 1s ease-in-out; 
+            transition: none; 
+            animation: none; 
         }
         
         .slideshow-item.active {
             display: block;
-            opacity: 1;
+            opacity: 1; 
         }
 
-        /* Gérer le zoom de l'image (par défaut centré) */
         .slideshow-item img {
             width: 100%;
-            height: 550px; /* Hauteur ajustée */
+            height: 550px; 
             object-fit: cover;
-            object-position: center; /* Positionnement par défaut */
+            object-position: center; 
             vertical-align: middle;
             transform: scale(1.0);
             transition: transform 3s ease-out; 
         }
         
-        /* RÈGLE : Cible les grandes images avec focus sur le haut */
         .slideshow-item.focus-top img {
-            object-position: top; /* Concentre l'image sur le haut pour ces slides */
+            object-position: top; 
         }
 
-        .slideshow-item.active img {
-            transform: scale(1.05); 
-        }
-
-        /* Contenu Hero (BOUTON SEUL EN BAS) - MODIFIÉ */
+        /* Contenu Hero (BOUTON SEUL EN BAS) */
         .hero-content.fused-content {
             position: absolute;
-            bottom: 30px; /* POSITIONNÉ EN BAS */
-            top: unset; /* Annule la valeur précédente de top */
+            bottom: 30px; 
+            top: unset; 
             left: 50%;
-            transform: translateX(-50%); /* Ajuste le centrage horizontal */
+            transform: translateX(-50%); 
             z-index: 10;
             padding: 0; 
             max-width: 90%;
@@ -242,13 +236,12 @@
             border: none;
             box-shadow: none; 
         }
-
-        /* Cache le texte qui a été supprimé */
+        
         .hero-content.fused-content h2,
         .hero-content.fused-content p {
             display: none; 
         }
-
+        
         .hero-button {
             background-color: var(--accent-neon);
             color: var(--light-text);
@@ -259,6 +252,7 @@
             border-radius: 50px;
             transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
             display: inline-block;
+            min-width: 200px; 
         }
 
         .hero-button:hover {
@@ -267,53 +261,90 @@
             transform: translateY(-2px);
         }
 
-        /* Indicateurs de slide (dots) - Cachés car les miniatures les remplacent */
-        .slide-dots {
-            display: none; 
-        }
-
-        /* Styles pour les Miniatures (Thumbnails) */
-        .slideshow-thumbnails {
-            display: flex;
-            flex-direction: column; /* Mise en page verticale ! */
+        /* ------------------------------------------------------------------- */
+        /* Styles pour les Miniatures PC (À DROITE) */
+        /* ------------------------------------------------------------------- */
+        .slideshow-thumbnails-desktop {
+            display: flex; /* Visible par défaut (PC) */
+            flex-direction: column; 
             justify-content: flex-start;
             gap: 15px; 
-            max-width: 150px; /* Limite de largeur pour la colonne de miniatures */
+            max-width: 150px; 
             width: auto; 
-            margin: 0; /* Suppression de la marge auto */
+            margin: 0; 
             padding-bottom: 0;
         }
 
+        /* ------------------------------------------------------------------- */
+        /* Styles pour les Miniatures Mobile (SUR LA PHOTO) */
+        /* ------------------------------------------------------------------- */
+        .slideshow-thumbnails-mobile {
+            display: none; /* Caché par défaut (PC) */
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%; 
+            max-width: 90%;
+            justify-content: center;
+            padding: 8px 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            gap: 4px;
+            z-index: 10;
+        }
+        
+        /* Styles communs aux items miniatures (peu importe le conteneur) */
         .thumbnail-item {
-            width: 100%; /* La miniature prend toute la largeur du conteneur vertical */
-            height: 100px; /* Hauteur ajustée */
+            height: 100px; /* Taille par défaut pour PC */
+            width: 100%;
             object-fit: cover;
-            object-position: center; /* Positionnement par défaut */
+            object-position: center; 
             border-radius: 6px;
             cursor: pointer;
             opacity: 0.7;
             border: 3px solid transparent; 
             transition: opacity 0.3s, border-color 0.3s, transform 0.2s;
+            will-change: opacity, transform;
         }
         
-        /* RÈGLE : Applique le focus sur le haut pour les miniatures ciblées */
-        .thumbnail-item.focus-top {
-            object-position: top;
+        .slideshow-thumbnails-mobile .thumbnail-item {
+            /* Surcharge de la taille pour la bande sur mobile */
+            height: 60px; 
+            width: 50px;
+            flex-shrink: 0;
         }
-
-
+        
         .thumbnail-item:hover {
             opacity: 0.9;
             transform: translateY(-2px);
         }
 
-        /* Style de la miniature actuellement sélectionnée */
         .thumbnail-item.active {
             opacity: 1;
             border-color: var(--accent-neon); 
         }
         
-        /* 3. Section Catégories/Mosaïque */
+        .thumbnail-item.focus-top {
+            object-position: top;
+        }
+
+
+        /* --- Autres Sections CSS (Inchangées) --- */
+        
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .anim-1 { animation: fadeIn 1s ease-out forwards; }
+        @keyframes slideFromLeft { from { transform: translateX(-100%); opacity: 0.2; } to { transform: translateX(0); opacity: 1; } }
+        .anim-2 { animation: slideFromLeft 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes zoomIn { from { transform: scale(1.15); opacity: 0.5; } to { transform: scale(1.05); opacity: 1; } } 
+        .anim-3 { animation: zoomIn 1.5s ease-out forwards; }
+        @keyframes rotateFade { from { transform: rotateZ(-3deg) scale(1.05); opacity: 0; } to { transform: rotateZ(0) scale(1.05); opacity: 1; } }
+        .anim-4 { animation: rotateFade 1.2s ease-out forwards; }
+        @keyframes slideFromBottom { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .anim-5 { animation: slideFromBottom 1s ease-in-out forwards; }
+
+        /* 3. Section Catégories/Mosaïque (Inchangée) */
         h2.section-title {
             text-align: center;
             font-size: 2.5rem;
@@ -374,7 +405,7 @@
             text-transform: uppercase;
         }
         
-        /* 4. Grille de Produits */
+        /* 4. Grille de Produits (Inchangée) */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -445,6 +476,8 @@
             text-transform: uppercase;
             transition: background-color 0.3s, box-shadow 0.3s;
             outline: none;
+            min-height: 48px; 
+            min-width: 48px; 
         }
         
         .add-to-cart:focus {
@@ -456,7 +489,7 @@
             box-shadow: 0 0 15px var(--accent-neon);
         }
         
-        /* 5. Footer */
+        /* 5. Footer (Inchangé) */
         .site-footer {
             background-color: #0c121e;
             color: #9ca3af;
@@ -520,6 +553,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            min-height: 48px;
         }
 
         .newsletter-form button:hover {
@@ -534,38 +568,47 @@
             text-align: center;
         }
 
-        /* 6. Responsive Design (Ajustements Mobile) */
+        /* 6. Responsive Design (Ajustements pour Mobile) */
+        
         @media (max-width: 900px) {
-            /* Revenir à la mise en page verticale */
             .fused-hero-container {
                 flex-direction: column; 
                 align-items: center; 
-                gap: 15px;
+                gap: 0; 
+                margin: 30px auto 30px auto; 
             }
             .slideshow-container {
-                width: 95%; /* Prend presque toute la largeur */
-                max-width: 600px; /* Nouvelle max-largeur */
+                width: 95%; 
+                max-width: 600px; 
                 height: 400px;
             }
             .slideshow-item img {
                 height: 400px;
             }
-            /* Les miniatures reviennent en dessous */
-            .slideshow-thumbnails {
-                flex-direction: row; /* Repasse en ligne en dessous */
-                max-width: 600px;
-                width: 95%;
-                margin: 15px auto 50px auto; 
+            
+            /* Masquer le conteneur miniatures PC (à droite) */
+            .slideshow-thumbnails-desktop {
+                display: none; 
             }
-            .thumbnail-item {
-                width: 18%; /* Retour à la mise en page horizontale */
-                height: 70px;
+            
+            /* Afficher le conteneur miniatures Mobile (sur la photo) */
+            .slideshow-thumbnails-mobile {
+                display: flex; 
             }
+            
+            /* Masquer le bouton Discover sur mobile/tablette */
+            .hero-content.fused-content {
+                display: none;
+            }
+
             .main-nav { 
                 top: 65px; 
             }
+            
+            h2.section-title { font-size: 2.2rem; margin: 80px 0 40px; }
         }
         
+        /* Mobile Standard */
         @media (max-width: 600px) {
             /* Header Mobile */
             .hamburger-menu { display: block; }
@@ -573,6 +616,7 @@
                 display: none; 
                 position: absolute;
                 left: 0;
+                top: 65px;
                 width: 100%;
                 background-color: rgba(17, 24, 39, 0.98);
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
@@ -584,29 +628,30 @@
             .main-nav a { margin: 0; padding: 15px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
             .main-nav a::after { display: none; }
             
-            /* Fusion Hero Mobile */
-            .slideshow-container, .slideshow-item img {
-                height: 300px;
-                max-width: 95%;
-            }
-            /* Position du bouton en bas pour mobile */
-            .hero-content.fused-content {
-                bottom: 20px;
-            }
-            
-            .hero-button {
-                padding: 10px 20px;
+            /* Conteneur Hero */
+            .fused-hero-container {
+                padding: 0 10px; 
             }
 
-            /* Miniatures Mobile */
-            .slideshow-thumbnails {
-                gap: 5px;
-                max-width: 95%;
-                margin: 10px auto 30px auto;
+            .slideshow-container {
+                width: 100%; 
+                max-width: 100%;
+                height: 300px; 
             }
-            .thumbnail-item {
-                width: 19%;
-                height: 45px;
+
+            .slideshow-item img {
+                height: 300px; 
+            }
+
+            /* Miniatures à l'intérieur du carrousel */
+            .slideshow-thumbnails-mobile {
+                bottom: 10px;
+                padding: 8px 0;
+                gap: 4px;
+            }
+            .slideshow-thumbnails-mobile .thumbnail-item {
+                height: 50px; 
+                width: 40px; 
             }
 
             /* Titres */
@@ -616,6 +661,7 @@
             .category-grid, .product-grid { grid-template-columns: 1fr; gap: 30px; }
             .category-item { height: 250px; }
             .product-card img { height: 300px; }
+            /* Empiler le prix et le bouton */
             .price-cta { flex-direction: column; align-items: flex-start; gap: 15px; }
             .add-to-cart { width: 100%; text-align: center; }
 
@@ -632,7 +678,7 @@
                 <h1>THE FUSION</h1>
             </a>
             
-            <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu de navigation">
+            <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu de navigation" aria-expanded="false">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
@@ -642,7 +688,7 @@
                 <a href="#categories-title" role="menuitem">Collections</a>
                 <a href="#products-title" role="menuitem">Boutique</a>
                 <a href="#edition-limitee" role="menuitem">Édition Limitée</a>
-                <a href="#" id="cart-link" role="menuitem" aria-live="polite">Panier (<span id="cart-count">0</span>)</a>
+                <a href="#" id="cart-link" role="menuitem" aria-live="polite" aria-label="Voir le panier, contient 0 article">Panier (<span id="cart-count">0</span>)</a>
             </nav>
         </div>
     </header>
@@ -650,26 +696,36 @@
     <main>
 
         <div class="fused-hero-container">
-            <section class="slideshow-container" aria-label="Nouvelle collection de maillots de football en vedette">
+            <section class="slideshow-container" id="slideshow-carrousel" aria-label="Nouvelle collection de maillots de football en vedette" role="region">
         
                 <div class="slideshow-item focus-top">
-                    <img src="images/realmadridback.webp" alt="Maillot Real Madrid - Vue Arrière">
+                    <picture>
+                        <img src="images/realmadridback.webp" alt="Maillot Real Madrid - Vue Arrière" loading="lazy">
+                    </picture>
                 </div>
 
                 <div class="slideshow-item">
-                    <img src="images/lyonback.webp" alt="Maillot Olympique Lyonnais - Vue Arrière">
+                    <picture>
+                        <img src="images/lyonback.webp" alt="Maillot Olympique Lyonnais - Vue Arrière" loading="lazy">
+                    </picture>
                 </div>
 
                 <div class="slideshow-item focus-top">
-                    <img src="images/grizback.webp" alt="Maillot Griezmann - Vue Arrière">
+                    <picture>
+                        <img src="images/grizback.webp" alt="Maillot Griezmann - Vue Arrière" loading="lazy">
+                    </picture>
                 </div>
 
                 <div class="slideshow-item">
-                    <img src="images/dortmundback.webp" alt="Maillot Dortmund - Vue Arrière">
+                    <picture>
+                        <img src="images/dortmundback.webp" alt="Maillot Dortmund - Vue Arrière" loading="lazy">
+                    </picture>
                 </div>
                 
                 <div class="slideshow-item focus-top">
-                    <img src="images/bayernback.webp" alt="Maillot Bayern Munich - Vue Arrière">
+                    <picture>
+                        <img src="images/bayernback.webp" alt="Maillot Bayern Munich - Vue Arrière" loading="lazy">
+                    </picture>
                 </div>
                 
                 <div class="hero-content fused-content">
@@ -678,14 +734,22 @@
                 
                 <div class="slide-dots" id="slide-dots"></div> 
                 
+                <div class="slideshow-thumbnails-mobile" id="mobile-thumbnails" role="tablist">
+                    <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1 - Maillot Real Madrid" role="tab" aria-selected="true" tabindex="0">
+                    <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2 - Maillot OL" role="tab" aria-selected="false" tabindex="0">
+                    <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3 - Maillot Griezmann" role="tab" aria-selected="false" tabindex="0">
+                    <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4 - Maillot Dortmund" role="tab" aria-selected="false" tabindex="0">
+                    <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" onclick="currentSlide(5)" alt="Miniature 5 - Maillot Bayern" role="tab" aria-selected="false" tabindex="0">
+                </div>
+                
             </section>
-
-            <div class="slideshow-thumbnails">
-                <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1">
-                <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2">
-                <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3">
-                <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4">
-                <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" alt="Miniature 5">
+            
+            <div class="slideshow-thumbnails-desktop" id="desktop-thumbnails" role="tablist">
+                <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1 - Maillot Real Madrid" role="tab" aria-selected="true" tabindex="0">
+                <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2 - Maillot OL" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3 - Maillot Griezmann" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4 - Maillot Dortmund" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" onclick="currentSlide(5)" alt="Miniature 5 - Maillot Bayern" role="tab" aria-selected="false" tabindex="0">
             </div>
         </div>
         
@@ -833,17 +897,41 @@
         const productGrid = document.querySelector('.product-grid');
         const hamburger = document.getElementById('hamburger-menu');
         const nav = document.getElementById('main-nav');
+        const slideshowContainer = document.getElementById('slideshow-carrousel'); 
         const slides = document.getElementsByClassName("slideshow-item");
         const dotContainer = document.getElementById('slide-dots');
-        const thumbnails = document.getElementsByClassName("thumbnail-item"); 
+        
+        // Cible les deux ensembles de miniatures
+        const desktopThumbnails = document.querySelectorAll('#desktop-thumbnails .thumbnail-item');
+        const mobileThumbnails = document.querySelectorAll('#mobile-thumbnails .thumbnail-item');
+        
+        // Utilise l'un des ensembles pour la référence du comptage
+        const thumbnails = desktopThumbnails.length > 0 ? desktopThumbnails : mobileThumbnails; 
         
         let slideIndex = 1;
         let slideTimer; 
+        let touchStartX = 0; 
+        
+        const animationClasses = {
+            1: 'anim-1', 
+            2: 'anim-2', 
+            3: 'anim-3', 
+            4: 'anim-4', 
+            5: 'anim-5', 
+        };
+        
+        function resetAnimations() {
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+                Object.values(animationClasses).forEach(className => {
+                    slides[i].classList.remove(className);
+                });
+            }
+        }
 
         // --- Fonctions Carrousel (Slideshow) ---
         function generateDots() {
             if (dotContainer) {
-                // Fonction conservée, bien que masquée par CSS
                 for (let i = 0; i < slides.length; i++) {
                     const dot = document.createElement('span');
                     dot.className = 'dot';
@@ -853,41 +941,50 @@
             }
         }
         
-        // Fonction pour l'autoplay (incrémente l'index)
-        function showSlides() {
-            let i;
+        function updateThumbnailsAndDots(index) {
             const dots = document.getElementsByClassName("dot");
             
-            // 1. Désactiver la slide et la miniature précédentes
-            for (i = 0; i < slides.length; i++) {
-                slides[i].classList.remove('active');
-                thumbnails[i].classList.remove('active'); 
-            }
+            // Met à jour les deux ensembles de miniatures (Desktop et Mobile)
+            [...desktopThumbnails, ...mobileThumbnails].forEach((thumb) => {
+                const thumbIndex = Array.from(thumb.parentElement.children).indexOf(thumb) + 1;
+                const isActive = thumbIndex === index;
+                
+                thumb.classList.toggle('active', isActive);
+                thumb.setAttribute('aria-selected', isActive);
+            });
 
-            // 2. Passage à la slide suivante
-            slideIndex++;
-            if (slideIndex > slides.length) {slideIndex = 1}
-
-            // 3. Activer la nouvelle slide et la miniature
-            slides[slideIndex-1].classList.add('active');
-            thumbnails[slideIndex-1].classList.add('active'); 
-            
-            // 4. Mettre à jour les dots (logique conservée)
-            for (i = 0; i < dots.length; i++) {
+            // Met à jour les points
+            for (let i = 0; i < dots.length; i++) {
                 dots[i].className = dots[i].className.replace(" active", "");
             }
-            if (dots[slideIndex-1]) {
-                dots[slideIndex-1].className += " active";
+            if (dots[index - 1]) {
+                dots[index - 1].className += " active";
             }
+        }
+        
+        function showSlides() {
+            clearTimeout(slideTimer); 
             
-            // 5. Relancer le minuteur pour l'animation automatique (3000ms = 3 secondes)
+            resetAnimations(); 
+
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}
+            
+            const currentSlideElement = slides[slideIndex-1];
+            const currentAnimClass = animationClasses[slideIndex];
+            
+            currentSlideElement.classList.add(currentAnimClass);
+            currentSlideElement.classList.add('active');
+            
+            updateThumbnailsAndDots(slideIndex);
+            
+            // 3000ms = 3 secondes
             slideTimer = setTimeout(showSlides, 3000); 
         }
 
-        // Fonction appelée manuellement (par une miniature)
         function currentSlide(n) {
-            clearTimeout(slideTimer); // Arrête l'autoplay
-            slideIndex = n - 1; 
+            clearTimeout(slideTimer); 
+            slideIndex = n;
             
             showSlidesManual(); 
             
@@ -895,27 +992,45 @@
             slideTimer = setTimeout(showSlides, 5000); 
         }
         
-        // Nouvelle fonction pour l'affichage manuel
         function showSlidesManual() {
-            let i;
-            const dots = document.getElementsByClassName("dot");
-
-            // Désactivation de toutes les slides, dots et miniatures
-            for (i = 0; i < slides.length; i++) {
-                slides[i].classList.remove('active');
-                thumbnails[i].classList.remove('active');
-                // Vérification de l'existence avant de manipuler la classe
-                if (dots[i]) {
-                    dots[i].className = dots[i].className.replace(" active", "");
-                }
-            }
+            resetAnimations(); 
             
-            // Activation de la slide, dot et miniature ciblées
-            slides[slideIndex].classList.add('active');
-            thumbnails[slideIndex].classList.add('active'); 
-            if (dots[slideIndex]) {
-                dots[slideIndex].className += " active";
+            const currentSlideElement = slides[slideIndex - 1];
+            const currentAnimClass = animationClasses[slideIndex];
+
+            currentSlideElement.classList.add(currentAnimClass);
+            currentSlideElement.classList.add('active');
+            
+            updateThumbnailsAndDots(slideIndex);
+        }
+        
+        // --- Gestion du Swipe Mobile ---
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+            clearTimeout(slideTimer); 
+        }
+
+        function handleTouchEnd(event) {
+            if (!touchStartX) return;
+            const touchEndX = event.changedTouches[0].clientX;
+            const swipeDistance = touchStartX - touchEndX;
+            const threshold = 50; 
+
+            if (swipeDistance > threshold) {
+                // Swipe vers la gauche (image suivante)
+                let newIndex = slideIndex + 1;
+                if (newIndex > slides.length) newIndex = 1;
+                currentSlide(newIndex);
+            } else if (swipeDistance < -threshold) {
+                // Swipe vers la droite (image précédente)
+                let newIndex = slideIndex - 1;
+                if (newIndex < 1) newIndex = slides.length;
+                currentSlide(newIndex);
+            } else {
+                slideTimer = setTimeout(showSlides, 5000);
             }
+
+            touchStartX = 0; 
         }
         
         // --- Logique du Menu Hamburger ---
@@ -932,15 +1047,14 @@
         function updateCartCount() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
+            cartLink.setAttribute('aria-label', `Voir le panier, contient ${totalItems} article${totalItems > 1 ? 's' : ''}`);
         }
 
         function addToCart(event) {
             const button = event.target;
             if (!button.classList.contains('add-to-cart')) return;
-
             const name = button.dataset.name;
             const price = parseFloat(button.dataset.price);
-
             const existingItem = cart.find(item => item.name === name);
 
             if (existingItem) {
@@ -948,10 +1062,8 @@
             } else {
                 cart.push({ name, price, quantity: 1 });
             }
-
             updateCartCount();
             
-            // Animation de succès
             button.textContent = '✅ Ajouté !';
             button.style.backgroundColor = 'var(--success-color)';
             button.style.boxShadow = `0 0 15px var(--success-color)`;
@@ -972,15 +1084,12 @@
             
             let summary = "--- VOTRE PANIER FUSION ---\n\n";
             let total = 0;
-            
             cart.forEach(item => {
                 summary += `- ${item.name} x ${item.quantity} = ${(item.price * item.quantity).toFixed(2)} €\n`;
                 total += item.price * item.quantity;
             });
-            
             summary += `\n-----------------------------\n`;
             summary += `TOTAL À PAYER: ${total.toFixed(2)} €`;
-            
             alert(summary); 
         }
 
@@ -991,6 +1100,12 @@
                 slideIndex = 0; 
                 showSlides(); 
             }
+            
+            if (slideshowContainer) {
+                slideshowContainer.addEventListener('touchstart', handleTouchStart, {passive: true});
+                slideshowContainer.addEventListener('touchend', handleTouchEnd, {passive: true});
+            }
+            
         });
         
         if (productGrid) {
