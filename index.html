@@ -226,11 +226,11 @@
         .hero-content.fused-content {
             position: absolute;
             bottom: 30px; /* POSITIONNÉ EN BAS */
-            top: unset; /* Annule la valeur précédente de top */
+            top: unset; 
             left: 50%;
-            transform: translateX(-50%); /* Ajuste le centrage horizontal */
+            transform: translateX(-50%); 
             z-index: 10;
-            padding: 0; /* Suppression du padding inutile */
+            padding: 0; 
             max-width: 90%;
             text-align: center;
             background: none; 
@@ -429,8 +429,9 @@
             font-weight: 900;
         }
 
+        /* Amélioration du contraste (CTA Produits) */
         .add-to-cart {
-            background-color: var(--dark-bg);
+            background-color: var(--accent-neon); /* Changé à neon pour meilleur contraste sur fond blanc */
             color: var(--light-text);
             border: none;
             padding: 14px 30px;
@@ -443,7 +444,7 @@
         }
         
         .add-to-cart:focus {
-             box-shadow: 0 0 0 3px var(--accent-neon);
+             box-shadow: 0 0 0 3px var(--accent-hover);
         }
 
         .add-to-cart:hover {
@@ -538,7 +539,6 @@
             .slideshow-item img {
                 height: 400px;
             }
-            /* Pas besoin de redéfinir le titre et paragraphe ici, ils sont masqués */
             .slideshow-thumbnails {
                  max-width: 90%;
                  gap: 10px;
@@ -583,14 +583,14 @@
                 padding: 10px 20px;
             }
 
-            /* Miniatures Mobile */
+            /* Miniatures Mobile : Amélioration UX Tactile */
             .slideshow-thumbnails {
                 gap: 5px;
                 max-width: 95%;
             }
             .thumbnail-item {
                 width: 19%;
-                height: 45px;
+                height: 55px; /* Augmenté pour un meilleur ciblage tactile */
             }
 
             /* Titres */
@@ -940,7 +940,7 @@
 
             setTimeout(() => {
                 button.textContent = 'Ajouter au Panier';
-                button.style.backgroundColor = 'var(--dark-bg)';
+                button.style.backgroundColor = 'var(--accent-neon)'; // Mise à jour pour correspondre au nouveau fond
                 button.style.boxShadow = 'none';
             }, 1200); 
         }
