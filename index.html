@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE FUSION - Maillots de Football Révolutionnaires</title>
+    <title>THE FUSION | Maillots de Football Révolutionnaires et Performance</title>
+
+    <meta name="description" content="Découvrez THE FUSION, votre boutique de référence pour des maillots de football innovants et des collections rétro. Style, performance et édition limitée.">
+    <meta name="keywords" content="maillot football, maillot performance, maillot rétro, kit complet, THE FUSION, équipement football, sport">
+    <link rel="canonical" href="[Votre URL Canonique Ici]">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
-
         :root {
             --dark-bg: #111827;
             --light-text: #f9fafb;
-            --accent-neon: #3b82f6;
+            --accent-neon: #3b82f6; /* Bleu Vif */
             --accent-hover: #1d4ed8;
             --card-bg: #ffffff;
-            --shadow-hard: 0 10px 20px rgba(0, 0, 0, 0.2);
-            --burger-size: 30px; /* Taille du menu burger */
+            --success-color: #10b981;
+            --shadow-hard: 0 15px 30px rgba(0, 0, 0, 0.4);
+            --burger-size: 30px;
         }
 
         /* Base & Reset */
@@ -26,23 +33,36 @@
             background-color: var(--dark-bg);
             color: var(--light-text);
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         .container {
-            width: 90%;
+            width: 92%;
             max-width: 1400px;
             margin: 0 auto;
         }
+        
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
 
-        /* 1. Header (Minimaliste Noir) */
+        /* 1. Header */
         .site-header {
             background-color: var(--dark-bg);
-            padding: 1.2rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: var(--shadow-hard);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .header-content {
@@ -52,12 +72,18 @@
         }
 
         .site-header h1 {
-            font-size: 1.9rem;
-            letter-spacing: 4px;
+            font-size: 2rem;
+            letter-spacing: 5px;
             font-weight: 900;
             color: var(--accent-neon);
             margin: 0;
-            z-index: 1001; /* Pour être au-dessus du menu si ouvert */
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            transition: text-shadow 0.3s;
+        }
+
+        .site-header h1:hover {
+             text-shadow: 0 0 10px var(--accent-neon);
         }
 
         /* Menu de navigation Desktop */
@@ -65,21 +91,39 @@
             color: var(--light-text);
             text-decoration: none;
             font-weight: 600;
-            margin-left: 30px;
+            margin-left: 35px;
+            padding: 5px 0;
+            position: relative;
             transition: color 0.3s;
         }
 
-        .main-nav a:hover {
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-neon);
+            transition: width 0.3s ease-out;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
             color: var(--accent-neon);
         }
         
-        /* Nouveau : Hamburger Menu (visible seulement sur mobile) */
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+        
         .hamburger-menu {
-            display: none; 
+            display: none;
             width: var(--burger-size);
             height: var(--burger-size);
             cursor: pointer;
-            z-index: 1001; 
+            z-index: 1001;
             position: relative;
         }
 
@@ -91,574 +135,720 @@
             transition: 0.4s;
             border-radius: 2px;
         }
-        
-        /* 2. Hero Section */
-        .hero-section {
-            background-image: url('images/hero-banner.jpg');
-            background-size: cover;
-            background-position: center 30%;
-            height: 550px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 60px;
-            position: relative;
+
+        /* Styles pour l'animation du menu hamburger (croix) */
+        .hamburger-menu.open .bar:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
         }
 
-        .hero-section::before {
+        .hamburger-menu.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.open .bar:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+        
+        /* ========================================================== */
+        /* 2. FUSION INTELIGENTE HERO + CARROUSEL */
+        /* ========================================================== */
+
+        .fused-hero-container {
+            margin-bottom: 60px;
+        }
+
+        .slideshow-container {
+            max-width: none;
+            width: 100%;
+            height: 650px; /* Hauteur d'impact */
+            position: relative;
+            margin: 0;
+            overflow: hidden;
+            box-shadow: none;
+            border-radius: 0;
+            background-color: #000;
+        }
+
+        /* Superposition sombre sur l'image de fond (IMPORTANTE pour la lisibilité du texte blanc) */
+        .slideshow-container::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.55); /* Overlay sombre */
+            z-index: 5;
+        }
+
+        .slideshow-item {
+            display: none;
+            width: 100%;
         }
         
-        .hero-content {
+        .slideshow-item img {
+            width: 100%;
+            height: 650px; 
+            object-fit: cover;
+            object-position: top; /* AJOUT / MODIFICATION ICI: Centre sur le haut de l'image */
+            vertical-align: middle;
+            transition: transform 0.5s ease;
+        }
+
+        /* Contenu Hero (TEXTE FLOTTANT SANS CADRE) */
+        .hero-content.fused-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centrage parfait */
             z-index: 10;
-            padding: 40px;
-            max-width: 500px;
-            margin-right: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: var(--shadow-hard);
+            padding: 40px 60px;
+            max-width: 800px;
+            text-align: center;
+            
+            /* SUPPRESSION COMPLÈTE DU CADRE ET DU FOND */
+            background: none; 
+            backdrop-filter: none;
+            border: none;
+            box-shadow: none; 
         }
 
-        .hero-content h2 {
-            font-size: 3rem;
-            margin: 0 0 10px;
-            font-weight: 900;
-            color: var(--light-text);
-            text-shadow: none;
+        /* On s'assure que le texte reste lisible sur le fond dynamique */
+        .hero-content.fused-content h2 {
+            font-size: 3rem; /* RÉDUCTION DE LA TAILLE */
+            margin: 0 0 15px;
+            font-weight: 800; /* Légèrement moins gras */
+            
+            /* COULEUR ET TRANSPARENCE DU TITRE */
+            color: rgba(255, 255, 255, 0.7); /* Blanc avec 70% d'opacité (30% transparent) */
+            
+            line-height: 1.2; 
+            /* Ombre de texte ajustée pour la lisibilité sur un texte plus transparent */
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9); 
         }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+        
+        .hero-content.fused-content p {
+            font-size: 1.05rem; /* RÉDUCTION DE LA TAILLE */
+            margin-bottom: 30px; /* Légèrement réduit */
             font-weight: 400;
+            
+            /* COULEUR ET TRANSPARENCE DU PARAGRAPHE */
+            color: rgba(255, 255, 255, 0.6); /* Blanc avec 60% d'opacité (40% transparent) */
+            
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
         }
 
         .hero-button {
             background-color: var(--accent-neon);
             color: var(--light-text);
-            padding: 15px 35px;
+            padding: 14px 35px; /* Légèrement réduit */
             text-decoration: none;
             text-transform: uppercase;
-            font-weight: 700;
+            font-weight: 700; /* Légèrement moins gras */
             border-radius: 50px;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            display: inline-block;
         }
 
         .hero-button:hover {
             background-color: var(--accent-hover);
-            box-shadow: 0 0 20px var(--accent-neon);
+            box-shadow: 0 0 20px var(--accent-neon); /* Légèrement réduit */
+            transform: translateY(-2px);
+        }
+
+        /* Indicateurs de slide (dots) */
+        .slide-dots {
+            text-align: center;
+            padding: 15px 0;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            z-index: 10;
         }
         
-        /* 3. Section Catégories/Mosaïque */
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        
+        .dot.active,
+        .dot:hover {
+            background-color: var(--accent-neon);
+        }
+
+        /* Animation de fondu */
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {opacity: .7} 
+            to {opacity: 1}
+        }
+        
+        /* 3. Section Catégories/Mosaïque (Le reste du CSS est inchangé) */
+        h2.section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 100px 0 50px;
+            color: var(--light-text);
+        }
+
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding-bottom: 60px;
+            gap: 25px;
+            padding-bottom: 80px;
         }
 
         .category-item {
             position: relative;
-            height: 300px;
+            height: 350px;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: var(--shadow-hard);
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 2px solid transparent;
         }
 
         .category-item:hover {
-            transform: scale(1.03);
+            transform: translateY(-5px);
+            border-color: var(--accent-neon);
         }
 
         .category-item img {
             width: 100%;
             height: 100%;
-            object-position: top;
             object-fit: cover;
-            transition: transform 0.5s;
+            filter: brightness(0.9);
+            transition: transform 0.5s, filter 0.5s;
         }
         
         .category-item:hover img {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            filter: brightness(1);
         }
         
         .category-overlay {
             position: absolute;
             bottom: 0;
             width: 100%;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+            padding: 30px 20px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 30%, rgba(0, 0, 0, 0));
         }
 
         .category-overlay h3 {
             margin: 0;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
             color: var(--light-text);
+            text-transform: uppercase;
         }
         
         /* 4. Grille de Produits */
-        h2.section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 80px 0 40px;
-            color: var(--light-text);
-        }
-        
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 40px;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
         
         .product-card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: var(--shadow-hard);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.5s ease-in-out;
         }
         
         .product-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
         .product-card img {
             width: 100%;
-            height: 350px;
+            height: 380px;
             object-fit: cover;
             display: block;
         }
 
         .product-info {
-            padding: 20px 25px;
+            padding: 25px 30px;
             color: #1f2937;
         }
 
         .product-info h3 {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin: 0 0 5px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .description {
-            font-size: 0.9rem;
-            color: #6b7280;
-            margin-bottom: 15px;
-            height: 36px;
-            overflow: hidden;
+            font-size: 1rem;
+            color: #4b5563;
+            margin-bottom: 20px;
+            min-height: 48px;
         }
 
         .price-cta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 15px;
+            padding-top: 20px;
             border-top: 1px solid #e5e7eb;
         }
 
         .price {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             color: var(--accent-neon);
             font-weight: 900;
         }
 
-        /* Bouton Add to Cart */
         .add-to-cart {
             background-color: var(--dark-bg);
             color: var(--light-text);
             border: none;
-            padding: 12px 25px;
+            padding: 14px 30px;
             cursor: pointer;
-            border-radius: 4px;
-            font-weight: 600;
+            border-radius: 6px;
+            font-weight: 700;
             text-transform: uppercase;
-            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            outline: none;
         }
         
-        .add-to-cart:hover {
-            background-color: var(--accent-neon);
-            box-shadow: 0 0 10px var(--accent-neon);
+        .add-to-cart:focus {
+             box-shadow: 0 0 0 3px var(--accent-neon);
         }
 
-        /* 5. Footer (Minimaliste) */
+        .add-to-cart:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 15px var(--accent-neon);
+        }
+        
+        /* 5. Footer */
         .site-footer {
-            background-color: #0f172a;
+            background-color: #0c121e;
             color: #9ca3af;
-            padding: 50px 0;
-            font-size: 0.9rem;
+            padding: 60px 0;
+            font-size: 0.95rem;
         }
         
         .footer-content {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 40px;
+            gap: 50px;
         }
         
         .footer-section {
             min-width: 180px;
+            flex: 1;
         }
 
         .footer-section h4 {
-            color: var(--light-text);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            font-weight: 700;
+            color: var(--accent-neon);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
         
         .footer-section a {
             display: block;
-            color: #6b7280;
+            color: #a1a1aa;
             text-decoration: none;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             transition: color 0.3s;
         }
         
         .footer-section a:hover {
-            color: var(--accent-neon);
+            color: var(--light-text);
         }
         
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .newsletter-form input[type="email"] {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #374151;
+            width: 100%;
+            color: #1f2937;
+            background-color: #e5e7eb;
+        }
+
+        .newsletter-form button {
+            background-color: var(--accent-neon);
+            color: var(--light-text);
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
         .footer-bottom {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
 
-        /* ========================================================== */
-        /* 6. Responsive Design (Mobile First) */
-        /* ========================================================== */
-
-        /* Écrans de taille moyenne (Tablettes / Grands smartphones) */
-        @media (max-width: 900px) {
-            /* Titres */
-            h2.section-title {
-                font-size: 1.8rem;
-                margin: 60px 0 30px;
-            }
-            
-            /* Section Hero */
-            .hero-section {
-                height: 450px;
-                justify-content: center; /* Centrer le contenu sur les tablettes */
-            }
-            .hero-content {
-                max-width: 80%;
-                margin: 0 auto;
-                text-align: center;
-                padding: 30px;
-                backdrop-filter: blur(5px);
-            }
-            .hero-content h2 {
-                font-size: 2.2rem;
-            }
-            .hero-content p {
-                font-size: 1rem;
-            }
-
-            /* Cartes Produits */
-            .product-grid {
-                /* Passage à une seule colonne pour les produits sur certains écrans */
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 20px;
-            }
-            
-            /* Pied de page */
-            .footer-content {
-                justify-content: space-around;
+        /* 6. Responsive Design (Ajustements Mobile) */
+        @media (max-width: 1200px) {
+            .hero-content.fused-content {
+                max-width: 85%;
             }
         }
         
-        /* Écrans très petits (Smartphones, max 480px) */
-        @media (max-width: 480px) {
-            
-            /* 1. Header (Menu Hamburger) */
-            .header-content {
-                flex-direction: row; /* Garder le logo et le burger côte à côte */
+        @media (max-width: 900px) {
+            .slideshow-container, .slideshow-item img {
+                height: 500px;
             }
-            
-            .hamburger-menu {
-                display: block; /* Afficher le burger */
+            .hero-content.fused-content {
+                max-width: 90%;
+                padding: 30px;
             }
-
-            .main-nav {
-                /* Menu caché par défaut */
-                display: none;
-                position: absolute;
-                top: 70px; /* Sous le header */
-                left: 0;
-                width: 100%;
-                background-color: rgba(17, 24, 39, 0.95);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-                flex-direction: column;
-                padding: 15px 0;
+            .hero-content.fused-content h2 {
+                font-size: 2.5rem;
             }
-            
-            /* Afficher le menu quand la classe est active (gérée par JS) */
-            .main-nav.active {
-                display: flex;
-            }
-
-            .main-nav a {
-                margin: 10px 0;
-                padding: 8px 20px;
-                text-align: center;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            .main-nav a:last-child {
-                border-bottom: none;
-            }
-            
-            /* 2. Hero Section */
-            .hero-section {
-                height: 350px;
-                margin-bottom: 40px;
-            }
-            .hero-content {
-                max-width: 100%;
-                margin: 0 10px;
-                padding: 20px;
-            }
-            .hero-content h2 {
-                font-size: 1.8rem;
-            }
-            .hero-button {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-
-            /* 3. Catégories et Produits */
-            .category-grid,
-            .product-grid {
-                /* Forcer l'affichage sur une seule colonne */
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .category-item {
-                height: 200px; /* Réduire la hauteur des cartes de catégorie */
-            }
-            
-            /* 4. Cartes produits */
-            .product-card img {
-                height: 250px; /* Réduire la hauteur des images de produits */
-            }
-
-            .product-info {
-                padding: 15px;
-            }
-            
-            .price-cta {
-                flex-direction: column; /* Empiler prix et bouton d'ajout au panier */
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .add-to-cart {
-                width: 100%; /* Bouton prend toute la largeur */
-                text-align: center;
-            }
-            
-            .price {
-                margin-bottom: 5px;
-            }
-            
-            /* 5. Footer */
-            .footer-content {
-                flex-direction: column;
-                gap: 30px;
-            }
-            .footer-section {
-                min-width: 100%;
+            .hero-content.fused-content p {
+                font-size: 1.1rem;
             }
         }
+        
+        @media (max-width: 600px) {
+            /* Header Mobile */
+            .hamburger-menu { display: block; }
+            .main-nav { 
+                display: none; 
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(17, 24, 39, 0.98);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+                flex-direction: column;
+                padding: 15px 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .main-nav.active { display: flex; }
+            .main-nav a { margin: 0; padding: 15px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+            .main-nav a::after { display: none; }
+            
+            /* Fusion Hero Mobile */
+            .slideshow-container, .slideshow-item img {
+                height: 400px;
+            }
+            .hero-content.fused-content {
+                padding: 20px;
+            }
+            .hero-content.fused-content h2 {
+                font-size: 2rem;
+            }
+            .hero-content.fused-content p {
+                font-size: 1rem;
+            }
+            .hero-button {
+                padding: 12px 25px;
+            }
+
+            /* Titres */
+            h2.section-title { margin: 60px 0 30px; font-size: 2rem; }
+
+            /* Grilles & Cartes */
+            .category-grid, .product-grid { grid-template-columns: 1fr; gap: 30px; }
+            .category-item { height: 250px; }
+            .product-card img { height: 300px; }
+            .price-cta { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .add-to-cart { width: 100%; text-align: center; }
+
+            /* Footer Mobile */
+            .footer-content { flex-direction: column; gap: 40px; }
+        }
+
     </style>
 </head>
 <body>
     
     <header class="site-header">
         <div class="container header-content">
-            <h1>THE FUSION</h1>
+            <a href="#" style="text-decoration: none;">
+                <h1>THE FUSION</h1>
+            </a>
             
-            <div class="hamburger-menu" id="hamburger-menu">
+            <button class="hamburger-menu" id="hamburger-menu" aria-label="Menu de navigation">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
-            </div>
+            </button>
 
-            <nav class="main-nav" id="main-nav">
-                <a href="#categories">Collections</a>
-                <a href="#produits">Boutique</a>
-                <a href="#">Édition Limitée</a>
-                <a href="#" id="cart-link">Panier (0)</a>
+            <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+                <a href="#categories-title" role="menuitem">Collections</a>
+                <a href="#products-title" role="menuitem">Boutique</a>
+                <a href="#edition-limitee" role="menuitem">Édition Limitée</a>
+                <a href="#" id="cart-link" role="menuitem" aria-live="polite">Panier (<span id="cart-count">0</span>)</a>
             </nav>
         </div>
     </header>
     
-    <div class="hero-section">
-        <div class="hero-content">
-            <h2>Fusionnez Style & Performance.</h2>
-            <p>Notre nouvelle collection redéfinit l'équipement de football moderne. Découvrez l'innovation.</p>
-            <a href="#produits" class="hero-button">Découvrir la Collection</a>
+    <main>
+
+        <div class="fused-hero-container">
+            <section class="slideshow-container" aria-label="Nouvelle collection de maillots de football en vedette">
+                
+                <div class="hero-content fused-content">
+                    <p>Découvrez notre nouvelle collection qui redéfinit l'équipement de football moderne. Des tissus techniques innovants, des designs audacieux. <strong>Élevez votre jeu.</strong></p>
+                    <a href="#products-title" class="hero-button">Découvrir la Collection</a>
+                </div>
+                
+                <div class="slideshow-item fade">
+                    <img src="images/realmadridback.webp" alt="Maillot Real Madrid - Vue Arrière">
+                </div>
+
+                <div class="slideshow-item fade">
+                    <img src="images/lyonback.webp" alt="Maillot Olympique Lyonnais - Vue Arrière">
+                </div>
+
+                <div class="slideshow-item fade">
+                    <img src="images/grizback.webp" alt="Maillot Griezmann - Vue Arrière">
+                </div>
+
+                <div class="slideshow-item fade">
+                    <img src="images/dortmundback.webp" alt="Maillot Dortmund - Vue Arrière">
+                </div>
+                
+                <div class="slideshow-item fade">
+                    <img src="images/bayernback.webp" alt="Maillot Bayern Munich - Vue Arrière">
+                </div>
+                
+                <div class="slide-dots" id="slide-dots">
+                    </div>
+                
+            </section>
         </div>
-    </div>
-    
-    <main class="container">
-        <h2 class="section-title" id="categories">Explorer par Catégorie</h2>
-        
-        <div class="category-grid">
-            <a href="domicile.html" class="category-item">
-                <img src="images/domicile.webp" alt="Maillots Domicile">
-                <div class="category-overlay">
-                    <h3>MAILLOTS DOMICILE</h3>
+        <div class="container">
+            <section aria-labelledby="categories-title">
+                <h2 class="section-title" id="categories-title">Explorer par Catégorie</h2>
+                
+                <div class="category-grid">
+                    <a href="domicile.html" class="category-item" aria-label="Maillots Domicile">
+                        <img src="images/domicile.webp" alt="Maillots Domicile, couleur rouge et blanc" loading="lazy">
+                        <div class="category-overlay">
+                            <h3>MAILLOTS DOMICILE</h3>
+                        </div>
+                    </a>
+                    
+                    <a href="exterieur.html" class="category-item" aria-label="Maillots Extérieur">
+                        <img src="images/fcb.webp" alt="Maillots Extérieur FC Barcelone" loading="lazy">
+                        <div class="category-overlay">
+                            <h3>MAILLOTS EXTÉRIEUR</h3>
+                        </div>
+                    </a>
+                    
+                    <a href="kits.html" class="category-item" aria-label="Kits Complets">
+                        <img src="images/liver.webp" alt="Kit complet Liverpool, maillot et short" loading="lazy">
+                        <div class="category-overlay">
+                            <h3>KITS COMPLETS</h3>
+                        </div>
+                    </a>
+                    
+                    <a href="retro.html" class="category-item" aria-label="Collection Rétro">
+                        <img src="images/franc.webp" alt="Maillot Rétro de l'équipe de France" loading="lazy">
+                        <div class="category-overlay">
+                            <h3>COLLECTION RÉTRO</h3>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </section>
+        </div>
             
-            <a href="exterieur.html" class="category-item"> <img src="images/fcb.webp" alt="Maillots Extérieur">
-                <div class="category-overlay">
-                    <h3>MAILLOTS EXTÉRIEUR</h3>
+        <div class="container">
+            <section aria-labelledby="products-title">
+                <h2 class="section-title" id="products-title">Les Produits Phares</h2>
+                
+                <div class="product-grid">
+                    
+                    <article class="product-card" data-sku="P001" role="region" aria-labelledby="product-title-1">
+                        <div class="product-card-header">
+                            <img src="images/maillot-domicile-mbappe.jpg" alt="Maillot Domicile Mbappé #7 - Première vue" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 id="product-title-1">Maillot Domicile Pro - MBAPPÉ #7</h3>
+                            <p class="description">Technologie FUSION-CELL™. Le maillot porté par la star, coupe ajustée et respirante.</p>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="139.99">139.99 €</span>
+                                <button class="add-to-cart" data-name="Maillot Domicile Mbappé" data-price="139.99" aria-label="Ajouter au panier : Maillot Domicile Pro - MBAPPÉ #7">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P002" role="region" aria-labelledby="product-title-2">
+                        <div class="product-card-header">
+                            <img src="images/maillot-exterieur-haaland.jpg" alt="Maillot Extérieur Haaland #9 - Design audacieux" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 id="product-title-2">Maillot Extérieur - HAALAND #9</h3>
+                            <p class="description">Design audacieux. Parfait pour les matchs à l'extérieur ou le street style, tissu anti-transpiration.</p>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="129.99">129.99 €</span>
+                                <button class="add-to-cart" data-name="Maillot Extérieur Haaland" data-price="129.99" aria-label="Ajouter au panier : Maillot Extérieur - HAALAND #9">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P003" role="region" aria-labelledby="product-title-3">
+                        <div class="product-card-header">
+                            <img src="images/maillot-retro-classique.jpg" alt="Maillot Rétro Classique 90s - Réplique fidèle" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 id="product-title-3">Maillot Héritage '98 Rétro</h3>
+                            <p class="description">Réplique fidèle de la légende. Tissu épais, broderies de luxe et coupe vintage.</p>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="89.99">89.99 €</span>
+                                <button class="add-to-cart" data-name="Maillot Héritage 98" data-price="89.99" aria-label="Ajouter au panier : Maillot Héritage '98 Rétro">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="product-card" data-sku="P004" role="region" aria-labelledby="product-title-4">
+                        <div class="product-card-header">
+                            <img src="images/tshirt-entrainement-pro.jpg" alt="T-shirt Entraînement Pro Noir - Coupe ergonomique" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 id="product-title-4">T-shirt Entraînement Pro (Noir)</h3>
+                            <p class="description">Léger, anti-odeur, coupe ergonomique. Votre allié pour la performance maximale sur le terrain.</p>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="49.99">49.99 €</span>
+                                <button class="add-to-cart" data-name="T-shirt Entraînement Pro" data-price="49.99" aria-label="Ajouter au panier : T-shirt Entraînement Pro (Noir)">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
                 </div>
-            </a>
-            
-            <a href="kits.html" class="category-item"> <img src="images/liver.webp" alt="Kits Complets">
-                <div class="category-overlay">
-                    <h3>KITS COMPLETS</h3>
-                </div>
-            </a>
-            
-            <a href="retro.html" class="category-item"> <img src="images/franc.webp" alt="Maillots Rétro">
-                <div class="category-overlay">
-                    <h3>COLLECTION RÉTRO</h3>
-                </div>
-            </a>
+            </section>
         </div>
     </main>
-        
-        <h2 class="section-title" id="produits">Les Produits Phares</h2>
-        
-        <div class="product-grid">
-            
-            <div class="product-card" data-sku="P001">
-                <div class="product-card-header">
-                    <img src="images/maillot-domicile-mbappe.jpg" alt="Maillot Domicile Mbappé #7">
-                </div>
-                <div class="product-info">
-                    <h3>Maillot Domicile Pro - MBAPPÉ #7</h3>
-                    <p class="description">Technologie FUSION-CELL™. Le maillot porté par la star, coupe ajustée.</p>
-                    <div class="price-cta">
-                        <span class="price">139.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Domicile Mbappé" data-price="139.99">Ajouter au Panier</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-sku="P002">
-                <div class="product-card-header">
-                    <img src="images/maillot-exterieur-haaland.jpg" alt="Maillot Extérieur Haaland #9">
-                </div>
-                <div class="product-info">
-                    <h3>Maillot Extérieur - HAALAND #9</h3>
-                    <p class="description">Design audacieux. Parfait pour les matchs à l'extérieur ou le street style.</p>
-                    <div class="price-cta">
-                        <span class="price">129.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Extérieur Haaland" data-price="129.99">Ajouter au Panier</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" data-sku="P003">
-                <div class="product-card-header">
-                    <img src="images/maillot-retro-classique.jpg" alt="Maillot Rétro Classique 90s">
-                </div>
-                <div class="product-info">
-                    <h3>Maillot Héritage '98 Rétro</h3>
-                    <p class="description">Réplique fidèle de la légende. Tissu épais, broderies de luxe.</p>
-                    <div class="price-cta">
-                        <span class="price">89.99 €</span>
-                        <button class="add-to-cart" data-name="Maillot Héritage 98" data-price="89.99">Ajouter au Panier</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card" data-sku="P004">
-                <div class="product-card-header">
-                    <img src="images/tshirt-entrainement-pro.jpg" alt="T-shirt Entraînement Pro">
-                </div>
-                <div class="product-info">
-                    <h3>T-shirt Entraînement Pro (Noir)</h3>
-                    <p class="description">Léger, anti-odeur, coupe ergonomique. Votre allié pour la performance.</p>
-                    <div class="price-cta">
-                        <span class="price">49.99 €</span>
-                        <button class="add-to-cart" data-name="T-shirt Entraînement Pro" data-price="49.99">Ajouter au Panier</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     
     
     <footer class="site-footer">
         <div class="container footer-content">
             <div class="footer-section">
                 <h4>THE FUSION</h4>
-                <p>Où l'innovation rencontre le terrain. Équipez-vous pour la victoire.</p>
+                <p>Où l'innovation rencontre le terrain. Équipez-vous pour la victoire. Nous créons l'avenir du vêtement sportif.</p>
             </div>
             <div class="footer-section">
                 <h4>Support</h4>
-                <a href="#">Centre d'aide</a>
-                <a href="#">Livraison & Suivi</a>
-                <a href="#">Retours & Échanges</a>
+                <a href="#" aria-label="Accéder au centre d'aide">Centre d'aide</a>
+                <a href="#" aria-label="Informations sur la livraison et le suivi">Livraison & Suivi</a>
+                <a href="#" aria-label="Politique de retours et échanges">Retours & Échanges</a>
+                <a href="#" aria-label="Contactez-nous">Contactez-nous</a>
             </div>
             <div class="footer-section">
                 <h4>Légal</h4>
-                <a href="#">Termes & Conditions</a>
-                <a href="#">Confidentialité</a>
-                <a href="#">Mentions Légales</a>
+                <a href="#" aria-label="Lire les Termes et Conditions">Termes & Conditions</a>
+                <a href="#" aria-label="Lire notre Politique de Confidentialité">Confidentialité</a>
+                <a href="#" aria-label="Lire les Mentions Légales">Mentions Légales</a>
             </div>
             <div class="footer-section">
                 <h4>Newsletter</h4>
-                <p>Offres exclusives et nouveautés.</p>
-                <input type="email" placeholder="Votre email" style="padding: 8px; border-radius: 4px; border: none; width: 100%; margin-top: 10px; color: #1f2937;">
+                <p>Offres exclusives, accès anticipé et nouveautés. Ne manquez rien !</p>
+                <form class="newsletter-form" onsubmit="alert('Merci pour votre inscription!'); return false;">
+                    <input type="email" placeholder="Votre email" required aria-label="Adresse email pour la newsletter">
+                    <button type="submit">S'inscrire</button>
+                </form>
             </div>
         </div>
         <div class="container footer-bottom">
-            <p>&copy; 2025 THE FUSION. Tous droits réservés. | Code par Gemini</p>
+            <p>&copy; 2025 THE FUSION. Tous droits réservés. | Design & Code optimisé.</p>
         </div>
     </footer>
     
     <script>
-        // Le code JavaScript pour le panier est conservé
         let cart = [];
         const cartLink = document.getElementById('cart-link');
+        const cartCount = document.getElementById('cart-count');
         const productGrid = document.querySelector('.product-grid');
         const hamburger = document.getElementById('hamburger-menu');
         const nav = document.getElementById('main-nav');
+        const slides = document.getElementsByClassName("slideshow-item");
+        const dotContainer = document.getElementById('slide-dots');
+        
+        let slideIndex = 1;
 
-        // NOUVEAU : Logique pour le menu hamburger
+        // --- Fonctions Carrousel (Slideshow) ---
+        function generateDots() {
+            if (dotContainer) {
+                for (let i = 0; i < slides.length; i++) {
+                    const dot = document.createElement('span');
+                    dot.className = 'dot';
+                    dot.onclick = () => currentSlide(i + 1);
+                    dotContainer.appendChild(dot);
+                }
+            }
+        }
+        
+        function showSlides() {
+            let i;
+            const dots = document.getElementsByClassName("dot");
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}
+
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            
+            slides[slideIndex-1].style.display = "block";
+            if (dots[slideIndex-1]) {
+                 dots[slideIndex-1].className += " active";
+            }
+            
+            setTimeout(showSlides, 4000); // Change l'image toutes les 4 secondes
+        }
+
+        function currentSlide(n) {
+            slideIndex = n - 1; 
+            showSlides();
+        }
+        
+        // --- Logique du Menu Hamburger ---
         if (hamburger) {
             hamburger.addEventListener('click', () => {
                 nav.classList.toggle('active');
+                hamburger.classList.toggle('open');
+                const isExpanded = nav.classList.contains('active');
+                hamburger.setAttribute('aria-expanded', isExpanded); 
             });
         }
         
-        // Logique du panier
+        // --- Logique du Panier ---
         function updateCartCount() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartLink.textContent = `Panier (${totalItems})`;
+            cartCount.textContent = totalItems;
         }
 
         function addToCart(event) {
@@ -678,9 +868,10 @@
 
             updateCartCount();
             
+            // Animation de succès
             button.textContent = '✅ Ajouté !';
-            button.style.backgroundColor = '#10b981';
-            button.style.boxShadow = '0 0 15px #10b981';
+            button.style.backgroundColor = 'var(--success-color)';
+            button.style.boxShadow = `0 0 15px var(--success-color)`;
 
             setTimeout(() => {
                 button.textContent = 'Ajouter au Panier';
@@ -707,10 +898,18 @@
             summary += `\n-----------------------------\n`;
             summary += `TOTAL À PAYER: ${total.toFixed(2)} €`;
             
-            alert(summary);
+            alert(summary); 
         }
 
-        // Initialisation des écouteurs d'événements
+        // --- Initialisation ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (slides.length > 0) {
+                generateDots();
+                slideIndex = 0; 
+                showSlides();
+            }
+        });
+        
         if (productGrid) {
             productGrid.addEventListener('click', addToCart);
         }
@@ -718,6 +917,8 @@
         if (cartLink) {
             cartLink.addEventListener('click', displayCartSummary);
         }
+        
+        updateCartCount(); 
     </script>
 </body>
 </html>
