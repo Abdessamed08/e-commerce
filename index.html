@@ -54,7 +54,7 @@
             border-width: 0;
         }
 
-        /* 1. Header (Inchangé) */
+        /* 1. Header */
         .site-header {
             background-color: var(--dark-bg);
             padding: 1rem 0;
@@ -155,13 +155,15 @@
         
         .fused-hero-container {
             margin-bottom: 60px;
-            display: flex; /* Permet le placement côte à côte sur PC */
+            display: flex;
             justify-content: center; 
             gap: 20px; 
             align-items: flex-start; 
             max-width: 1400px; 
             padding: 0 4%;
             margin: 30px auto 60px auto; 
+            /* Permet aux miniatures mobiles d'être sous le carrousel dans le flux */
+            flex-wrap: wrap; 
         }
 
         .slideshow-container {
@@ -220,7 +222,7 @@
             object-position: top; 
         }
 
-        /* Contenu Hero (BOUTON SEUL EN BAS) */
+        /* Contenu Hero (BOUTON CTA) */
         .hero-content.fused-content {
             position: absolute;
             bottom: 30px; 
@@ -265,7 +267,7 @@
         /* Styles pour les Miniatures PC (À DROITE) */
         /* ------------------------------------------------------------------- */
         .slideshow-thumbnails-desktop {
-            display: flex; /* Visible par défaut (PC) */
+            display: flex; 
             flex-direction: column; 
             justify-content: flex-start;
             gap: 15px; 
@@ -276,27 +278,46 @@
         }
 
         /* ------------------------------------------------------------------- */
-        /* Styles pour les Miniatures Mobile (SUR LA PHOTO) */
+        /* Styles pour les Miniatures Mobile (SORTIES du Carrousel) */
         /* ------------------------------------------------------------------- */
-        .slideshow-thumbnails-mobile {
-            display: none; /* Caché par défaut (PC) */
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%; 
-            max-width: 90%;
-            justify-content: center;
-            padding: 8px 0;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 8px;
-            gap: 4px;
-            z-index: 10;
+        .slideshow-thumbnails-mobile-standalone {
+            display: none; /* Cacher par défaut sur PC */
+            position: relative; /* Reste dans le flux */
+            width: 95%; 
+            max-width: 600px;
+            margin: 15px auto 0 auto; 
+            padding: 10px;
+            
+            /* Pour l'effet de défilement horizontal intelligent */
+            justify-content: flex-start;
+            overflow-x: scroll; 
+            scroll-snap-type: x mandatory; 
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.05); 
+            border-radius: 10px;
+        }
+
+        /* Amélioration du look des miniatures dans ce conteneur */
+        .slideshow-thumbnails-mobile-standalone .thumbnail-item {
+            scroll-snap-align: center;
+            height: 70px; 
+            min-width: 70px;
+            width: 70px;
+            flex-shrink: 0;
+        }
+        
+        /* Masquer les barres de défilement pour un look plus clean */
+        .slideshow-thumbnails-mobile-standalone::-webkit-scrollbar {
+            display: none;
+        }
+        .slideshow-thumbnails-mobile-standalone {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
         
         /* Styles communs aux items miniatures (peu importe le conteneur) */
         .thumbnail-item {
-            height: 100px; /* Taille par défaut pour PC */
+            height: 100px; 
             width: 100%;
             object-fit: cover;
             object-position: center; 
@@ -308,11 +329,10 @@
             will-change: opacity, transform;
         }
         
-        .slideshow-thumbnails-mobile .thumbnail-item {
-            /* Surcharge de la taille pour la bande sur mobile */
-            height: 60px; 
-            width: 50px;
-            flex-shrink: 0;
+        /* Ajustement taille pour les miniatures PC */
+        .slideshow-thumbnails-desktop .thumbnail-item {
+            height: 100px; 
+            width: 100%;
         }
         
         .thumbnail-item:hover {
@@ -329,10 +349,8 @@
             object-position: top;
         }
 
-
-        /* --- Autres Sections CSS (Inchangées) --- */
+        /* --- Animations CSS (Inchangées) --- */
         
-        /* Animations */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .anim-1 { animation: fadeIn 1s ease-out forwards; }
         @keyframes slideFromLeft { from { transform: translateX(-100%); opacity: 0.2; } to { transform: translateX(0); opacity: 1; } }
@@ -344,7 +362,6 @@
         @keyframes slideFromBottom { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .anim-5 { animation: slideFromBottom 1s ease-in-out forwards; }
 
-        /* 3. Section Catégories/Mosaïque (Inchangée) */
         h2.section-title {
             text-align: center;
             font-size: 2.5rem;
@@ -405,7 +422,6 @@
             text-transform: uppercase;
         }
         
-        /* 4. Grille de Produits (Inchangée) */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -489,7 +505,6 @@
             box-shadow: 0 0 15px var(--accent-neon);
         }
         
-        /* 5. Footer (Inchangé) */
         .site-footer {
             background-color: #0c121e;
             color: #9ca3af;
@@ -568,7 +583,9 @@
             text-align: center;
         }
 
+        /* ------------------------------------------------------------------- */
         /* 6. Responsive Design (Ajustements pour Mobile) */
+        /* ------------------------------------------------------------------- */
         
         @media (max-width: 900px) {
             .fused-hero-container {
@@ -577,13 +594,15 @@
                 gap: 0; 
                 margin: 30px auto 30px auto; 
             }
+            
+            /* Carrousel (hauteur ajustée car les miniatures sont sorties) */
             .slideshow-container {
                 width: 95%; 
                 max-width: 600px; 
-                height: 400px;
+                height: 400px; 
             }
             .slideshow-item img {
-                height: 400px;
+                height: 400px; 
             }
             
             /* Masquer le conteneur miniatures PC (à droite) */
@@ -591,14 +610,22 @@
                 display: none; 
             }
             
-            /* Afficher le conteneur miniatures Mobile (sur la photo) */
-            .slideshow-thumbnails-mobile {
-                display: flex; 
+            /* Bouton CTA - Priorité (hauteur ajustée car les miniatures sont sorties) */
+            .hero-content.fused-content {
+                display: block; 
+                bottom: 30px; /* Retourne à une position plus normale en bas de l'image */
+                width: 85%;
+                min-width: unset;
             }
             
-            /* Masquer le bouton Discover sur mobile/tablette */
-            .hero-content.fused-content {
-                display: none;
+            .hero-button {
+                padding: 10px 20px; 
+                font-size: 0.9rem;
+            }
+
+            /* Afficher le nouveau conteneur scrollable */
+            .slideshow-thumbnails-mobile-standalone {
+                display: flex;
             }
 
             .main-nav { 
@@ -608,7 +635,6 @@
             h2.section-title { font-size: 2.2rem; margin: 80px 0 40px; }
         }
         
-        /* Mobile Standard */
         @media (max-width: 600px) {
             /* Header Mobile */
             .hamburger-menu { display: block; }
@@ -642,26 +668,21 @@
             .slideshow-item img {
                 height: 300px; 
             }
-
-            /* Miniatures à l'intérieur du carrousel */
-            .slideshow-thumbnails-mobile {
-                bottom: 10px;
-                padding: 8px 0;
-                gap: 4px;
+            
+            /* Positionnement du bouton Découvrir sur petit mobile */
+            .hero-content.fused-content {
+                bottom: 20px; 
             }
-            .slideshow-thumbnails-mobile .thumbnail-item {
-                height: 50px; 
-                width: 40px; 
+            
+            .slideshow-thumbnails-mobile-standalone {
+                width: 100%;
             }
 
-            /* Titres */
+            /* Titres et Grilles */
             h2.section-title { margin: 60px 0 30px; font-size: 2rem; }
-
-            /* Grilles & Cartes */
             .category-grid, .product-grid { grid-template-columns: 1fr; gap: 30px; }
             .category-item { height: 250px; }
             .product-card img { height: 300px; }
-            /* Empiler le prix et le bouton */
             .price-cta { flex-direction: column; align-items: flex-start; gap: 15px; }
             .add-to-cart { width: 100%; text-align: center; }
 
@@ -734,17 +755,17 @@
                 
                 <div class="slide-dots" id="slide-dots"></div> 
                 
-                <div class="slideshow-thumbnails-mobile" id="mobile-thumbnails" role="tablist">
-                    <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1 - Maillot Real Madrid" role="tab" aria-selected="true" tabindex="0">
-                    <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2 - Maillot OL" role="tab" aria-selected="false" tabindex="0">
-                    <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3 - Maillot Griezmann" role="tab" aria-selected="false" tabindex="0">
-                    <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4 - Maillot Dortmund" role="tab" aria-selected="false" tabindex="0">
-                    <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" onclick="currentSlide(5)" alt="Miniature 5 - Maillot Bayern" role="tab" aria-selected="false" tabindex="0">
-                </div>
-                
             </section>
             
             <div class="slideshow-thumbnails-desktop" id="desktop-thumbnails" role="tablist">
+                <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1 - Maillot Real Madrid" role="tab" aria-selected="true" tabindex="0">
+                <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2 - Maillot OL" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3 - Maillot Griezmann" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/dortmundback.webp" class="thumbnail-item" onclick="currentSlide(4)" alt="Miniature 4 - Maillot Dortmund" role="tab" aria-selected="false" tabindex="0">
+                <img src="images/bayernback.webp" class="thumbnail-item focus-top" onclick="currentSlide(5)" onclick="currentSlide(5)" alt="Miniature 5 - Maillot Bayern" role="tab" aria-selected="false" tabindex="0">
+            </div>
+            
+            <div class="slideshow-thumbnails-mobile-standalone" id="mobile-thumbnails-standalone" role="tablist">
                 <img src="images/realmadridback.webp" class="thumbnail-item active focus-top" onclick="currentSlide(1)" alt="Miniature 1 - Maillot Real Madrid" role="tab" aria-selected="true" tabindex="0">
                 <img src="images/lyonback.webp" class="thumbnail-item" onclick="currentSlide(2)" alt="Miniature 2 - Maillot OL" role="tab" aria-selected="false" tabindex="0">
                 <img src="images/grizback.webp" class="thumbnail-item focus-top" onclick="currentSlide(3)" alt="Miniature 3 - Maillot Griezmann" role="tab" aria-selected="false" tabindex="0">
@@ -903,7 +924,8 @@
         
         // Cible les deux ensembles de miniatures
         const desktopThumbnails = document.querySelectorAll('#desktop-thumbnails .thumbnail-item');
-        const mobileThumbnails = document.querySelectorAll('#mobile-thumbnails .thumbnail-item');
+        // NOTE : Cible le nouveau conteneur standalone pour mobile
+        const mobileThumbnails = document.querySelectorAll('#mobile-thumbnails-standalone .thumbnail-item'); 
         
         // Utilise l'un des ensembles pour la référence du comptage
         const thumbnails = desktopThumbnails.length > 0 ? desktopThumbnails : mobileThumbnails; 
@@ -946,7 +968,9 @@
             
             // Met à jour les deux ensembles de miniatures (Desktop et Mobile)
             [...desktopThumbnails, ...mobileThumbnails].forEach((thumb) => {
-                const thumbIndex = Array.from(thumb.parentElement.children).indexOf(thumb) + 1;
+                // Pour que ça marche avec les deux conteneurs, on utilise l'index dans le conteneur parent
+                const parentChildren = Array.from(thumb.parentElement.children);
+                const thumbIndex = parentChildren.indexOf(thumb) + 1;
                 const isActive = thumbIndex === index;
                 
                 thumb.classList.toggle('active', isActive);
