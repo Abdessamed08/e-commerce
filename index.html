@@ -2,7 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#1e2126">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title>LUX FUTURA | Équipements de Performance - Design Équilibré</title>
 
     <meta name="description" content="Découvrez LUX FUTURA, une collection d'équipements sportifs et de performance conçus pour le confort, l'équilibre et l'élégance minimaliste.">
@@ -12,6 +16,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome pour les icônes professionnelles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         /* ========================================================================= */
@@ -52,13 +59,23 @@
             padding: 0;
             background-color: var(--dark-bg);
             color: var(--light-text);
-            line-height: 1.65; /* Améliore la lisibilité */
+            line-height: 1.65;
             scroll-behavior: smooth;
             text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            /* Optimisations supplémentaires pour mobile */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            overscroll-behavior-y: contain;
         }
         
         a { color: var(--accent-primary); text-decoration: none; transition: color 0.3s; }
         a:hover { color: var(--accent-hover); }
+        
+        img { max-width: 100%; height: auto; }
+        button { font-family: var(--font-body); }
 
         .container {
             width: 90%;
@@ -85,12 +102,20 @@
         /* ========================================================================= */
         .site-header {
             background-color: var(--dark-bg); 
-            padding: 1.5rem 0;
+            padding: 1rem 0;
             border-bottom: var(--border-soft);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background-color: rgba(30, 33, 38, 0.95);
+        }
+        
+        .site-header.scrolled {
+            padding: 0.7rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
@@ -118,11 +143,18 @@
             color: var(--secondary-text);
             font-weight: 500;
             margin-left: 35px;
-            padding: 5px 10px;
+            padding: 8px 12px;
             position: relative;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .main-nav a i {
+            font-size: 1.1em;
         }
 
         .main-nav a::after {
@@ -167,7 +199,251 @@
             transition: 0.4s;
             border-radius: 2px;
         }
-        /* Styles pour l'état ouvert du hamburger (non inclus pour la longueur) */
+        
+        /* Badge panier */
+        .cart-badge {
+            position: relative;
+        }
+        
+        .cart-badge-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: var(--accent-secondary);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            animation: pulse 0.3s ease;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Panier flottant */
+        .floating-cart {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--mid-dark-bg);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .floating-cart.active {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .cart-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .cart-header {
+            padding: 25px;
+            border-bottom: var(--border-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--dark-bg);
+        }
+        
+        .cart-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--light-text);
+            font-family: var(--font-title);
+        }
+        
+        .cart-close {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: transform 0.2s;
+        }
+        
+        .cart-close:hover {
+            transform: rotate(90deg);
+            color: var(--accent-secondary);
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background-color: var(--dark-bg);
+            border-radius: var(--radius-default);
+            margin-bottom: 15px;
+            border: var(--border-soft);
+            transition: transform 0.2s;
+        }
+        
+        .cart-item:hover {
+            transform: translateX(-5px);
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--radius-default);
+        }
+        
+        .cart-item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--light-text);
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        
+        .qty-btn:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.1);
+        }
+        
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .cart-item-remove:hover {
+            transform: scale(1.2);
+        }
+        
+        .cart-footer {
+            padding: 25px;
+            border-top: var(--border-soft);
+            background-color: var(--dark-bg);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .cart-total-label {
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        .cart-total-amount {
+            font-weight: 900;
+            color: var(--accent-secondary);
+            font-size: 1.8rem;
+        }
+        
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            border: none;
+            border-radius: var(--radius-default);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cart-checkout-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 168, 168, 0.6);
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--secondary-text);
+        }
+        
+        .cart-empty i {
+            font-size: 4rem;
+            color: var(--accent-primary);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .cart-empty p {
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
 
         h2.section-title {
             font-family: var(--font-title);
@@ -320,6 +596,307 @@
         }
         
         .slideshow-thumbnails-mobile-standalone { display: none; }
+        
+        /* Contrôles de navigation carrousel */
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 20;
+            pointer-events: none;
+        }
+        
+        .carousel-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(30, 33, 38, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            pointer-events: all;
+            font-size: 1.2rem;
+        }
+        
+        .carousel-btn:hover {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: scale(1.1);
+        }
+        
+        /* Bouton retour en haut */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0, 168, 168, 0.4);
+            font-size: 1.3rem;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 168, 168, 0.6);
+        }
+        
+        /* ========================================================================= */
+        /* --- Bottom Navigation Mobile (Style Kiabi) --- */
+        /* Navigation tactile confortable et intuitive */
+        /* ========================================================================= */
+        .mobile-bottom-nav {
+            display: none; /* Caché par défaut, visible en mobile */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(30, 33, 38, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-bottom-nav.hidden {
+            transform: translateY(100%);
+        }
+        
+        .mobile-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+        
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            color: var(--secondary-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 60px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+        }
+        
+        .mobile-nav-item i {
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-item span {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-item.active {
+            color: var(--accent-primary);
+            background-color: rgba(0, 168, 168, 0.1);
+        }
+        
+        .mobile-nav-item.active i {
+            transform: scale(1.1);
+        }
+        
+        .mobile-nav-item:active {
+            transform: scale(0.95);
+        }
+        
+        /* Badge panier pour bottom nav */
+        .mobile-nav-item .cart-badge-count {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            min-width: 18px;
+            height: 18px;
+            font-size: 0.65rem;
+        }
+        
+        /* ========================================================================= */
+        /* --- Micro-Animations & Transitions Douces --- */
+        /* ========================================================================= */
+        
+        /* Smooth Scroll amélioré */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Pour compenser le header sticky */
+        }
+        
+        /* Animations d'apparition au scroll */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        /* Amélioration des touches tactiles */
+        button, a, .product-card, .category-item {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        
+        /* Touch feedback pour les boutons */
+        button:active, .add-to-cart:active, .hero-button:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease;
+        }
+        
+        /* Amélioration du focus visible pour l'accessibilité */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--accent-secondary);
+            outline-offset: 3px;
+        }
+        
+        /* Skeleton loading pour les images */
+        @keyframes shimmer {
+            0% { background-position: -468px 0; }
+            100% { background-position: 468px 0; }
+        }
+        
+        .product-card img, .category-item img {
+            background: linear-gradient(
+                to right,
+                var(--mid-dark-bg) 0%,
+                #353b47 20%,
+                var(--mid-dark-bg) 40%,
+                var(--mid-dark-bg) 100%
+            );
+            background-size: 800px 100%;
+        }
+        
+        .product-card img[src], .category-item img[src] {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        /* Amélioration des transitions */
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* ========================================================================= */
+        /* --- Optimisations Performance & Touch Gestures --- */
+        /* ========================================================================= */
+        
+        /* Optimisation GPU pour les animations */
+        .product-card, .category-item, .mobile-nav-item, 
+        .floating-cart, .back-to-top, .carousel-btn {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
+        /* Touch gestures améliorés pour le carrousel */
+        .slideshow-container {
+            touch-action: pan-y pinch-zoom;
+            cursor: grab;
+        }
+        
+        .slideshow-container:active {
+            cursor: grabbing;
+        }
+        
+        /* Optimisation des scrolls */
+        .product-filters, .testimonial-slider, .cart-items {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        
+        /* Préchargement des images critiques */
+        .slideshow-item img {
+            content-visibility: auto;
+        }
+        
+        /* Lazy loading natif pour toutes les images */
+        img[loading="lazy"] {
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+        
+        img[loading="lazy"].loaded {
+            opacity: 1;
+        }
+        
+        /* Swipe indicator pour mobile */
+        @media (max-width: 600px) {
+            .slideshow-container::after {
+                content: '← Swipe →';
+                position: absolute;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 8px 20px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                opacity: 0.7;
+                pointer-events: none;
+                z-index: 5;
+                animation: fadeOut 3s ease-out 2s forwards;
+            }
+            
+            @keyframes fadeOut {
+                to { opacity: 0; visibility: hidden; }
+            }
+        }
 
 
         /* ========================================================================= */
@@ -388,10 +965,84 @@
         /* --- 5. Styles de la Grille de Produits Détaillée (Lignes 701 - 900) --- */
         /* Clarté et lisibilité */
         /* ========================================================================= */
+        
+        /* Filtres de produits */
+        .product-filters {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            padding: 20px;
+            background-color: var(--mid-dark-bg);
+            border-radius: var(--radius-large);
+            border: var(--border-soft);
+        }
+        
+        .filter-btn {
+            padding: 12px 25px;
+            background-color: transparent;
+            color: var(--secondary-text);
+            border: 1px solid var(--secondary-text);
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover {
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            border-color: var(--accent-primary);
+        }
+        
+        .search-bar {
+            position: relative;
+            flex: 1;
+            max-width: 350px;
+            min-width: 250px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            background-color: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--light-text);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(0, 168, 168, 0.3);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text);
+        }
+        
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 50px; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px; 
             padding-bottom: var(--spacing-large);
         }
         
@@ -404,16 +1055,80 @@
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
         .product-card:hover {
-            transform: translateY(-10px); /* Mouvement plus prononcé */
+            transform: translateY(-10px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85);
         }
 
         .product-card-header {
             flex-shrink: 0;
             border-bottom: var(--border-soft);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Actions rapides sur produit */
+        .product-quick-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover .product-quick-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .quick-action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(30, 33, 38, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .quick-action-btn:hover {
+            background-color: var(--accent-primary);
+            transform: scale(1.15);
+            border-color: var(--accent-primary);
+        }
+        
+        .quick-action-btn.wishlist:hover {
+            background-color: #ff4444;
+            border-color: #ff4444;
+        }
+        
+        /* Badge stock limité */
+        .stock-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: rgba(255, 68, 68, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
         }
         
         .product-card img {
@@ -763,6 +1478,432 @@
             font-size: 0.9rem;
             color: #7f8691;
         }
+        
+        /* Liens sociaux */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-text);
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .social-link:hover {
+            background-color: var(--accent-primary);
+            color: var(--light-text);
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Trust badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-large);
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+        
+        .trust-badge i {
+            font-size: 2rem;
+            color: var(--accent-primary);
+        }
+        
+        .trust-badge-text {
+            text-align: left;
+        }
+        
+        .trust-badge-title {
+            font-weight: 700;
+            color: var(--light-text);
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        /* Méthodes de paiement */
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 32px;
+            background-color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        
+        .payment-icon:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
+        .payment-icon i {
+            font-size: 1.5rem;
+            color: #333;
+        }
+        
+        /* ========================================================================= */
+        /* --- Section FAQ --- */
+        /* ========================================================================= */
+        .faq-section {
+            padding: var(--spacing-large) 0;
+            background-color: var(--dark-bg);
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background-color: var(--mid-dark-bg);
+            border-radius: var(--radius-large);
+            margin-bottom: 20px;
+            border: var(--border-soft);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .faq-item:hover {
+            border-color: var(--accent-primary);
+        }
+        
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--light-text);
+            transition: all 0.3s;
+            user-select: none;
+        }
+        
+        .faq-question:hover {
+            color: var(--accent-primary);
+        }
+        
+        .faq-question i {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            color: var(--accent-primary);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 30px;
+            color: var(--secondary-text);
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 30px 25px 30px;
+        }
+        
+        /* ========================================================================= */
+        /* --- Section Marques/Partenaires --- */
+        /* ========================================================================= */
+        .brands-section {
+            padding: var(--spacing-large) 0;
+            background-color: var(--mid-dark-bg);
+        }
+        
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            align-items: center;
+            justify-items: center;
+        }
+        
+        .brand-logo {
+            width: 120px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-default);
+            padding: 15px;
+            transition: all 0.3s;
+            border: var(--border-soft);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .brand-logo:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            color: var(--light-text);
+        }
+        
+        /* ========================================================================= */
+        /* --- Section Avantages USP --- */
+        /* ========================================================================= */
+        .usp-section {
+            padding: var(--spacing-large) 0;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--mid-dark-bg) 100%);
+        }
+        
+        .usp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 35px;
+        }
+        
+        .usp-card {
+            text-align: center;
+            padding: 40px 30px;
+            background-color: rgba(43, 48, 56, 0.6);
+            border-radius: var(--radius-large);
+            border: var(--border-soft);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .usp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .usp-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
+            background-color: rgba(43, 48, 56, 0.9);
+        }
+        
+        .usp-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .usp-icon {
+            font-size: 3rem;
+            color: var(--accent-primary);
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .usp-card:hover .usp-icon {
+            transform: scale(1.1);
+            color: var(--accent-secondary);
+        }
+        
+        .usp-card h4 {
+            font-size: 1.3rem;
+            color: var(--light-text);
+            margin: 15px 0;
+            font-weight: 700;
+        }
+        
+        .usp-card p {
+            color: var(--secondary-text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* ========================================================================= */
+        /* --- Section Newsletter Améliorée --- */
+        /* ========================================================================= */
+        .newsletter-section {
+            padding: var(--spacing-large) 0;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .newsletter-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .newsletter-content h3 {
+            font-family: var(--font-title);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: white;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .newsletter-content p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .newsletter-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .newsletter-benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .newsletter-benefit i {
+            color: var(--accent-secondary);
+            font-size: 1.2rem;
+        }
+        
+        .newsletter-form-enhanced {
+            display: flex;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form-enhanced input {
+            flex: 1;
+            padding: 18px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            background-color: white;
+            color: var(--dark-bg);
+        }
+        
+        .newsletter-form-enhanced button {
+            padding: 18px 40px;
+            border-radius: 50px;
+            border: none;
+            background-color: var(--accent-secondary);
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .newsletter-form-enhanced button:hover {
+            background-color: #ffb347;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ========================================================================= */
+        /* --- Stats Section --- */
+        /* ========================================================================= */
+        .stats-section {
+            padding: var(--spacing-large) 0;
+            background-color: var(--mid-dark-bg);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 30px;
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--accent-primary);
+            font-family: var(--font-title);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
 
         /* Responsive Design */
         
@@ -819,45 +1960,727 @@
         }
         
         @media (max-width: 600px) {
-            /* Header Mobile */
-            .hamburger-menu { display: block; }
-            .main-nav { 
-                display: none; 
-                position: absolute; left: 0; top: 70px; width: 100%;
-                background-color: var(--mid-dark-bg);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-                flex-direction: column; padding: 10px 0;
-                border-top: var(--border-soft);
+            /* Header Mobile - Plus Compact */
+            .site-header { 
+                padding: 0.6rem 0; 
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 2000;
             }
-            .main-nav.active { display: flex; }
-            .main-nav a { 
-                margin: 0; padding: 15px 20px; 
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-            }
-            .main-nav a:hover { background-color: rgba(0, 168, 168, 0.1); }
-            .main-nav a::after { display: none; }
+            .site-header h1 { font-size: 1.4rem; letter-spacing: 1px; }
+            .hamburger-menu { display: none; } /* On utilise la bottom nav maintenant */
             
-            /* Carrousel */
-            .slideshow-container { height: 350px; border-radius: var(--radius-default); }
-            .slideshow-item img { height: 350px; }
-            .hero-content.fused-content { bottom: 40px; }
-            .hero-button { padding: 12px 30px; min-width: 200px; font-size: 0.95rem; letter-spacing: 0.5px; }
-            .slideshow-thumbnails-mobile-standalone .thumbnail-item { max-width: 18%; height: 70px; }
+            /* Cache la navigation desktop sur mobile */
+            .main-nav { 
+                display: none !important;
+            }
+            
+            /* Ajoute du padding pour compenser le header fixe */
+            main {
+                padding-top: 60px;
+                padding-bottom: 80px; /* Pour la bottom nav */
+            }
+            
+            /* Active la Bottom Navigation sur mobile */
+            .mobile-bottom-nav {
+                display: block;
+            }
+            
+            /* Optimisation des cartes produits pour le tactile */
+            .product-card {
+                border-radius: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .product-card img {
+                height: 320px;
+                border-radius: 16px 16px 0 0;
+            }
+            
+            .product-info {
+                padding: 18px;
+            }
+            
+            .product-info h3 {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            
+            .description {
+                font-size: 0.9rem;
+                line-height: 1.5;
+                margin: 10px 0;
+            }
+            
+            .add-to-cart {
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                border-radius: 50px;
+                width: 100%;
+                font-weight: 600;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            /* Quick actions plus grandes pour le tactile */
+            .product-quick-actions {
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .quick-action-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+            
+            /* Panier mobile - Bottom Sheet Style Kiabi */
+            .floating-cart { 
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                right: -100%;
+            }
+            
+            .floating-cart.active {
+                right: 0;
+                animation: slideUpCart 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            @keyframes slideUpCart {
+                0% { transform: translateY(100%); }
+                100% { transform: translateY(0); }
+            }
+            
+            .cart-header {
+                padding: 20px;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+                border-radius: 20px 20px 0 0;
+                position: relative;
+            }
+            
+            .cart-header::before {
+                content: '';
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 4px;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 2px;
+            }
+            
+            .cart-header h3 {
+                font-size: 1.3rem;
+                margin-top: 10px;
+            }
+            
+            .cart-item { 
+                flex-direction: row;
+                gap: 15px;
+                padding: 15px;
+                border-radius: 12px;
+                margin-bottom: 12px;
+                background-color: var(--dark-bg);
+            }
+            
+            .cart-item-image { 
+                width: 90px; 
+                height: 90px;
+                border-radius: 10px;
+                flex-shrink: 0;
+            }
+            
+            .cart-item-details {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            
+            .cart-item h4 {
+                font-size: 1rem;
+                margin-bottom: 5px;
+            }
+            
+            .cart-footer {
+                padding: 20px;
+                border-top: 2px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            /* Carrousel Mobile Optimisé */
+            .slideshow-container { 
+                height: 450px; 
+                border-radius: 20px;
+                margin-top: 5px;
+                width: 100%;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            }
+            .slideshow-item img { 
+                height: 450px;
+                object-fit: cover;
+            }
+            .hero-content.fused-content { 
+                bottom: 25px;
+                left: 15px;
+                right: 15px;
+                transform: none;
+                text-align: center;
+            }
+            .hero-button { 
+                padding: 16px 40px; 
+                min-width: 100%;
+                font-size: 1rem; 
+                letter-spacing: 0.8px;
+                font-weight: 700;
+                border-radius: 50px;
+                box-shadow: 0 6px 20px rgba(0, 168, 168, 0.5);
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .slideshow-thumbnails-mobile-standalone {
+                padding-top: 15px;
+                gap: 8px;
+            }
+            .slideshow-thumbnails-mobile-standalone .thumbnail-item { 
+                max-width: 18%; 
+                height: 65px;
+                border-radius: 10px;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
+            .carousel-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+                backdrop-filter: blur(15px);
+            }
+            .carousel-controls { padding: 0 12px; }
+            
+            /* Filtres Mobile - Sticky & Horizontal Scroll */
+            .product-filters {
+                position: sticky;
+                top: 60px;
+                z-index: 100;
+                background-color: var(--dark-bg);
+                padding: 15px 0;
+                margin: 0 -20px 20px -20px;
+                padding-left: 20px;
+                padding-right: 20px;
+                flex-direction: row;
+                gap: 10px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                flex-wrap: nowrap;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .product-filters::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .filter-btn {
+                flex-shrink: 0;
+                padding: 12px 24px;
+                font-size: 0.9rem;
+                border-radius: 50px;
+                white-space: nowrap;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .search-bar {
+                flex-shrink: 0;
+                min-width: 200px;
+            }
+            
+            .search-bar input {
+                padding: 12px 40px 12px 15px;
+                font-size: 0.9rem;
+                border-radius: 50px;
+            }
+            
+            .search-bar i {
+                right: 15px;
+            }
+            
+            /* Indicateur de scroll pour les filtres */
+            .product-filters::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 30px;
+                background: linear-gradient(to left, var(--dark-bg), transparent);
+                pointer-events: none;
+            }
+            
+            .old-filter-btn {
+                width: 100%;
+                padding: 14px 25px;
+            }
+            .search-bar {
+                max-width: 100%;
+                width: 100%;
+            }
             
             /* Grilles */
-            .category-grid, .product-grid, .features-grid { grid-template-columns: 1fr; gap: 30px; }
-            .category-item { height: 280px; }
-            .product-card img { height: 300px; }
-            .price-cta { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .category-grid, .product-grid, .features-grid { 
+                grid-template-columns: 1fr; 
+                gap: 25px; 
+            }
+            .category-item { 
+                height: 300px;
+                border-radius: 12px;
+            }
+            .product-card img { height: 320px; }
+            .product-info { padding: 25px; }
+            .product-info h3 { font-size: 1.3rem; }
+            .price-cta { 
+                flex-direction: column; 
+                align-items: stretch; 
+                gap: 15px; 
+            }
             .price { font-size: 2rem; }
-            .add-to-cart { width: 100%; text-align: center; }
+            .add-to-cart { 
+                width: 100%; 
+                text-align: center;
+                padding: 16px;
+            }
+            
+            /* Actions rapides toujours visibles sur mobile */
+            .product-quick-actions {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
             /* Offre */
-            .special-offer h3 { font-size: 2rem; }
-            .timer { font-size: 2rem; margin-bottom: 30px; }
+            .special-offer { padding: 35px 25px; }
+            .special-offer h3 { font-size: 1.8rem; }
+            .timer { font-size: 1.8rem; margin-bottom: 25px; }
+            .timer span { 
+                margin: 0 8px; 
+                padding: 8px 12px;
+                font-size: 1.6rem;
+            }
 
             /* Footer */
-            .footer-content { flex-direction: column; gap: 30px; }
+            .footer-content { 
+                flex-direction: column; 
+                gap: 35px; 
+            }
+            .footer-section { min-width: 100%; }
+            .trust-badges { 
+                flex-direction: column; 
+                gap: 20px;
+                padding: 25px 15px;
+            }
+            .trust-badge {
+                width: 100%;
+                justify-content: center;
+            }
+            .social-links { justify-content: center; }
+            .payment-methods {
+                gap: 15px;
+            }
+            
+            /* Bouton retour en haut mobile */
+            .back-to-top {
+                bottom: 90px; /* Au-dessus de la bottom nav */
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                box-shadow: 0 8px 24px rgba(0, 168, 168, 0.6);
+            }
+            
+            /* Badges plus visibles sur mobile */
+            .badges {
+                gap: 8px;
+                margin: 10px 0;
+                flex-wrap: wrap;
+            }
+            
+            .badge {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+            
+            .stock-badge {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+            }
+            
+            /* Safe area pour iPhone avec encoche */
+            main {
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+            
+            body {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Optimisations inputs mobile */
+            input, select, textarea {
+                font-size: 16px !important; /* Empêche le zoom automatique sur iOS */
+                border-radius: 12px;
+            }
+            
+            input:focus, select:focus, textarea:focus {
+                outline: 2px solid var(--accent-primary);
+                outline-offset: 2px;
+            }
+            
+            /* Amélioration du contraste des textes */
+            .secondary-text {
+                color: #c5cdd8;
+            }
+            
+            /* Touch target minimum 44x44px (recommandation iOS) */
+            button, a, .filter-btn, .carousel-btn, .quick-action-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+            
+            /* Désactive le double-tap zoom sur les boutons */
+            .add-to-cart, .hero-button, .filter-btn, 
+            .mobile-nav-item, .carousel-btn {
+                touch-action: manipulation;
+            }
+            
+            /* Amélioration des ombres pour plus de profondeur */
+            .product-card {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+            
+            .product-card:active {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            /* Amélioration des catégories pour le tactile */
+            .category-item {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+            
+            .category-item:active {
+                transform: scale(0.98);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            /* Amélioration de l'overlay des catégories */
+            .category-overlay {
+                backdrop-filter: blur(8px);
+                background: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.85) 0%,
+                    rgba(0, 0, 0, 0.3) 100%
+                );
+            }
+            
+            .category-overlay h3 {
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            }
+            
+            /* Amélioration des témoignages mobile */
+            .testimonial-card {
+                background-color: rgba(43, 48, 56, 0.8);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+            
+            /* Amélioration de la section newsletter */
+            .newsletter-section {
+                border-radius: 0;
+                margin: 0 -15px;
+            }
+            
+            .newsletter-form-enhanced input,
+            .newsletter-form-enhanced button {
+                padding: 16px 24px;
+                font-size: 16px;
+            }
+            
+            /* Amélioration des feature cards */
+            .feature-item {
+                background-color: rgba(43, 48, 56, 0.6);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            }
+            
+            .feature-item:active {
+                transform: scale(0.98);
+            }
+            
+            /* Amélioration de l'offre spéciale */
+            .special-offer {
+                background: linear-gradient(
+                    135deg,
+                    rgba(43, 48, 56, 0.9) 0%,
+                    rgba(30, 33, 38, 0.9) 100%
+                );
+                backdrop-filter: blur(10px);
+                border-width: 3px;
+                box-shadow: 0 10px 40px rgba(0, 168, 168, 0.3);
+            }
+            
+            /* Amélioration des stats */
+            .stat-number {
+                text-shadow: 0 2px 10px rgba(0, 168, 168, 0.5);
+            }
+            
+            /* Amélioration du footer mobile */
+            .site-footer {
+                margin-top: 40px;
+                padding-bottom: calc(60px + env(safe-area-inset-bottom));
+            }
+            
+            /* Grid produits optimisé pour mobile */
+            .product-grid {
+                gap: 20px;
+            }
+            
+            /* Amélioration des dots du carrousel */
+            .slide-dots {
+                bottom: 75px;
+            }
+            
+            .dot {
+                width: 10px;
+                height: 10px;
+                margin: 0 6px;
+            }
+            
+            .dot.active {
+                width: 28px;
+                border-radius: 5px;
+            }
+            
+            /* Loading skeleton pour une meilleure UX */
+            .loading-skeleton {
+                background: linear-gradient(
+                    90deg,
+                    var(--mid-dark-bg) 0%,
+                    #353b47 50%,
+                    var(--mid-dark-bg) 100%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s ease-in-out infinite;
+            }
+            
+            /* Pull to refresh indicator */
+            .ptr-indicator {
+                position: fixed;
+                top: 60px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-100px);
+                background-color: var(--accent-primary);
+                color: white;
+                padding: 10px 24px;
+                border-radius: 50px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                opacity: 0;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .ptr-indicator.active {
+                transform: translateX(-50%) translateY(10px);
+                opacity: 1;
+            }
+            
+            /* Amélioration du scroll snap pour les témoignages */
+            .testimonial-slider {
+                scroll-snap-type: x mandatory;
+                scroll-padding: 20px;
+            }
+            
+            .testimonial-card {
+                scroll-snap-align: center;
+            }
+            
+            /* Optimisation des transitions pour 60fps */
+            .product-card, .category-item, .mobile-nav-item {
+                will-change: transform;
+                transform: translate3d(0, 0, 0);
+            }
+            
+            /* Témoignages */
+            .testimonial-card {
+                min-width: 85vw;
+                max-width: 85vw;
+                padding: 30px 20px;
+            }
+            
+            /* Espacement et Typographie Mobile Optimisés */
+            :root {
+                --spacing-large: 50px;
+            }
+            
+            /* Titres optimisés pour la lisibilité mobile */
+            h2.section-title {
+                font-size: 1.8rem;
+                line-height: 1.3;
+                margin: 50px 0 30px;
+                padding: 0 10px;
+                text-align: center;
+            }
+            
+            /* Container avec padding confortable */
+            .container {
+                padding: 0 15px;
+            }
+            
+            /* Texte plus lisible */
+            body {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            p {
+                line-height: 1.7;
+                margin-bottom: 1rem;
+            }
+            
+            /* Espacement entre sections */
+            section {
+                margin-bottom: 40px;
+            }
+            
+            h2.section-title {
+                font-size: 1.8rem;
+                margin: 60px 0 35px;
+            }
+            
+            .container {
+                width: 95%;
+                padding: 0 15px;
+            }
+        }
+        
+        /* Responsive pour nouvelles sections */
+        @media (max-width: 768px) {
+            .usp-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .faq-question {
+                padding: 20px;
+                font-size: 1rem;
+            }
+            
+            .faq-answer {
+                padding: 0 20px;
+            }
+            
+            .faq-item.active .faq-answer {
+                padding: 0 20px 20px 20px;
+            }
+            
+            .newsletter-content h3 {
+                font-size: 1.8rem;
+            }
+            
+            .newsletter-benefits {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .newsletter-form-enhanced {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .newsletter-form-enhanced button {
+                width: 100%;
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            
+            .brand-logo {
+                width: 100%;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .usp-card {
+                padding: 30px 20px;
+            }
+            
+            .usp-icon {
+                font-size: 2.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-number {
+                font-size: 3rem;
+            }
+            
+            .newsletter-section {
+                padding: 60px 0;
+            }
+            
+            .newsletter-content {
+                padding: 0 15px;
+            }
+            
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .brand-logo {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+        
+        /* Optimisations pour très petits écrans */
+        @media (max-width: 380px) {
+            .site-header h1 { font-size: 1.3rem; }
+            .slideshow-container { height: 350px; }
+            .slideshow-item img { height: 350px; }
+            .hero-button { padding: 12px 25px; font-size: 0.9rem; }
+            .category-item { height: 260px; }
+            .product-card img { height: 280px; }
+            .special-offer h3 { font-size: 1.5rem; }
+            .timer { font-size: 1.5rem; }
+            .timer span { font-size: 1.3rem; padding: 6px 10px; }
+            
+            .newsletter-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .newsletter-benefit {
+                font-size: 0.9rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
         }
 
     </style>
@@ -877,11 +2700,14 @@
             </button>
 
             <nav class="main-nav" id="main-nav" role="menubar" aria-label="Navigation principale">
-                <a href="#collections-section" role="menuitem">Collections</a>
-                <a href="#products-title" role="menuitem">Boutique</a>
-                <a href="#featured-offers" role="menuitem">Promotions</a>
-                <a href="#features-section" role="menuitem">Notre Engagement</a>
-                <a href="#" id="cart-link" role="menuitem" aria-live="polite" aria-label="Voir le panier, contient 0 article">Panier (<span id="cart-count">0</span>)</a>
+                <a href="#collections-section" role="menuitem"><i class="fas fa-layer-group"></i> Collections</a>
+                <a href="#products-title" role="menuitem"><i class="fas fa-shopping-bag"></i> Boutique</a>
+                <a href="#featured-offers" role="menuitem"><i class="fas fa-tag"></i> Promotions</a>
+                <a href="#features-section" role="menuitem"><i class="fas fa-star"></i> Notre Engagement</a>
+                <a href="#" id="cart-link" role="menuitem" aria-live="polite" aria-label="Voir le panier, contient 0 article" class="cart-badge">
+                    <i class="fas fa-shopping-cart"></i> Panier
+                    <span class="cart-badge-count" id="cart-count">0</span>
+                </a>
             </nav>
         </div>
     </header>
@@ -928,6 +2754,16 @@
                 
                 <div class="hero-content fused-content">
                     <a href="#products-title" class="hero-button">Découvrir la Collection</a>
+                </div>
+                
+                <!-- Contrôles de navigation -->
+                <div class="carousel-controls">
+                    <button class="carousel-btn" onclick="moveSlide(-1)" aria-label="Image précédente">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn" onclick="moveSlide(1)" aria-label="Image suivante">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
                 
                 <div class="slide-dots" id="slide-dots"></div> 
@@ -1003,11 +2839,31 @@
             <section aria-labelledby="products-title">
                 <h2 class="section-title" id="products-title">Sélection d'Équipements Premium</h2>
                 
+                <!-- Filtres de produits -->
+                <div class="product-filters">
+                    <button class="filter-btn active" data-filter="all">Tous les Produits</button>
+                    <button class="filter-btn" data-filter="new">Nouveautés</button>
+                    <button class="filter-btn" data-filter="sale">Promotions</button>
+                    <button class="filter-btn" data-filter="retro">Rétro</button>
+                    <div class="search-bar">
+                        <input type="text" id="product-search" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
                 <div class="product-grid">
                     
-                    <article class="product-card" data-sku="P001" role="region" aria-labelledby="product-title-1">
+                    <article class="product-card" data-sku="P001" data-category="new,sale" role="region" aria-labelledby="product-title-1">
                         <div class="product-card-header">
                             <img src="images/maillot-domicile-mbappe.jpg" alt="Maillot de match Premium - Vue de face" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="product-info">
                             <div>
@@ -1025,9 +2881,18 @@
                         </div>
                     </article>
 
-                    <article class="product-card" data-sku="P002" role="region" aria-labelledby="product-title-2">
+                    <article class="product-card" data-sku="P002" data-category="new" role="region" aria-labelledby="product-title-2">
                         <div class="product-card-header">
                             <img src="images/maillot-exterieur-haaland.jpg" alt="Maillot Contraste Épure - Design moderne" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="stock-badge">Stock Limité</span>
                         </div>
                         <div class="product-info">
                              <div>
@@ -1044,9 +2909,17 @@
                         </div>
                     </article>
 
-                    <article class="product-card" data-sku="P003" role="region" aria-labelledby="product-title-3">
+                    <article class="product-card" data-sku="P003" data-category="retro" role="region" aria-labelledby="product-title-3">
                         <div class="product-card-header">
                             <img src="images/maillot-retro-classique.jpg" alt="Maillot Héritage Classique '98" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="product-info">
                             <div>
@@ -1063,9 +2936,17 @@
                         </div>
                     </article>
                     
-                    <article class="product-card" data-sku="P004" role="region" aria-labelledby="product-title-4">
+                    <article class="product-card" data-sku="P004" data-category="sale" role="region" aria-labelledby="product-title-4">
                         <div class="product-card-header">
                             <img src="images/tshirt-entrainement-pro.jpg" alt="T-shirt d'Entraînement Ergonomique Noir" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="product-info">
                             <div>
@@ -1078,6 +2959,227 @@
                             <div class="price-cta">
                                 <span class="price" data-price-value="49.99">49.99 €</span>
                                 <button class="add-to-cart" data-name="T-shirt Entraînement Pro" data-price="49.99" aria-label="Ajouter au panier : T-shirt Entraînement Ergonomique">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P005" data-category="new" role="region" aria-labelledby="product-title-5">
+                        <div class="product-card-header">
+                            <img src="images/maillot-domicile-mbappe.jpg" alt="Short Performance Pro" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-5">Short Performance Pro</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Nouveau</span>
+                                </div>
+                                <p class="description">Short technique avec poches zippées. Tissu extensible et respirant pour un maximum de confort.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="59.99">59.99 €</span>
+                                <button class="add-to-cart" data-name="Short Performance Pro" data-price="59.99" aria-label="Ajouter au panier : Short Performance Pro">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P006" data-category="sale" role="region" aria-labelledby="product-title-6">
+                        <div class="product-card-header">
+                            <img src="images/lyonback.webp" alt="Veste Zippée Technique" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="stock-badge">-20%</span>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-6">Veste Zippée Technique</h3>
+                                <div class="badges">
+                                    <span class="badge badge-sale">-20%</span>
+                                </div>
+                                <p class="description">Veste légère et résistante au vent. Parfaite pour vos échauffements et déplacements.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="79.99">79.99 €</span>
+                                <button class="add-to-cart" data-name="Veste Zippée Technique" data-price="79.99" aria-label="Ajouter au panier : Veste Zippée Technique">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P007" data-category="new,sale" role="region" aria-labelledby="product-title-7">
+                        <div class="product-card-header">
+                            <img src="images/grizback.webp" alt="Pantalon Survêtement Elite" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-7">Pantalon Survêtement Elite</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Nouveau</span>
+                                    <span class="badge badge-sale">Promo</span>
+                                </div>
+                                <p class="description">Coupe ajustée avec fermetures éclair aux chevilles. Confort optimal et style moderne.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="69.99">69.99 €</span>
+                                <button class="add-to-cart" data-name="Pantalon Survêtement Elite" data-price="69.99" aria-label="Ajouter au panier : Pantalon Survêtement Elite">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P008" data-category="retro" role="region" aria-labelledby="product-title-8">
+                        <div class="product-card-header">
+                            <img src="images/dortmundback.webp" alt="Maillot Rétro Édition 90s" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-8">Maillot Rétro Édition 90s</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Rétro</span>
+                                </div>
+                                <p class="description">Collection heritage inspirée des années 90. Design iconique et qualité premium.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="94.99">94.99 €</span>
+                                <button class="add-to-cart" data-name="Maillot Rétro 90s" data-price="94.99" aria-label="Ajouter au panier : Maillot Rétro Édition 90s">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P009" data-category="new" role="region" aria-labelledby="product-title-9">
+                        <div class="product-card-header">
+                            <img src="images/bayernback.webp" alt="Kit Complet Performance" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="stock-badge">Édition Limitée</span>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-9">Kit Complet Performance</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Exclusif</span>
+                                </div>
+                                <p class="description">Ensemble maillot + short + chaussettes. Économisez 15% sur l'ensemble complet.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="179.99">179.99 €</span>
+                                <button class="add-to-cart" data-name="Kit Complet Performance" data-price="179.99" aria-label="Ajouter au panier : Kit Complet Performance">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P010" data-category="new,sale" role="region" aria-labelledby="product-title-10">
+                        <div class="product-card-header">
+                            <img src="images/realmadridback.webp" alt="Sweat Capuche Premium" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-10">Sweat Capuche Premium</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Nouveau</span>
+                                    <span class="badge badge-sale">-10%</span>
+                                </div>
+                                <p class="description">Molleton doux intérieur. Capuche ajustable et poches kangourou. Confort maximal.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="89.99">89.99 €</span>
+                                <button class="add-to-cart" data-name="Sweat Capuche Premium" data-price="89.99" aria-label="Ajouter au panier : Sweat Capuche Premium">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P011" data-category="sale" role="region" aria-labelledby="product-title-11">
+                        <div class="product-card-header">
+                            <img src="images/liver.webp" alt="Chaussettes Techniques Pro" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-11">Chaussettes Techniques Pro</h3>
+                                <div class="badges">
+                                    <span class="badge badge-sale">Pack x3</span>
+                                </div>
+                                <p class="description">Pack de 3 paires. Compression optimale et zones ventilées. Soutien de la voûte plantaire.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="29.99">29.99 €</span>
+                                <button class="add-to-cart" data-name="Chaussettes Techniques Pro x3" data-price="29.99" aria-label="Ajouter au panier : Chaussettes Techniques Pro">Ajouter au Panier</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="product-card" data-sku="P012" data-category="new,retro" role="region" aria-labelledby="product-title-12">
+                        <div class="product-card-header">
+                            <img src="images/franc.webp" alt="Maillot Collector Édition Spéciale" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="quick-action-btn quick-view" aria-label="Vue rapide" title="Vue rapide">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="stock-badge">Pièce Unique</span>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3 id="product-title-12">Maillot Collector Édition Spéciale</h3>
+                                <div class="badges">
+                                    <span class="badge badge-new">Collector</span>
+                                </div>
+                                <p class="description">Édition limitée numérotée. Livré avec certificat d'authenticité et packaging premium.</p>
+                            </div>
+                            <div class="price-cta">
+                                <span class="price" data-price-value="149.99">149.99 €</span>
+                                <button class="add-to-cart" data-name="Maillot Collector" data-price="149.99" aria-label="Ajouter au panier : Maillot Collector Édition Spéciale">Ajouter au Panier</button>
                             </div>
                         </div>
                     </article>
@@ -1133,6 +3235,205 @@
                         <p class="testimonial-text">"Je n'ai jamais eu un maillot avec une coupe aussi flatteuse et un tissu aussi agréable. Le service client est également très professionnel et réactif."</p>
                         <p class="testimonial-author">Sofiane B. - Très Satisfait</p>
                     </article>
+                    <article class="testimonial-card" role="testimonial">
+                        <span class="quote-indicator">"</span>
+                        <p class="testimonial-text">"Livraison ultra rapide et emballage soigné. La qualité des tissus est exceptionnelle. Je suis totalement conquis par cette marque !"</p>
+                        <p class="testimonial-author">Marc T. - Client Fidèle</p>
+                    </article>
+                    <article class="testimonial-card" role="testimonial">
+                        <span class="quote-indicator">"</span>
+                        <p class="testimonial-text">"Parfait pour mes entraînements. Les matériaux respirent bien et le design est moderne. Je recommande à tous mes amis sportifs."</p>
+                        <p class="testimonial-author">Sarah K. - Athlète Pro</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section USP Avantages -->
+        <section class="usp-section" aria-labelledby="usp-title">
+            <div class="container">
+                <h2 class="section-title" id="usp-title">Pourquoi Choisir LUX FUTURA ?</h2>
+                <div class="usp-grid">
+                    <div class="usp-card">
+                        <i class="fas fa-certificate usp-icon"></i>
+                        <h4>Qualité Garantie</h4>
+                        <p>Tous nos produits sont fabriqués avec des matériaux premium et testés pour assurer une durabilité exceptionnelle.</p>
+                    </div>
+                    <div class="usp-card">
+                        <i class="fas fa-truck-fast usp-icon"></i>
+                        <h4>Livraison Express</h4>
+                        <p>Expédition sous 24h et livraison en 2-5 jours ouvrés. Suivi en temps réel de votre commande.</p>
+                    </div>
+                    <div class="usp-card">
+                        <i class="fas fa-shield-halved usp-icon"></i>
+                        <h4>Paiement 100% Sécurisé</h4>
+                        <p>Technologie SSL et cryptage bancaire. Vos données sont protégées à chaque transaction.</p>
+                    </div>
+                    <div class="usp-card">
+                        <i class="fas fa-rotate-left usp-icon"></i>
+                        <h4>Retours Faciles</h4>
+                        <p>30 jours pour changer d'avis. Retours gratuits et remboursement rapide sans questions.</p>
+                    </div>
+                    <div class="usp-card">
+                        <i class="fas fa-headphones usp-icon"></i>
+                        <h4>Support Dédié</h4>
+                        <p>Équipe disponible 7j/7 par chat, email ou téléphone pour répondre à toutes vos questions.</p>
+                    </div>
+                    <div class="usp-card">
+                        <i class="fas fa-leaf usp-icon"></i>
+                        <h4>Engagement Éco-responsable</h4>
+                        <p>Matériaux recyclés et production éthique. Nous nous engageons pour un avenir durable.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Statistiques -->
+        <section class="stats-section" aria-labelledby="stats-title">
+            <div class="container">
+                <h2 class="section-title" id="stats-title">LUX FUTURA en Chiffres</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Clients Satisfaits</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Taux de Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Produits Premium</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support Client</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section FAQ -->
+        <section class="faq-section" aria-labelledby="faq-title">
+            <div class="container">
+                <h2 class="section-title" id="faq-title">Questions Fréquentes</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Quels sont les délais de livraison ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Nous expédions toutes les commandes sous 24h ouvrées. La livraison standard prend 2-5 jours ouvrés en France métropolitaine. Pour les autres destinations, comptez 5-10 jours. Vous recevrez un numéro de suivi dès l'expédition de votre colis.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Puis-je retourner un article si la taille ne convient pas ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Absolument ! Vous disposez de 30 jours pour retourner tout article qui ne vous convient pas. Les retours sont gratuits en France. L'article doit être dans son état d'origine avec les étiquettes. Le remboursement est effectué sous 5-7 jours après réception du retour.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Comment choisir ma taille ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Consultez notre guide des tailles disponible sur chaque fiche produit. Si vous êtes entre deux tailles, nous recommandons de prendre la taille supérieure pour plus de confort. Notre service client est également disponible pour vous conseiller personnellement.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Les paiements sont-ils sécurisés ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Oui, tous les paiements sont 100% sécurisés. Nous utilisons le protocole SSL et le système 3D Secure pour protéger vos données bancaires. Nous acceptons Visa, Mastercard, PayPal, American Express et Apple Pay. Aucune de vos informations de paiement n'est conservée sur nos serveurs.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Proposez-vous des réductions pour les commandes groupées ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Oui ! Nous proposons régulièrement des offres spéciales sur nos kits complets. Inscrivez-vous à notre newsletter pour recevoir des codes promo exclusifs et être informé en avant-première de nos promotions. Les abonnés bénéficient également de -10% sur leur première commande.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Comment entretenir mes produits LUX FUTURA ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Pour préserver la qualité de vos équipements, nous recommandons un lavage en machine à 30°C maximum, avec des couleurs similaires. Évitez le sèche-linge et préférez un séchage à l'air libre. N'utilisez pas d'adoucissant qui pourrait altérer les propriétés techniques des tissus.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Puis-je suivre ma commande en temps réel ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Oui, vous recevrez un email de confirmation avec un lien de suivi dès que votre commande sera expédiée. Vous pourrez suivre votre colis en temps réel jusqu'à la livraison. Nous travaillons avec les meilleurs transporteurs pour garantir une livraison rapide et sécurisée.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Newsletter Améliorée -->
+        <section class="newsletter-section" aria-labelledby="newsletter-title">
+            <div class="container">
+                <div class="newsletter-content">
+                    <h3 id="newsletter-title">Rejoignez la Communauté LUX FUTURA</h3>
+                    <p>Inscrivez-vous et profitez d'avantages exclusifs</p>
+                    
+                    <div class="newsletter-benefits">
+                        <div class="newsletter-benefit">
+                            <i class="fas fa-gift"></i>
+                            <span>-10% sur votre première commande</span>
+                        </div>
+                        <div class="newsletter-benefit">
+                            <i class="fas fa-bolt"></i>
+                            <span>Accès aux ventes privées</span>
+                        </div>
+                        <div class="newsletter-benefit">
+                            <i class="fas fa-star"></i>
+                            <span>Nouveautés en avant-première</span>
+                        </div>
+                    </div>
+                    
+                    <form class="newsletter-form-enhanced" onsubmit="handleNewsletterSubmit(event)">
+                        <input type="email" placeholder="Votre adresse email" required aria-label="Adresse email pour la newsletter">
+                        <button type="submit"><i class="fas fa-paper-plane"></i> S'inscrire</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Marques Partenaires -->
+        <section class="brands-section" aria-labelledby="brands-title">
+            <div class="container">
+                <h2 class="section-title" id="brands-title">Ils Nous Font Confiance</h2>
+                <div class="brands-grid">
+                    <div class="brand-logo">ADIDAS</div>
+                    <div class="brand-logo">NIKE</div>
+                    <div class="brand-logo">PUMA</div>
+                    <div class="brand-logo">UMBRO</div>
+                    <div class="brand-logo">KAPPA</div>
+                    <div class="brand-logo">FILA</div>
+                    <div class="brand-logo">REEBOK</div>
+                    <div class="brand-logo">DIADORA</div>
                 </div>
             </div>
         </section>
@@ -1141,10 +3442,51 @@
     
     
     <footer class="site-footer">
+        <div class="container">
+            <!-- Trust Badges -->
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-shipping-fast"></i>
+                    <div class="trust-badge-text">
+                        <span class="trust-badge-title">Livraison Rapide</span>
+                        <span>2-5 jours ouvrés</span>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-undo"></i>
+                    <div class="trust-badge-text">
+                        <span class="trust-badge-title">Retours Gratuits</span>
+                        <span>Sous 30 jours</span>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-lock"></i>
+                    <div class="trust-badge-text">
+                        <span class="trust-badge-title">Paiement Sécurisé</span>
+                        <span>SSL & 3D Secure</span>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-headset"></i>
+                    <div class="trust-badge-text">
+                        <span class="trust-badge-title">Support 24/7</span>
+                        <span>Service client réactif</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="container footer-content">
             <div class="footer-section">
                 <h4>LUX FUTURA</h4>
                 <p>L'excellence dans la simplicité. Des équipements conçus pour la performance et le bien-être durable de nos clients.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
             </div>
             <div class="footer-section">
                 <h4>Support</h4>
@@ -1169,14 +3511,52 @@
             </div>
         </div>
         <div class="container footer-bottom">
-            <p>&copy; 2025 LUX FUTURA. Tous droits réservés. | Version 2.0 Confort & Équilibre.</p>
+            <div class="payment-methods">
+                <div class="payment-icon" title="Visa"><i class="fab fa-cc-visa"></i></div>
+                <div class="payment-icon" title="Mastercard"><i class="fab fa-cc-mastercard"></i></div>
+                <div class="payment-icon" title="PayPal"><i class="fab fa-cc-paypal"></i></div>
+                <div class="payment-icon" title="American Express"><i class="fab fa-cc-amex"></i></div>
+                <div class="payment-icon" title="Apple Pay"><i class="fab fa-cc-apple-pay"></i></div>
+            </div>
+            <p style="margin-top: 25px;">&copy; 2025 LUX FUTURA. Tous droits réservés. | Version 2.0 Confort & Équilibre.</p>
         </div>
     </footer>
     
+    <!-- Panier Flottant -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="floating-cart" id="floating-cart">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Mon Panier</h3>
+            <button class="cart-close" id="cart-close" aria-label="Fermer le panier">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-bag"></i>
+                <p><strong>Votre panier est vide</strong></p>
+                <p>Découvrez nos produits et ajoutez vos favoris !</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span class="cart-total-label">Total :</span>
+                <span class="cart-total-amount" id="cart-total">0.00 €</span>
+            </div>
+            <button class="cart-checkout-btn" id="cart-checkout">
+                <i class="fas fa-credit-card"></i> Passer la Commande
+            </button>
+        </div>
+    </div>
+    
+    <!-- Bouton Retour en Haut -->
+    <button class="back-to-top" id="back-to-top" aria-label="Retour en haut">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
     
     <script>
-        // Lignes 1651+ (Début du script)
-
+        // ========== Variables Globales ==========
         let cart = [];
         const cartLink = document.getElementById('cart-link');
         const cartCount = document.getElementById('cart-count');
@@ -1191,9 +3571,21 @@
         const mobileThumbnails = document.querySelectorAll('#mobile-thumbnails-standalone .thumbnail-item'); 
         const cyberTimerElement = document.getElementById('cyber-timer');
         
+        // Nouveaux éléments
+        const floatingCart = document.getElementById('floating-cart');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartClose = document.getElementById('cart-close');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const cartTotalElement = document.getElementById('cart-total');
+        const backToTopBtn = document.getElementById('back-to-top');
+        const siteHeader = document.querySelector('.site-header');
+        const productSearch = document.getElementById('product-search');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
         let slideIndex = 1;
         let slideTimer; 
-        let touchStartX = 0; 
+        let touchStartX = 0;
+        let wishlist = []; 
         
         // Les classes d'animation sont simplifiées pour un design plus doux
         const animationClasses = {
@@ -1301,80 +3693,313 @@
             touchStartX = 0; 
         }
         
-        // --- Logique du Menu Hamburger ---
-        if (hamburger) {
-            hamburger.addEventListener('click', () => {
-                nav.classList.toggle('active');
-                hamburger.classList.toggle('open');
-                const isExpanded = nav.classList.contains('active');
-                hamburger.setAttribute('aria-expanded', isExpanded); 
+        // Navigation avec boutons
+        function moveSlide(direction) {
+            clearTimeout(slideTimer);
+            let newIndex = slideIndex + direction;
+            if (newIndex > slides.length) newIndex = 1;
+            if (newIndex < 1) newIndex = slides.length;
+            currentSlide(newIndex);
+        }
+        
+        // ========== Filtres de Produits ==========
+        function filterProducts(category) {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = '';
+                } else {
+                    const categories = card.dataset.category || '';
+                    if (categories.includes(category)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
             });
-            document.querySelectorAll('.main-nav a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth <= 600) {
-                        nav.classList.remove('active');
-                        hamburger.classList.remove('open');
-                        hamburger.setAttribute('aria-expanded', 'false');
+        }
+        
+        function searchProducts(searchTerm) {
+            const productCards = document.querySelectorAll('.product-card');
+            searchTerm = searchTerm.toLowerCase();
+            
+            productCards.forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const productDesc = card.querySelector('.description').textContent.toLowerCase();
+                
+                if (productName.includes(searchTerm) || productDesc.includes(searchTerm)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // ========== Header Scroll & Back to Top ==========
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Header scroll effect
+            if (scrollTop > 100) {
+                siteHeader.classList.add('scrolled');
+            } else {
+                siteHeader.classList.remove('scrolled');
+            }
+            
+            // Back to top button
+            if (scrollTop > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // ========== Wishlist ==========
+        function toggleWishlist(productName) {
+            const index = wishlist.indexOf(productName);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                return false;
+            } else {
+                wishlist.push(productName);
+                return true;
+            }
+        }
+        
+        // ========== FAQ Accordion ==========
+        function setupFAQ() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Fermer les autres items
+                    const wasActive = item.classList.contains('active');
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // Toggle l'item cliqué
+                    if (!wasActive) {
+                        item.classList.add('active');
                     }
                 });
             });
         }
         
-        // --- Logique du Panier (Sans Emoji) ---
+        // ========== Newsletter Enhanced ==========
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // Simuler l'inscription
+            alert(`Merci de votre inscription !\n\nVous allez recevoir un email de confirmation à ${email}\n\n🎁 Votre code promo -10% : WELCOME10`);
+            event.target.reset();
+        }
+        
+        // ========== Animation des Stats au Scroll ==========
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const text = target.textContent;
+                        const number = parseInt(text.replace(/[^0-9]/g, ''));
+                        
+                        if (!isNaN(number)) {
+                            animateNumber(target, number, text);
+                        }
+                        observer.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(stat => observer.observe(stat));
+        }
+        
+        function animateNumber(element, target, originalText) {
+            const duration = 2000;
+            const steps = 60;
+            const increment = target / steps;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = originalText;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + originalText.replace(/[0-9]/g, '').replace('+', '');
+                }
+            }, duration / steps);
+        }
+        
+        // ========== Logique du Menu Hamburger ==========
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                hamburger.classList.toggle('open');
+                const isExpanded = nav.classList.contains('active');
+                hamburger.setAttribute('aria-expanded', isExpanded);
+                
+                // Empêcher le scroll du body quand le menu est ouvert sur mobile
+                if (isExpanded && window.innerWidth <= 600) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // ========== Gestion du Panier Flottant ==========
         function updateCartCount() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
             cartLink.setAttribute('aria-label', `Voir le panier, contient ${totalItems} article${totalItems > 1 ? 's' : ''}`);
+            
+            // Mise à jour du compteur mobile
+            const mobileCartCount = document.getElementById('mobile-cart-count');
+            if (mobileCartCount) {
+                mobileCartCount.textContent = totalItems;
+                mobileCartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+        
+        function updateCartTotal() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = total.toFixed(2) + ' €';
+        }
+        
+        function renderCartItems() {
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p><strong>Votre panier est vide</strong></p>
+                        <p>Découvrez nos produits et ajoutez vos favoris !</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item" data-name="${item.name}">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button class="qty-btn qty-minus" data-name="${item.name}" aria-label="Diminuer quantité">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn qty-plus" data-name="${item.name}" aria-label="Augmenter quantité">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" data-name="${item.name}" aria-label="Retirer du panier">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            // Ajouter les événements aux boutons de quantité
+            document.querySelectorAll('.qty-minus').forEach(btn => {
+                btn.addEventListener('click', () => changeQuantity(btn.dataset.name, -1));
+            });
+            document.querySelectorAll('.qty-plus').forEach(btn => {
+                btn.addEventListener('click', () => changeQuantity(btn.dataset.name, 1));
+            });
+            document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                btn.addEventListener('click', () => removeFromCart(btn.dataset.name));
+            });
+        }
+        
+        function changeQuantity(itemName, delta) {
+            const item = cart.find(i => i.name === itemName);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(itemName);
+                } else {
+                    updateCartCount();
+                    updateCartTotal();
+                    renderCartItems();
+                }
+            }
+        }
+        
+        function removeFromCart(itemName) {
+            cart = cart.filter(item => item.name !== itemName);
+            updateCartCount();
+            updateCartTotal();
+            renderCartItems();
+        }
+        
+        function openCart() {
+            floatingCart.classList.add('active');
+            cartOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCart() {
+            floatingCart.classList.remove('active');
+            cartOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         function addToCart(event) {
             const button = event.target;
             if (!button.classList.contains('add-to-cart')) return;
+            
+            const productCard = button.closest('.product-card');
             const name = button.dataset.name;
             const price = parseFloat(button.dataset.price);
+            const image = productCard.querySelector('img').src;
+            
             const existingItem = cart.find(item => item.name === name);
 
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ name, price, quantity: 1 });
+                cart.push({ name, price, quantity: 1, image });
             }
+            
             updateCartCount();
+            updateCartTotal();
+            renderCartItems();
             
-            // Confirmation visuelle sans emoji
-            const originalText = button.textContent;
-            const originalBg = window.getComputedStyle(button).getPropertyValue('background-color');
-            const originalShadow = window.getComputedStyle(button).getPropertyValue('box-shadow');
+            // Ouvrir le panier brièvement
+            openCart();
             
-            button.textContent = 'AJOUTÉ';
+            // Confirmation visuelle
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> AJOUTÉ';
             button.style.backgroundColor = 'var(--success-color)';
-            button.style.boxShadow = `0 0 10px rgba(56, 176, 0, 0.5)`;
-            button.style.transform = 'translateY(-3px)'; // Maintien de l'effet hover
 
             setTimeout(() => {
-                button.textContent = originalText;
-                button.style.backgroundColor = originalBg;
-                button.style.boxShadow = originalShadow;
-                button.style.transform = 'translateY(0)';
+                button.innerHTML = originalText;
+                button.style.backgroundColor = '';
             }, 1200); 
         }
 
         function displayCartSummary(e) {
             e.preventDefault();
-            if (cart.length === 0) {
-                alert("Votre panier est actuellement vide. Explorez nos collections !");
-                return;
-            }
-            
-            let summary = "--- SOMMAIRE DE VOTRE PANIER LUX FUTURA ---\n\n";
-            let total = 0;
-            cart.forEach(item => {
-                summary += `- ${item.name} x ${item.quantity} = ${(item.price * item.quantity).toFixed(2)} €\n`;
-                total += item.price * item.quantity;
-            });
-            summary += `\n-------------------------------------------------\n`;
-            summary += `TOTAL ESTIMÉ: ${total.toFixed(2)} €\n`;
-            alert(summary); 
+            openCart();
         }
         
         // --- Logique du Compte à Rebours (Timer) ---
@@ -1435,7 +4060,7 @@
             });
         }
 
-        // --- Initialisation Globale ---
+        // ========== Initialisation Globale ==========
         document.addEventListener('DOMContentLoaded', () => {
             // Carrousel
             if (slides.length > 0) {
@@ -1447,6 +4072,7 @@
                 slideshowContainer.addEventListener('touchstart', handleTouchStart, {passive: true});
                 slideshowContainer.addEventListener('touchend', handleTouchEnd, {passive: true});
             }
+            
             // Panier
             if (productGrid) {
                 productGrid.addEventListener('click', addToCart);
@@ -1454,15 +4080,98 @@
             if (cartLink) {
                 cartLink.addEventListener('click', displayCartSummary);
             }
+            // Panier mobile bottom nav
+            const mobileCartLink = document.getElementById('mobile-cart-link');
+            if (mobileCartLink) {
+                mobileCartLink.addEventListener('click', displayCartSummary);
+            }
+            if (cartClose) {
+                cartClose.addEventListener('click', closeCart);
+            }
+            if (cartOverlay) {
+                cartOverlay.addEventListener('click', closeCart);
+            }
+            
+            // Checkout
+            document.getElementById('cart-checkout')?.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Votre panier est vide !');
+                    return;
+                }
+                alert('Redirection vers le paiement sécurisé...\nTotal: ' + cartTotalElement.textContent);
+            });
+            
             updateCartCount(); 
+            updateCartTotal();
             
             // Timer
             if (cyberTimerElement) {
                 startCyberTimer();
             }
             
+            // Filtres de produits
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterProducts(btn.dataset.filter);
+                });
+            });
+            
+            // Recherche
+            if (productSearch) {
+                productSearch.addEventListener('input', (e) => {
+                    searchProducts(e.target.value);
+                });
+            }
+            
+            // Scroll events
+            window.addEventListener('scroll', handleScroll);
+            
+            // Back to top
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', scrollToTop);
+            }
+            
+            // Wishlist buttons
+            document.querySelectorAll('.quick-action-btn.wishlist').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productCard = btn.closest('.product-card');
+                    const productName = productCard.querySelector('h3').textContent;
+                    const isAdded = toggleWishlist(productName);
+                    
+                    const icon = btn.querySelector('i');
+                    if (isAdded) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        btn.style.backgroundColor = '#ff4444';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        btn.style.backgroundColor = '';
+                    }
+                });
+            });
+            
+            // Quick view (simulation)
+            document.querySelectorAll('.quick-action-btn.quick-view').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productCard = btn.closest('.product-card');
+                    const productName = productCard.querySelector('h3').textContent;
+                    alert('Vue rapide de: ' + productName + '\n\n(Fonctionnalité à développer avec une modal)');
+                });
+            });
+            
             // Animations au scroll
             setupIntersectionObservers();
+            
+            // FAQ
+            setupFAQ();
+            
+            // Animation des statistiques
+            animateStats();
             
             // Accessibilité (Gestion clavier sur les miniatures)
             [...desktopThumbnails, ...mobileThumbnails].forEach(thumb => {
@@ -1473,8 +4182,246 @@
                     }
                 });
             });
+            
+            // Fermer le menu mobile lors du clic sur un lien
+            document.querySelectorAll('.main-nav a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 600) {
+                        nav.classList.remove('active');
+                        hamburger.classList.remove('open');
+                        hamburger.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            // ========================================================================
+            // --- Lazy Loading & Performance Optimizations ---
+            // ========================================================================
+            
+            // Lazy loading natif avec fallback
+            if ('loading' in HTMLImageElement.prototype) {
+                // Le navigateur supporte le lazy loading natif
+                const images = document.querySelectorAll('img[loading="lazy"]');
+                images.forEach(img => {
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                    });
+                });
+            } else {
+                // Fallback avec Intersection Observer
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src || img.src;
+                            img.classList.add('loaded');
+                            observer.unobserve(img);
+                        }
+                    });
+                }, {
+                    rootMargin: '50px'
+                });
+                
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+            
+            // Préchargement des images critiques du carrousel
+            const criticalImages = document.querySelectorAll('.slideshow-item img[loading="eager"]');
+            criticalImages.forEach(img => {
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.as = 'image';
+                link.href = img.src;
+                document.head.appendChild(link);
+            });
+            
+            // Performance: Debounce pour les événements scroll
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+            
+            // Gestion de la Bottom Navigation Mobile
+            const mobileBottomNav = document.querySelector('.mobile-bottom-nav');
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            
+            // Active le bon élément de navigation
+            mobileNavItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Retire active de tous les éléments
+                    mobileNavItems.forEach(nav => nav.classList.remove('active'));
+                    // Ajoute active à l'élément cliqué
+                    this.classList.add('active');
+                    
+                    // Haptic feedback pour mobile
+                    if (navigator.vibrate) {
+                        navigator.vibrate(10);
+                    }
+                });
+            });
+            
+            // Cache la bottom nav lors du scroll vers le bas (avec debounce)
+            let lastScrollTop = 0;
+            const scrollThreshold = 5;
+            
+            const handleBottomNavScroll = debounce(() => {
+                if (window.innerWidth <= 600 && mobileBottomNav) {
+                    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    if (Math.abs(scrollTop - lastScrollTop) > scrollThreshold) {
+                        if (scrollTop > lastScrollTop && scrollTop > 100) {
+                            // Scroll vers le bas
+                            mobileBottomNav.classList.add('hidden');
+                        } else {
+                            // Scroll vers le haut
+                            mobileBottomNav.classList.remove('hidden');
+                        }
+                        lastScrollTop = scrollTop;
+                    }
+                }
+            }, 10);
+            
+            window.addEventListener('scroll', handleBottomNavScroll, { passive: true });
+            
+            // Smooth scroll pour tous les liens d'ancrage
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            const offset = window.innerWidth <= 600 ? 70 : 80;
+                            const targetPosition = target.offsetTop - offset;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                            
+                            // Haptic feedback pour mobile
+                            if (navigator.vibrate) {
+                                navigator.vibrate(10);
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // ========================================================================
+            // --- Améliorations UX Mobile Supplémentaires ---
+            // ========================================================================
+            
+            // Feedback haptic pour tous les boutons sur mobile
+            const addHapticFeedback = (element) => {
+                element.addEventListener('click', () => {
+                    if (navigator.vibrate && window.innerWidth <= 600) {
+                        navigator.vibrate(8);
+                    }
+                }, { passive: true });
+            };
+            
+            document.querySelectorAll('.add-to-cart, .hero-button, .filter-btn, .quick-action-btn').forEach(addHapticFeedback);
+            
+            // Amélioration du swipe pour le carrousel sur mobile
+            const slideshowContainer = document.getElementById('slideshow-carrousel');
+            if (slideshowContainer && window.innerWidth <= 600) {
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+                
+                slideshowContainer.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                }, { passive: true });
+                
+                slideshowContainer.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                }, { passive: true });
+                
+                slideshowContainer.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    const diff = startX - currentX;
+                    const threshold = 50;
+                    
+                    if (Math.abs(diff) > threshold) {
+                        if (diff > 0) {
+                            moveSlide(1); // Swipe gauche = suivant
+                        } else {
+                            moveSlide(-1); // Swipe droite = précédent
+                        }
+                        
+                        // Haptic feedback
+                        if (navigator.vibrate) {
+                            navigator.vibrate(15);
+                        }
+                    }
+                }, { passive: true });
+            }
+            
+            // Optimisation: Cache les animations quand l'onglet n'est pas visible
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    document.body.style.animationPlayState = 'paused';
+                } else {
+                    document.body.style.animationPlayState = 'running';
+                }
+            });
+            
+            // Détection du premier touch pour optimiser les performances
+            let hasTouch = false;
+            window.addEventListener('touchstart', function setHasTouch() {
+                hasTouch = true;
+                document.body.classList.add('has-touch');
+                window.removeEventListener('touchstart', setHasTouch);
+            }, { passive: true });
+            
+            // Optimisation: Réduction des animations si demandé par l'utilisateur
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (prefersReducedMotion.matches) {
+                document.documentElement.style.scrollBehavior = 'auto';
+            }
         });
-        // Lignes 1850+ (Fin du script)
     </script>
+    
+    <!-- Bottom Navigation Mobile (Style Kiabi) -->
+    <nav class="mobile-bottom-nav" aria-label="Navigation mobile principale">
+        <div class="mobile-nav-container">
+            <a href="#" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="#collections-section" class="mobile-nav-item">
+                <i class="fas fa-layer-group"></i>
+                <span>Collections</span>
+            </a>
+            <a href="#products-title" class="mobile-nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Boutique</span>
+            </a>
+            <a href="#featured-offers" class="mobile-nav-item">
+                <i class="fas fa-tag"></i>
+                <span>Promos</span>
+            </a>
+            <button id="mobile-cart-link" class="mobile-nav-item" aria-label="Panier">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Panier</span>
+                <span class="cart-badge-count" id="mobile-cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+    
 </body>
 </html>
