@@ -2294,7 +2294,7 @@
                 gap: 15px;
             }
             .category-item { 
-                height: 260px;
+                height: 320px;
                 border-radius: 12px;
             }
             .category-item img {
@@ -2447,12 +2447,14 @@
             
             /* Amélioration de l'overlay des catégories */
             .category-overlay {
-                backdrop-filter: blur(8px);
+                backdrop-filter: none;
                 background: linear-gradient(
                     to top,
-                    rgba(0, 0, 0, 0.85) 0%,
-                    rgba(0, 0, 0, 0.3) 100%
+                    rgba(0, 0, 0, 0.9) 0%,
+                    rgba(0, 0, 0, 0.2) 60%,
+                    transparent 100%
                 );
+                padding: 40px 15px 15px; 
             }
             
             .category-overlay h3 {
