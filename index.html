@@ -864,14 +864,16 @@
             content-visibility: auto;
         }
         
-        /* Lazy loading natif pour toutes les images */
-        img[loading="lazy"] {
+        /* Lazy loading pour toutes les images sauf carrousel et catégories */
+        img[loading="lazy"]:not(.slideshow-item img):not(.category-item img) {
             opacity: 0;
-            transition: opacity 0.3s ease-in;
+            transition: opacity 0.4s ease-in;
         }
         
-        img[loading="lazy"].loaded {
-            opacity: 1;
+        img[loading="lazy"].loaded,
+        .slideshow-item.active img,
+        .category-item img {
+            opacity: 1 !important;
         }
         
         /* Swipe indicator pour mobile */
@@ -2855,7 +2857,7 @@
                     
                     <article class="product-card" data-sku="P001" data-category="new,sale" role="region" aria-labelledby="product-title-1">
                         <div class="product-card-header">
-                            <img src="images/maillot-domicile-mbappe.jpg" alt="Maillot de match Premium - Vue de face" loading="lazy">
+                            <img src="images/mbapé.webp" alt="Maillot de match Premium - Vue de face" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -2883,7 +2885,7 @@
 
                     <article class="product-card" data-sku="P002" data-category="new" role="region" aria-labelledby="product-title-2">
                         <div class="product-card-header">
-                            <img src="images/maillot-exterieur-haaland.jpg" alt="Maillot Contraste Épure - Design moderne" loading="lazy">
+                            <img src="images/haland.webp" alt="Maillot Contraste Épure - Design moderne" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -2911,7 +2913,7 @@
 
                     <article class="product-card" data-sku="P003" data-category="retro" role="region" aria-labelledby="product-title-3">
                         <div class="product-card-header">
-                            <img src="images/maillot-retro-classique.jpg" alt="Maillot Héritage Classique '98" loading="lazy">
+                            <img src="images/fcbvintage.webp" alt="Maillot Héritage Classique '98" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -2938,7 +2940,7 @@
                     
                     <article class="product-card" data-sku="P004" data-category="sale" role="region" aria-labelledby="product-title-4">
                         <div class="product-card-header">
-                            <img src="images/tshirt-entrainement-pro.jpg" alt="T-shirt d'Entraînement Ergonomique Noir" loading="lazy">
+                            <img src="images/bellinghamtshirt.webp" alt="T-shirt d'Entraînement Ergonomique Noir" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -2965,7 +2967,7 @@
 
                     <article class="product-card" data-sku="P005" data-category="new" role="region" aria-labelledby="product-title-5">
                         <div class="product-card-header">
-                            <img src="images/maillot-domicile-mbappe.jpg" alt="Short Performance Pro" loading="lazy">
+                            <img src="images/bruno.webp" alt="Short Performance Pro" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -2992,7 +2994,7 @@
 
                     <article class="product-card" data-sku="P006" data-category="sale" role="region" aria-labelledby="product-title-6">
                         <div class="product-card-header">
-                            <img src="images/lyonback.webp" alt="Veste Zippée Technique" loading="lazy">
+                            <img src="images/salah.webp" alt="Veste Zippée Technique" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3020,7 +3022,7 @@
 
                     <article class="product-card" data-sku="P007" data-category="new,sale" role="region" aria-labelledby="product-title-7">
                         <div class="product-card-header">
-                            <img src="images/grizback.webp" alt="Pantalon Survêtement Elite" loading="lazy">
+                            <img src="images/yildiz.webp" alt="Pantalon Survêtement Elite" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3048,7 +3050,7 @@
 
                     <article class="product-card" data-sku="P008" data-category="retro" role="region" aria-labelledby="product-title-8">
                         <div class="product-card-header">
-                            <img src="images/dortmundback.webp" alt="Maillot Rétro Édition 90s" loading="lazy">
+                            <img src="images/dembelee.webp" alt="Maillot Rétro Édition 90s" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3075,7 +3077,7 @@
 
                     <article class="product-card" data-sku="P009" data-category="new" role="region" aria-labelledby="product-title-9">
                         <div class="product-card-header">
-                            <img src="images/bayernback.webp" alt="Kit Complet Performance" loading="lazy">
+                            <img src="images/kane.webp" alt="Kit Complet Performance" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3103,7 +3105,7 @@
 
                     <article class="product-card" data-sku="P010" data-category="new,sale" role="region" aria-labelledby="product-title-10">
                         <div class="product-card-header">
-                            <img src="images/realmadridback.webp" alt="Sweat Capuche Premium" loading="lazy">
+                            <img src="images/bellingham.webp" alt="Sweat Capuche Premium" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3131,7 +3133,7 @@
 
                     <article class="product-card" data-sku="P011" data-category="sale" role="region" aria-labelledby="product-title-11">
                         <div class="product-card-header">
-                            <img src="images/liver.webp" alt="Chaussettes Techniques Pro" loading="lazy">
+                            <img src="images/atlenticokits.webp" alt="Chaussettes Techniques Pro" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3158,7 +3160,7 @@
 
                     <article class="product-card" data-sku="P012" data-category="new,retro" role="region" aria-labelledby="product-title-12">
                         <div class="product-card-header">
-                            <img src="images/franc.webp" alt="Maillot Collector Édition Spéciale" loading="lazy">
+                            <img src="images/manunited.webp" alt="Maillot Collector Édition Spéciale" loading="lazy">
                             <div class="product-quick-actions">
                                 <button class="quick-action-btn wishlist" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
                                     <i class="far fa-heart"></i>
@@ -3618,14 +3620,17 @@
         
         function updateThumbnailsAndDots(index) {
             const dots = document.getElementsByClassName("dot");
+            const allThumbs = Array.from(desktopThumbnails).concat(Array.from(mobileThumbnails));
             
-            [...desktopThumbnails, ...mobileThumbnails].forEach((thumb, i) => {
-                const thumbIndex = i % slides.length + 1; 
-                const isActive = thumbIndex === index;
-                
-                thumb.classList.toggle('active', isActive);
-                thumb.setAttribute('aria-selected', isActive);
-            });
+            if (slides.length > 0) {
+                allThumbs.forEach((thumb, i) => {
+                    const thumbIndex = (i % slides.length) + 1; 
+                    const isActive = thumbIndex === index;
+                    
+                    thumb.classList.toggle('active', isActive);
+                    thumb.setAttribute('aria-selected', isActive);
+                });
+            }
 
             for (let i = 0; i < dots.length; i++) {
                 dots[i].classList.remove("active");
@@ -3638,31 +3643,48 @@
         }
         
         function showSlides() {
-            clearTimeout(slideTimer); 
+            if (!slides || slides.length === 0) {
+                // Récupérer les slides si elles n'étaient pas prêtes
+                const fallbackSlides = document.getElementsByClassName("slideshow-item");
+                if (fallbackSlides.length === 0) return;
+            }
             
+            clearTimeout(slideTimer); 
             resetAnimations(); 
 
             slideIndex++;
-            if (slideIndex > slides.length) {slideIndex = 1}
+            if (slideIndex > slides.length) { slideIndex = 1; }
             
-            const currentSlideElement = slides[slideIndex-1];
-            currentSlideElement.classList.add('active');
+            const currentSlideElement = slides[slideIndex - 1];
+            if (currentSlideElement) {
+                currentSlideElement.classList.add('active');
+                const img = currentSlideElement.querySelector('img');
+                if (img) img.classList.add('loaded');
+            }
             
             updateThumbnailsAndDots(slideIndex);
             
-            slideTimer = setTimeout(showSlides, 5000); // Temps plus long pour plus de confort
+            // On s'assure que le prochain switch est programmé
+            slideTimer = setTimeout(showSlides, 4000); 
         }
 
         function currentSlide(n) {
+            if (!slides || slides.length === 0) return;
             clearTimeout(slideTimer); 
             slideIndex = n;
             showSlidesManual(); 
-            slideTimer = setTimeout(showSlides, 5000); 
+            slideTimer = setTimeout(showSlides, 4000); 
         }
         
         function showSlidesManual() {
+            if (!slides || slides.length === 0) return;
             resetAnimations(); 
-            slides[slideIndex - 1].classList.add('active');
+            const slide = slides[slideIndex - 1];
+            if (slide) {
+                slide.classList.add('active');
+                const img = slide.querySelector('img');
+                if (img) img.classList.add('loaded');
+            }
             updateThumbnailsAndDots(slideIndex);
         }
         
@@ -3687,7 +3709,7 @@
                 if (newIndex < 1) newIndex = slides.length;
                 currentSlide(newIndex);
             } else {
-                slideTimer = setTimeout(showSlides, 5000);
+                slideTimer = setTimeout(showSlides, 4000);
             }
 
             touchStartX = 0; 
@@ -4198,43 +4220,50 @@
             // --- Lazy Loading & Performance Optimizations ---
             // ========================================================================
             
-            // Lazy loading natif avec fallback
-            if ('loading' in HTMLImageElement.prototype) {
-                // Le navigateur supporte le lazy loading natif
+            function initLazyLoading() {
                 const images = document.querySelectorAll('img[loading="lazy"]');
-                images.forEach(img => {
-                    img.addEventListener('load', () => {
-                        img.classList.add('loaded');
-                    });
-                });
-            } else {
-                // Fallback avec Intersection Observer
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src || img.src;
-                            img.classList.add('loaded');
-                            observer.unobserve(img);
-                        }
-                    });
-                }, {
-                    rootMargin: '50px'
-                });
                 
-                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-                    imageObserver.observe(img);
-                });
+                const handleImage = (img) => {
+                    if (img.complete) {
+                        img.classList.add('loaded');
+                    } else {
+                        img.addEventListener('load', () => {
+                            img.classList.add('loaded');
+                        }, { once: true });
+                        // Fallback au cas où l'événement load ne se déclenche pas
+                        setTimeout(() => img.classList.add('loaded'), 3000);
+                    }
+                };
+
+                if ('loading' in HTMLImageElement.prototype) {
+                    images.forEach(handleImage);
+                } else {
+                    const imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                handleImage(img);
+                                observer.unobserve(img);
+                            }
+                        });
+                    }, { rootMargin: '50px' });
+                    
+                    images.forEach(img => imageObserver.observe(img));
+                }
             }
-            
+
+            initLazyLoading();
+
             // Préchargement des images critiques du carrousel
             const criticalImages = document.querySelectorAll('.slideshow-item img[loading="eager"]');
             criticalImages.forEach(img => {
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'image';
-                link.href = img.src;
-                document.head.appendChild(link);
+                if (img.src) {
+                    const link = document.createElement('link');
+                    link.rel = 'preload';
+                    link.as = 'image';
+                    link.href = img.src;
+                    document.head.appendChild(link);
+                }
             });
             
             // Performance: Debounce pour les événements scroll
@@ -4332,51 +4361,12 @@
             
             document.querySelectorAll('.add-to-cart, .hero-button, .filter-btn, .quick-action-btn').forEach(addHapticFeedback);
             
-            // Amélioration du swipe pour le carrousel sur mobile
-            const slideshowContainer = document.getElementById('slideshow-carrousel');
-            if (slideshowContainer && window.innerWidth <= 600) {
-                let startX = 0;
-                let currentX = 0;
-                let isDragging = false;
-                
-                slideshowContainer.addEventListener('touchstart', (e) => {
-                    startX = e.touches[0].clientX;
-                    isDragging = true;
-                }, { passive: true });
-                
-                slideshowContainer.addEventListener('touchmove', (e) => {
-                    if (!isDragging) return;
-                    currentX = e.touches[0].clientX;
-                }, { passive: true });
-                
-                slideshowContainer.addEventListener('touchend', () => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    
-                    const diff = startX - currentX;
-                    const threshold = 50;
-                    
-                    if (Math.abs(diff) > threshold) {
-                        if (diff > 0) {
-                            moveSlide(1); // Swipe gauche = suivant
-                        } else {
-                            moveSlide(-1); // Swipe droite = précédent
-                        }
-                        
-                        // Haptic feedback
-                        if (navigator.vibrate) {
-                            navigator.vibrate(15);
-                        }
-                    }
-                }, { passive: true });
-            }
-            
             // Optimisation: Cache les animations quand l'onglet n'est pas visible
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
-                    document.body.style.animationPlayState = 'paused';
+                    clearTimeout(slideTimer);
                 } else {
-                    document.body.style.animationPlayState = 'running';
+                    slideTimer = setTimeout(showSlides, 4000);
                 }
             });
             
