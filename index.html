@@ -2050,17 +2050,27 @@
             
             /* Optimisation des cartes produits pour le tactile */
             .product-card {
+                background-color: transparent;
+                box-shadow: none;
+                border: none;
+                margin-bottom: 25px;
+            }
+            
+            .product-card-header {
                 border-radius: 16px;
-                margin-bottom: 20px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                border-bottom: none;
             }
             
             .product-card img {
-                height: 320px;
-                border-radius: 16px 16px 0 0;
+                height: 180px;
+                border-radius: 0;
             }
             
             .product-info {
-                padding: 18px;
+                padding: 10px 5px;
+                background: transparent;
             }
             
             .product-info h3 {
@@ -2298,11 +2308,30 @@
                 gap: 15px;
             }
             .category-item { 
-                height: 320px;
-                border-radius: 12px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                background-color: transparent;
+                box-shadow: none;
+                border: none;
             }
             .category-item img {
+                height: 250px;
                 object-position: center top;
+                border-radius: 12px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            .category-overlay {
+                position: static;
+                background: transparent;
+                padding: 15px;
+                text-align: center;
+            }
+            .category-overlay h3 {
+                font-size: 1.1rem;
+                border-bottom: none;
+                padding-bottom: 0;
+                text-shadow: none;
             }
             .product-card img { height: 200px; }
             .product-info { padding: 12px; }
@@ -2339,18 +2368,8 @@
             }
             
             /* Actions rapides toujours visibles sur mobile */
-            .product-quick-actions {
-                opacity: 1;
-                transform: translateX(0);
-                top: 10px;
-                right: 10px;
-                gap: 8px;
-            }
-
-            .quick-action-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
+            .product-quick-actions, .stock-badge {
+                display: none !important;
             }
 
             /* Offre */
