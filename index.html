@@ -74,7 +74,11 @@
         a { color: var(--accent-primary); text-decoration: none; transition: color 0.3s; }
         a:hover { color: var(--accent-hover); }
         
-        img { max-width: 100%; height: auto; }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            image-rendering: -webkit-optimize-contrast; /* Améliore la netteté sur certains navigateurs */
+        }
         button { font-family: var(--font-body); }
 
         .container {
@@ -2793,38 +2797,23 @@
             <section class="slideshow-container" id="slideshow-carrousel" aria-label="Nouvelle collection d'équipements de luxe en vedette" role="region">
         
                 <div class="slideshow-item focus-top">
-                    <picture>
-                        <source srcset="images/realmadridback-large.webp" media="(min-width: 900px)">
-                        <img src="images/realmadridback.webp" alt="Maillot de performance premium - Vue Arrière" loading="eager">
-                    </picture>
+                    <img src="images/realmadridback.webp" alt="Maillot de performance premium - Vue Arrière" loading="eager">
                 </div>
 
                 <div class="slideshow-item">
-                    <picture>
-                        <source srcset="images/lyonback-large.webp" media="(min-width: 900px)">
-                        <img src="images/lyonback.webp" alt="Équipement de sport minimaliste - Vue Arrière" loading="lazy">
-                    </picture>
+                    <img src="images/lyonback.webp" alt="Équipement de sport minimaliste - Vue Arrière" loading="lazy">
                 </div>
 
                 <div class="slideshow-item focus-top">
-                    <picture>
-                        <source srcset="images/grizback-large.webp" media="(min-width: 900px)">
-                        <img src="images/grizback.webp" alt="Maillot de luxe pour athlètes - Vue Arrière" loading="lazy">
-                    </picture>
+                    <img src="images/grizback.webp" alt="Maillot de luxe pour athlètes - Vue Arrière" loading="lazy">
                 </div>
 
                 <div class="slideshow-item">
-                    <picture>
-                        <source srcset="images/dortmundback-large.webp" media="(min-width: 900px)">
-                        <img src="images/dortmundback.webp" alt="Vêtements d'entraînement élégants - Vue Arrière" loading="lazy">
-                    </picture>
+                    <img src="images/dortmundback.webp" alt="Vêtements d'entraînement élégants - Vue Arrière" loading="lazy">
                 </div>
                 
                 <div class="slideshow-item focus-top">
-                    <picture>
-                        <source srcset="images/bayernback-large.webp" media="(min-width: 900px)">
-                        <img src="images/bayernback.webp" alt="Tricot haute technologie - Vue Arrière" loading="lazy">
-                    </picture>
+                    <img src="images/bayernback.webp" alt="Tricot haute technologie - Vue Arrière" loading="lazy">
                 </div>
                 
                 <div class="hero-content fused-content">
